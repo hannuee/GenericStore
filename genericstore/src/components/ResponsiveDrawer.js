@@ -20,8 +20,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import {
-  Switch, Route, Link
+  Switch, Route, Link, useRouteMatch
 } from "react-router-dom"
+
+import { useSelector } from 'react-redux'
 
 
 const drawerWidth = 240;
@@ -74,6 +76,8 @@ function ResponsiveDrawer(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const categories = useSelector(state => state.categories)  // Kat haku tilasta MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -81,48 +85,50 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-      <Divider />
-
+      
+      
+      
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-
-      <Divider />
-
-      <List>
-        <Link to="/koti" style={noDeco}>
+      {categories.filter(category => category.category_id === null).map(category =>
+        <Link to={`/kategoriat/${category.id}`} style={noDeco} key={category.id}>
           <ListItem button>   
             <ListItemIcon> <InboxIcon /> </ListItemIcon>
-            <ListItemText primary="Koti" />
+            <ListItemText primary={category.name} />
           </ListItem>
         </Link>
-        <Link to="/artikkeli" style={noDeco}>
+      )}
+      </List>
+
+      <Divider />
+
+      <List>
+        <Link to="/tilaukset" style={noDeco}>
+          <ListItem button>   
+            <ListItemIcon> <InboxIcon /> </ListItemIcon>
+            <ListItemText primary="Omat tilaukset" />
+          </ListItem>
+        </Link>
+        <Link to="/tiedot" style={noDeco}>
           <ListItem button>   
             <ListItemIcon> <MailIcon /> </ListItemIcon>
-            <ListItemText primary="Artikkeli" />
+            <ListItemText primary="Omat tiedot" />
           </ListItem>
         </Link>
       </List>
 
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+
+
     </div>
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+
+  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD:
+  const idInMatchObject = useRouteMatch('/kategoriat/:id')
+  const idExtracted = idInMatchObject ? Number(idInMatchObject.params.id) : null
+
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -176,15 +182,26 @@ function ResponsiveDrawer(props) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
 
+
+
+
+
+
+
     <Switch>
-      <Route path="/koti">        
+      <Route path="/kategoriat/:id">
           <Typography paragraph>
-            Kotona ollaan!
+            Kategorian ID: {idExtracted}
+          </Typography>  
+      </Route>
+      <Route path="/tilaukset">        
+          <Typography paragraph>
+            Omat tilaukset täällä.
           </Typography>              
       </Route>      
-      <Route path="/artikkeli">
+      <Route path="/tiedot">
           <Typography paragraph>
-            Artikkeli-sivulla ollaan.
+            Omat tiedot täällä.
           </Typography>      
       </Route>
     </Switch>
