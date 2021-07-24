@@ -6,6 +6,10 @@ import ResponsiveDrawer from './components/ResponsiveDrawer'
 //import { initializeCategories } from './reducers/categoryReducer'
 //import Container from '@material-ui/core/Container'
 
+import {
+  BrowserRouter as Router
+} from "react-router-dom"
+
 const App = () => {  
   // const dispatch = useDispatch()
 
@@ -13,7 +17,9 @@ const App = () => {
 
   return (
     <div>
-      <ResponsiveDrawer />
+      <Router>
+        <ResponsiveDrawer />
+      </Router>
     </div>
   )
 }
