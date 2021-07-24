@@ -24,6 +24,7 @@ import {
 } from "react-router-dom"
 
 import { useSelector } from 'react-redux'
+import CategoryPage from './CategoryPage'
 
 
 const drawerWidth = 240;
@@ -190,9 +191,7 @@ function ResponsiveDrawer(props) {
 
     <Switch>
       <Route path="/kategoriat/:id">
-          <Typography paragraph>
-            Kategorian ID: {idExtracted}
-          </Typography>  
+          <CategoryPage id={idExtracted} />
       </Route>
       <Route path="/tilaukset">        
           <Typography paragraph>

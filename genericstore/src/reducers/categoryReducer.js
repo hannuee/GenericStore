@@ -12,14 +12,7 @@ const reducer = (state = [], action) => {
 
 export const initializeCategories = () => {
   return async dispatch => {
-    // Error kierto:
-    let categories
-    try {
-      categories = await categoryService.getAll()
-    } catch(error) {
-      categories = null
-    }
-    // const categories = await categoryService.getAll()
+    const categories = await categoryService.getAll()
     dispatch({
       type: 'INIT_CATEGORIES',
       data: categories
