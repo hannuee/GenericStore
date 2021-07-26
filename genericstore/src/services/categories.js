@@ -7,4 +7,19 @@ const getAll = async () => {
   return response.data
 }
 
-export default { getAll }
+const post = async (newCategory) => {
+  const response = await axios.post(baseUrl, newCategory)
+  return response.data
+}
+
+const deleteCategory = async (id) => {
+  const response = await axios.delete(baseUrl + '/' + id)
+  return response.data
+}
+
+const putNewCategory = async (idAndInfoToModify) => {
+  const response = await axios.put(baseUrl + '/newCategory', idAndInfoToModify)
+  return response.data
+}
+
+export default { getAll, post, deleteCategory, putNewCategory }

@@ -128,7 +128,7 @@ function ResponsiveDrawer(props) {
   // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD:
   const idInMatchObject = useRouteMatch('/kategoriat/:id')
   const idExtracted = idInMatchObject ? Number(idInMatchObject.params.id) : null
-
+  
   
   return (
     <div className={classes.root}>

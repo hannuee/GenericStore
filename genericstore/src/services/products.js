@@ -7,4 +7,29 @@ const getAll = async () => {
   return response.data
 }
 
-export default { getAll }
+const getAvailable = async () => {
+  const response = await axios.get(baseUrl + '/available')
+  return response.data
+}
+
+const post = async (newProduct) => {
+  const response = await axios.post(baseUrl, newProduct)
+  return response.data
+}
+
+const putAvailable = async (idAndInfoToModify) => {
+  const response = await axios.put(baseUrl + '/available', idAndInfoToModify)
+  return response.data
+}
+
+const putNewCategory = async (idAndInfoToModify) => {
+  const response = await axios.put(baseUrl + '/newCategory', idAndInfoToModify)
+  return response.data
+}
+
+const putPricesAndSizes = async (idAndInfoToModify) => {
+  const response = await axios.put(baseUrl + '/pricesAndSizes', idAndInfoToModify)
+  return response.data
+}
+
+export default { getAll, getAvailable, post, putAvailable, putNewCategory, putPricesAndSizes }

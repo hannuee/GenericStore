@@ -2,7 +2,7 @@ import productService from '../services/products'
 
 const reducer = (state = [], action) => {
   switch (action.type) {
-    case 'INIT_PRODUCTS':
+    case 'INIT_AVAILABLE_PRODUCTS':
       return action.data
     default: return state
   }
@@ -10,11 +10,11 @@ const reducer = (state = [], action) => {
 
 // Action creators:
 
-export const initializeProducts = () => {
+export const initializeAvailableProducts = () => {
   return async dispatch => {
-    const products = await productService.getAll()
+    const products = await productService.getAvailable()
     dispatch({
-      type: 'INIT_PRODUCTS',
+      type: 'INIT_AVAILABLE_PRODUCTS',
       data: products
     })
   }
