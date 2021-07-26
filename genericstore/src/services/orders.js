@@ -12,6 +12,8 @@ const post = async (order) => {
   return response.data
 }
 
+// For admin:
+
 const getUndispatchedWithDetails = async () => {
   const response = await axios.get(baseUrl + '/undispatchedWithDetails')
   return response.data

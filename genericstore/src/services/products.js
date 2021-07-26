@@ -2,13 +2,15 @@ import axios from 'axios'
 
 const baseUrl = 'http://localhost:3001/api/products'
 
-const getAll = async () => {
-  const response = await axios.get(baseUrl)
+const getAvailable = async () => {
+  const response = await axios.get(baseUrl + '/available')
   return response.data
 }
 
-const getAvailable = async () => {
-  const response = await axios.get(baseUrl + '/available')
+// For admin:
+
+const getAll = async () => {
+  const response = await axios.get(baseUrl)
   return response.data
 }
 
