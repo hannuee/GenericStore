@@ -1,5 +1,6 @@
 import orderService from '../services/orders'
 
+// customers state is "with details"
 const reducer = (state = {customers: [], admins: []}, action) => {
     switch (action.type) {
       case 'INIT_CUSTOMERS_ORDERS':

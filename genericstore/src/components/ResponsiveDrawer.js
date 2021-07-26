@@ -25,6 +25,7 @@ import {
 
 import { useSelector } from 'react-redux'
 import CategoryPage from './CategoryPage'
+import MyOrdersPage from './MyOrdersPage'
 
 
 const drawerWidth = 240;
@@ -193,10 +194,8 @@ function ResponsiveDrawer(props) {
       <Route path="/kategoriat/:id">
           <CategoryPage id={idExtracted} />
       </Route>
-      <Route path="/tilaukset">        
-          <Typography paragraph>
-            Omat tilaukset täällä.
-          </Typography>              
+      <Route path="/tilaukset">
+          <MyOrdersPage />
       </Route>      
       <Route path="/tiedot">
           <Typography paragraph>
