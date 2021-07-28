@@ -11,19 +11,21 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-// For size selection button:
+// For size selection and quantity selection:
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Input from '@material-ui/core/Input';
 
 // For new card exclusive:
 import IconButton from '@material-ui/core/IconButton';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
-
-
 
 
 const useStyles = makeStyles({
@@ -48,12 +50,16 @@ const TypographyStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
     
 }
 
+const TypographyStylePrice = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  color: 'red'
+}
+
 const buttonStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
     float: 'right'
 }
 
 
-// For size selection button:
+// For size and quantity selection:
 const useStylesSizeSelect = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -98,14 +104,39 @@ const ProductCard = ({ product }) => {
   const classes = useStyles();
 
 
-  // For size selection button:
+ // For size and quantity selection:
+
   const classesSizeSelect = useStylesSizeSelect();
-  const [size, setSize] = React.useState('');
+
+  const [size, setSize] = React.useState(product.pricesandsizes[0])
+  const [quantity, setQuantity] = React.useState(1);
 
   const handleChange = (event) => {
-    setSize(event.target.value);
-  };
+    console.log(event.target.value)
+    setSize(event.target.value)
+  }
+  const handleQuantityChange = (event) => {
+    setQuantity(event.target.value);
+  }
 
+  const quantityInput = () => {
+    if(quantity > 0){
+      return (
+      <FormControl variant="outlined" className={classesSizeSelect.formControl}>
+        <InputLabel htmlFor="component-outlined">Lukumäärä</InputLabel>
+        <OutlinedInput id="lukumaara" value={quantity} onChange={handleQuantityChange} label="Lukumäärä" type="number" />
+      </FormControl>
+      )   
+    } else {
+      return (
+      <FormControl error variant="outlined" className={classesSizeSelect.formControl}>
+        <InputLabel htmlFor="component-outlined-error">Lukumäärä</InputLabel>
+        <OutlinedInput id="lukumaara-error" value={quantity} onChange={handleQuantityChange} label="Lukumäärä" type="number" />
+        <FormHelperText id="lukumaara-error-text">Error!!!!!</FormHelperText>
+      </FormControl>
+      )
+    }
+  }
 
   // For new card:
   const classesNewCard = useStylesNewCard();
@@ -114,7 +145,6 @@ const ProductCard = ({ product }) => {
 
 // {product.id}
 // {product.category_id}
-// {product.pricesAndSizes}
 // {product.available} JOS ADMIN
 // {product.added} JOS ADMIN
   return (
@@ -151,12 +181,17 @@ const ProductCard = ({ product }) => {
           onChange={handleChange}
           label="Koko"
         >
-          {product.pricesandsizes.map(priceAndSize => <MenuItem value={10}>{priceAndSize.size}, {priceAndSize.price}</MenuItem> )}
+          {product.pricesandsizes.map(priceAndSize => <MenuItem value={priceAndSize}>{priceAndSize.size} - {priceAndSize.price / 100} €</MenuItem> )}
           <MenuItem value={10}>Ten</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>
           <MenuItem value={30}>Thirty</MenuItem>
         </Select>
       </FormControl>
+
+
+      {quantityInput()}
+
+      <Typography variant="body2" component="p" style={TypographyStylePrice}>{(size.price / 100) * quantity} €</Typography>
 
 
           </Typography>
