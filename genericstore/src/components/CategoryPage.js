@@ -1,10 +1,10 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import ProductCard from './ProductCard'
 
 const CategoryPage = (props) => {
 
   const kokoTila = useSelector(state => state)
-  console.log(kokoTila)
 
   const categoryDisplayed = useSelector(state => state.categories.find(category => category.id === props.id))
   const subCategories = useSelector(state => state.categories.filter(category => category.category_id === props.id))
@@ -12,6 +12,9 @@ const CategoryPage = (props) => {
 
     return (
       <>
+        <br />
+        <br />
+
         {categoryDisplayed.id}, {categoryDisplayed.category_id}, {categoryDisplayed.name}, {categoryDisplayed.description}
         
         <br />
@@ -28,7 +31,8 @@ const CategoryPage = (props) => {
 
         {products.map(product =>
         <div key={product.id}>
-          {product.id}, {product.category_id}, {product.name}, {product.description}, {product.pricesAndSizes}, {product.available}, {product.added} <br />
+          <ProductCard product={product} />
+          <br />
         </div>
         )}
       </>
