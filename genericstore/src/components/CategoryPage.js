@@ -2,6 +2,9 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import ProductCard from './ProductCard'
 
+import { Link } from "react-router-dom"
+import Button from '@material-ui/core/Button';
+
 const CategoryPage = (props) => {
 
   const kokoTila = useSelector(state => state)
@@ -21,9 +24,13 @@ const CategoryPage = (props) => {
         <br />
         
         {subCategories.map(category =>
-        <div key={category.id}>
-          {category.id}, {category.category_id}, {category.name}, {category.description} <br />
-        </div>
+
+          <Link to={`/kategoriat/${category.id}`} key={category.id}>
+            <Button size="small" color="primary" >
+              {category.name}, {category.description}
+            </Button>
+          </Link>
+
         )}
 
         <br />

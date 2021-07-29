@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 
 // For delete order item:
 import { useDispatch } from 'react-redux'
-import { deleteOrderItemFromCart } from '../reducers/orderReducer'
+import { deleteItemFromCart } from '../reducers/orderReducer'
 import Button from '@material-ui/core/Button';
 
 import { sendNewOrder } from '../reducers/orderReducer'
@@ -31,7 +31,7 @@ const MyOrdersPage = (props) => {
 
   const dispatch = useDispatch()
 
-  const handleDeleteFromCart = (product_time) => dispatch(deleteOrderItemFromCart(product_time))
+  const handleDeleteFromCart = (product_time) => dispatch(deleteItemFromCart(product_time))
 
   const handleOrderSending = () => dispatch(sendNewOrder(cartItems))
 

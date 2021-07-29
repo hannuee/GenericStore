@@ -77,7 +77,7 @@ console.log({customers: state.customers, cart: state.cart.filter(orderItem => or
     }
   }
 
-  export const deleteOrderItemFromCart = (product_time) => {
+  export const deleteItemFromCart = (product_time) => {
     return async dispatch => {
       dispatch({
         type: 'DELETE_FROM_CART',
