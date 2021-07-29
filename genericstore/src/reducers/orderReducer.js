@@ -1,14 +1,14 @@
 import orderService from '../services/orders'
 
 // customers state is "with details"
-const reducer = (state = {customers: [], admins: []}, action) => {
+const reducer = (state = {customers: [], cart: [], admins: []}, action) => {
     switch (action.type) {
       case 'INIT_CUSTOMERS_ORDERS':
-        return {customers: action.data, admins: state.admins}
-      case 'ADD_ORDER':
-        return {customers: state.customers.concat(action.data), admins: state.admins}
+        return {customers: action.data, cart: state.cart, admins: state.admins}
+      case 'ADD_ORDER':  // MIETI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        return {customers: state.customers.concat(action.data), cart: state.cart, admins: state.admins}
       case 'INIT_ADMINS_ORDERS':  
-        return {customers: state.customers, admins: action.data}
+        return {customers: state.customers, cart: state.cart, admins: action.data}
       case 'REPLACE_ADMIN':
         const newAdmins = []
 
@@ -20,7 +20,10 @@ const reducer = (state = {customers: [], admins: []}, action) => {
           }
         }
 
-        return {customers: state.customers, admins: newAdmins}
+        return {customers: state.customers, cart: state.cart, admins: newAdmins}
+      case 'ADD_TO_CART':
+console.log({customers: state.customers, cart: state.cart.concat(action.data), admins: state.admins})
+        return {customers: state.customers, cart: state.cart.concat(action.data), admins: state.admins}
       default: return state
     }
   }
@@ -47,7 +50,14 @@ const reducer = (state = {customers: [], admins: []}, action) => {
     }
   }
 
-
+  export const addProductAndDetailsToCart = (productAndDetails) => {
+    return async dispatch => {
+      dispatch({
+        type: 'ADD_TO_CART',
+        data: productAndDetails
+      })
+    }
+  }
 
   export const initializeAdminsUndispatchedOrdersWithDetails = () => {
     return async dispatch => {

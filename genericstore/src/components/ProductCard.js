@@ -27,6 +27,11 @@ import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 
+// In order to add product to cart:
+import { useDispatch } from 'react-redux'
+import { addProductAndDetailsToCart } from '../reducers/orderReducer'
+
+
 
 const useStyles = makeStyles({
   root: {
@@ -51,7 +56,9 @@ const TypographyStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
 }
 
 const TypographyStylePrice = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-  color: 'red'
+  color: 'red',
+  float: 'right',
+  margin: '10px'
 }
 
 const buttonStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
@@ -108,15 +115,23 @@ const ProductCard = ({ product }) => {
 
   const classesSizeSelect = useStylesSizeSelect();
 
-  const [size, setSize] = React.useState(product.pricesandsizes[0])
+  const [priceAndSize, setPriceAndSize] = React.useState(product.pricesandsizes[0])
   const [quantity, setQuantity] = React.useState(1);
+  const [product_id, setProductId] = React.useState(product.id); // Product ID also in a state for symmetry.
 
   const handleChange = (event) => {
     console.log(event.target.value)
-    setSize(event.target.value)
+    setPriceAndSize(event.target.value)
   }
   const handleQuantityChange = (event) => {
-    setQuantity(event.target.value);
+    const quantityInput = Number(event.target.value)
+    if (quantityInput >= 0) setQuantity(event.target.value)
+    else setQuantity(0)
+  }
+
+  const dispatch = useDispatch()
+  const addToCart = () => {
+    dispatch(addProductAndDetailsToCart({product_id, priceAndSize, quantity}))
   }
 
   const quantityInput = () => {
@@ -159,14 +174,8 @@ const ProductCard = ({ product }) => {
         <CardContent style={CardContentStyle}>
           <Typography gutterBottom variant="h6" component="h2" style={TypographyStyle}>
             {product.name}
-
-            <Button size="small" color="primary" style={buttonStyle}>
-              Share
-            </Button>
-            <Button size="small" color="primary" style={buttonStyle}>
-              Learn More
-            </Button>
          </Typography>
+
           <Typography variant="body2" color="textSecondary" component="p">
             {product.description} Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
             Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
@@ -177,11 +186,11 @@ const ProductCard = ({ product }) => {
         <Select
           labelId="size-select-label-id"
           id="size-select-id"
-          value={size}
+          value={priceAndSize}
           onChange={handleChange}
           label="Koko"
         >
-          {product.pricesandsizes.map(priceAndSize => <MenuItem value={priceAndSize}>{priceAndSize.size} - {priceAndSize.price / 100} €</MenuItem> )}
+          {product.pricesandsizes.map(priceAndSizeOption => <MenuItem value={priceAndSizeOption}>{priceAndSizeOption.size} - {priceAndSizeOption.price / 100} €</MenuItem> )}
           <MenuItem value={10}>Ten</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>
           <MenuItem value={30}>Thirty</MenuItem>
@@ -191,7 +200,11 @@ const ProductCard = ({ product }) => {
 
       {quantityInput()}
 
-      <Typography variant="body2" component="p" style={TypographyStylePrice}>{(size.price / 100) * quantity} €</Typography>
+      <Button size="small" color="primary" style={buttonStyle} onClick={addToCart}>
+        Lisää ostoskoriin
+      </Button>
+
+      <Typography variant="body2" component="p" style={TypographyStylePrice}>{(priceAndSize.price / 100) * quantity} €</Typography>
 
 
           </Typography>
