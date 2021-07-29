@@ -117,7 +117,6 @@ const ProductCard = ({ product }) => {
 
   const [priceAndSize, setPriceAndSize] = React.useState(product.pricesandsizes[0])
   const [quantity, setQuantity] = React.useState(1);
-  const [product_id, setProductId] = React.useState(product.id); // Product ID also in a state for symmetry.
 
   const handleChange = (event) => {
     console.log(event.target.value)
@@ -125,13 +124,17 @@ const ProductCard = ({ product }) => {
   }
   const handleQuantityChange = (event) => {
     const quantityInput = Number(event.target.value)
-    if (quantityInput >= 0) setQuantity(event.target.value)
+    if (quantityInput >= 0) setQuantity(quantityInput)
     else setQuantity(0)
   }
 
   const dispatch = useDispatch()
+
   const addToCart = () => {
-    dispatch(addProductAndDetailsToCart({product_id, priceAndSize, quantity}))
+    const product_time = new Date().getTime()
+    const product_name = product.name 
+    const product_id = product.id
+    dispatch(addProductAndDetailsToCart({product_time, product_name, product_id, priceAndSize, quantity}))
   }
 
   const quantityInput = () => {

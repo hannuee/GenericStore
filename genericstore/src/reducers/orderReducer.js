@@ -1,6 +1,8 @@
 import orderService from '../services/orders'
 
-// customers state is "with details"
+// customers state is "with details"       
+// cart is in the same format as Orders POST interface, but every item has also product name and time.
+// time is there just to work as an unique key for react when printing arrays.
 const reducer = (state = {customers: [], cart: [], admins: []}, action) => {
     switch (action.type) {
       case 'INIT_CUSTOMERS_ORDERS':
