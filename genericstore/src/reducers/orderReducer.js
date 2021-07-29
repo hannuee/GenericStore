@@ -2,12 +2,12 @@ import orderService from '../services/orders'
 
 // customers state is "with details"       
 // cart is in the same format as Orders POST interface, but every item has also product name and time.
-// time is there just to work as an unique key for react when printing arrays.
+// time is there just to work as an unique key for react when printing arrays, and also to identify order items to be deleted.
 const reducer = (state = {customers: [], cart: [], admins: []}, action) => {
     switch (action.type) {
       case 'INIT_CUSTOMERS_ORDERS':
         return {customers: action.data, cart: state.cart, admins: state.admins}
-      case 'ADD_ORDER':  // MIETI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      case 'ADD_ORDER':  // MIETI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ei käyttöä toistaiseksti
         return {customers: state.customers.concat(action.data), cart: state.cart, admins: state.admins}
       case 'INIT_ADMINS_ORDERS':  
         return {customers: state.customers, cart: state.cart, admins: action.data}
@@ -26,6 +26,11 @@ const reducer = (state = {customers: [], cart: [], admins: []}, action) => {
       case 'ADD_TO_CART':
 console.log({customers: state.customers, cart: state.cart.concat(action.data), admins: state.admins})
         return {customers: state.customers, cart: state.cart.concat(action.data), admins: state.admins}
+      case 'DELETE_FROM_CART':
+console.log({customers: state.customers, cart: state.cart.filter(orderItem => orderItem.product_time !== action.data), admins: state.admins})
+        return {customers: state.customers, cart: state.cart.filter(orderItem =>orderItem.product_time !== action.data), admins: state.admins}
+      case 'CLEAR_CART':
+        return {customers: state.customers, cart: [], admins: state.admins}
       default: return state
     }
   }
@@ -42,21 +47,41 @@ console.log({customers: state.customers, cart: state.cart.concat(action.data), a
     }
   }
 
-  export const sendNewOrder = (order) => {
+  export const sendNewOrder = (cartItems) => {
     return async dispatch => {
-      const response = await orderService.post(order)
+
+      for(let item of cartItems) {
+        delete item.product_time
+        delete item.product_name
+      }
+
+      const response = await orderService.post(cartItems)
+
+      // jos onnistuu niin ostoskorin tyhjennys:
       dispatch({
-        type: 'ADD_ORDER',
-        data: order
+        type: 'CLEAR_CART'
       })
+
+      // Tilaukset haetaan uudestaan koska Orders POST rajapinta ei tällä hetkellä palauta lisättyä tilausta.
+      // Kun tilaukset pyydetään Orders GET rajapinnoilta niin ne tulevat varmasti oikein, siten kun ne ovat tietokannassa.
+      dispatch(initializeCustomersOrdersWithDetails())
     }
   }
 
-  export const addProductAndDetailsToCart = (productAndDetails) => {
+  export const addOrderItemToCart = (productAndDetails) => {
     return async dispatch => {
       dispatch({
         type: 'ADD_TO_CART',
         data: productAndDetails
+      })
+    }
+  }
+
+  export const deleteOrderItemFromCart = (product_time) => {
+    return async dispatch => {
+      dispatch({
+        type: 'DELETE_FROM_CART',
+        data: product_time
       })
     }
   }

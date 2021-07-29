@@ -29,7 +29,7 @@ import SkipNextIcon from '@material-ui/icons/SkipNext';
 
 // In order to add product to cart:
 import { useDispatch } from 'react-redux'
-import { addProductAndDetailsToCart } from '../reducers/orderReducer'
+import { addOrderItemToCart } from '../reducers/orderReducer'
 
 
 
@@ -130,11 +130,11 @@ const ProductCard = ({ product }) => {
 
   const dispatch = useDispatch()
 
-  const addToCart = () => {
+  const handleAddToCart = () => {
     const product_time = new Date().getTime()
     const product_name = product.name 
     const product_id = product.id
-    dispatch(addProductAndDetailsToCart({product_time, product_name, product_id, priceAndSize, quantity}))
+    dispatch(addOrderItemToCart({product_time, product_name, product_id, priceAndSize, quantity}))
   }
 
   const quantityInput = () => {
@@ -203,7 +203,7 @@ const ProductCard = ({ product }) => {
 
       {quantityInput()}
 
-      <Button size="small" color="primary" style={buttonStyle} onClick={addToCart}>
+      <Button size="small" color="primary" style={buttonStyle} onClick={handleAddToCart}>
         Lisää ostoskoriin
       </Button>
 
