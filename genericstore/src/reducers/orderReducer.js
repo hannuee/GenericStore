@@ -3,18 +3,20 @@ import orderService from '../services/orders'
 // customers state is "with details"       
 // cart is in the same format as Orders POST interface, but every item has also product name and time.
 // time is there just to work as an unique key for react when printing arrays, and also to identify order items to be deleted.
-const reducer = (state = {customers: [], cart: [], admins: []}, action) => {
+const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], adminsDispatched: []}, action) => {
     switch (action.type) {
       case 'INIT_CUSTOMERS_ORDERS':
-        return {customers: action.data, cart: state.cart, admins: state.admins}
+        return {customers: action.data, cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched}
       case 'ADD_ORDER':  // MIETI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ei käyttöä toistaiseksti
-        return {customers: state.customers.concat(action.data), cart: state.cart, admins: state.admins}
-      case 'INIT_ADMINS_ORDERS':  
-        return {customers: state.customers, cart: state.cart, admins: action.data}
-      case 'REPLACE_ADMIN':
+        return {customers: state.customers.concat(action.data), cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched}
+      case 'INIT_ADMINS_UNDISPATCHED_ORDERS':  
+        return {customers: state.customers, cart: state.cart, adminsUndispatched: action.data, adminsDispatched: state.adminsDispatched}
+      case 'INIT_ADMINS_DISPATCHED_ORDERS':  
+        return {customers: state.customers, cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: action.data}
+      case 'REPLACE_ADMINS_UNDISPATCHED':
         const newAdmins = []
 
-        for(let order in state.admins){
+        for(let order in state.adminsUndispatched){
           if(order.id === action.data.id) {
             newAdmins.push({...action.data, orderDetails: order.orderDetails})
           } else {
@@ -22,15 +24,13 @@ const reducer = (state = {customers: [], cart: [], admins: []}, action) => {
           }
         }
 
-        return {customers: state.customers, cart: state.cart, admins: newAdmins}
+        return {customers: state.customers, cart: state.cart, adminsUndispatched: newAdmins, adminsDispatched: state.adminsDispatched}
       case 'ADD_TO_CART':
-console.log({customers: state.customers, cart: state.cart.concat(action.data), admins: state.admins})
-        return {customers: state.customers, cart: state.cart.concat(action.data), admins: state.admins}
+        return {customers: state.customers, cart: state.cart.concat(action.data), adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched}
       case 'DELETE_FROM_CART':
-console.log({customers: state.customers, cart: state.cart.filter(orderItem => orderItem.product_time !== action.data), admins: state.admins})
-        return {customers: state.customers, cart: state.cart.filter(orderItem =>orderItem.product_time !== action.data), admins: state.admins}
+        return {customers: state.customers, cart: state.cart.filter(orderItem =>orderItem.product_time !== action.data), adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched}
       case 'CLEAR_CART':
-        return {customers: state.customers, cart: [], admins: state.admins}
+        return {customers: state.customers, cart: [], adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched}
       default: return state
     }
   }
@@ -86,11 +86,21 @@ console.log({customers: state.customers, cart: state.cart.filter(orderItem => or
     }
   }
 
-  export const initializeAdminsUndispatchedOrdersWithDetails = () => {
+  export const initializeAdminsUndispatchedOrdersWithDetails = () => { 
     return async dispatch => {
       const orders = await orderService.getUndispatchedWithDetails()
       dispatch({
-        type: 'INIT_ADMINS_ORDERS',
+        type: 'INIT_ADMINS_UNDISPATCHED_ORDERS',
+        data: orders
+      })
+    }
+  }
+
+  export const initializeAdminsDispatchedOrders = () => { 
+    return async dispatch => {
+      const orders = await orderService.getDispatched()
+      dispatch({
+        type: 'INIT_ADMINS_DISPATCHED_ORDERS',
         data: orders
       })
     }
@@ -100,7 +110,7 @@ console.log({customers: state.customers, cart: state.cart.filter(orderItem => or
     return async dispatch => {
       const order = await orderService.putInternalNotes(idAndInfoToModify)
       dispatch({
-        type: 'REPLACE_ADMIN',
+        type: 'REPLACE_ADMINS_UNDISPATCHED',
         data: order
       })
     }
@@ -110,7 +120,7 @@ console.log({customers: state.customers, cart: state.cart.filter(orderItem => or
     return async dispatch => {
       const order = await orderService.putOrderDispatced(id)
       dispatch({
-        type: 'REPLACE_ADMIN',
+        type: 'REPLACE_ADMINS_UNDISPATCHED',
         data: order
       })
     }

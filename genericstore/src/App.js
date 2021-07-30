@@ -5,6 +5,7 @@ import ResponsiveDrawer from './components/ResponsiveDrawer'
 import { initializeCategories } from './reducers/categoryReducer'
 import { initializeAvailableProducts } from './reducers/productReducer'
 import { initializeCustomersOrdersWithDetails } from './reducers/orderReducer'
+import { initializeAdminsUndispatchedOrdersWithDetails } from './reducers/orderReducer'
 //import Container from '@material-ui/core/Container'
 
 import { BrowserRouter as Router } from "react-router-dom"
@@ -18,6 +19,8 @@ console.log('PITÄIS ALUSTAAAAAAAAAAAAA')
 
   // SIIRRÄ ONNISTUNEEN KIRJAUTUMISEN JÄLKEISEEN HETKEEN, KUNHAN SE OSIO ON TEHTY, JA ONNISTUNEEN TILAUKSEN TEKO HETKEEN.
   useEffect(() => dispatch(initializeCustomersOrdersWithDetails()), [dispatch])
+
+  useEffect(() => dispatch(initializeAdminsUndispatchedOrdersWithDetails()), [dispatch])
 
   return (
     <div>

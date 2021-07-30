@@ -27,6 +27,7 @@ import { useSelector } from 'react-redux'
 import CategoryPage from './CategoryPage'
 import MyOrdersPage from './MyOrdersPage'
 import MyCartPage from './MyCartPage'
+import AdminOrdersPage from './AdminOrdersPage'
 
 
 const drawerWidth = 240;
@@ -105,7 +106,7 @@ function ResponsiveDrawer(props) {
       <Divider />
 
       <List>
-        <Link to="/tilaukset" style={noDeco}>
+        <Link to="/omattilaukset" style={noDeco}>
           <ListItem button>   
             <ListItemIcon> <InboxIcon /> </ListItemIcon>
             <ListItemText primary="Omat tilaukset" />
@@ -125,7 +126,16 @@ function ResponsiveDrawer(props) {
         </Link>
       </List>
 
+      <Divider />
 
+      <List>
+        <Link to="/tilaukset" style={noDeco}>
+          <ListItem button>   
+            <ListItemIcon> <InboxIcon /> </ListItemIcon>
+            <ListItemText primary="Tilaukset" />
+          </ListItem>
+        </Link>
+      </List>
 
     </div>
   );
@@ -201,7 +211,7 @@ function ResponsiveDrawer(props) {
       <Route path="/kategoriat/:id">
           <CategoryPage id={idExtracted} />
       </Route>
-      <Route path="/tilaukset">
+      <Route path="/omattilaukset">
           <MyOrdersPage />
       </Route>      
       <Route path="/tiedot">
@@ -212,6 +222,9 @@ function ResponsiveDrawer(props) {
       <Route path="/ostoskori">
            <MyCartPage />
       </Route>
+      <Route path="/tilaukset">
+          <AdminOrdersPage />
+      </Route> 
     </Switch>
 
       </main>

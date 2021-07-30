@@ -14,8 +14,18 @@ const post = async (order) => {
 
 // For admin:
 
+const getOneWithDetails = async (id) => {
+  const response = await axios.get(baseUrl + '/details/' + id)
+  return response.data
+}
+
 const getUndispatchedWithDetails = async () => {
   const response = await axios.get(baseUrl + '/undispatchedWithDetails')
+  return response.data
+}
+
+const getDispatched = async () => {
+  const response = await axios.get(baseUrl + '/dispatched')
   return response.data
 }
 
@@ -29,4 +39,4 @@ const putOrderDispatced = async (id) => {
   return response.data
 }
 
-export default { getOfCustomerWithDetails, post, getUndispatchedWithDetails, putInternalNotes, putOrderDispatced }
+export default { getOfCustomerWithDetails, post, getUndispatchedWithDetails, putInternalNotes, putOrderDispatced, getDispatched }
