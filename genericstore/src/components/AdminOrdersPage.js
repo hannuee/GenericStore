@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { initializeAdminsDispatchedOrders } from '../reducers/orderReducer'
+import { getDetailsForAdminsDispatchedOrder } from '../reducers/orderReducer'
 
 // For the accordion:
 import { makeStyles } from '@material-ui/core/styles';
@@ -74,6 +75,7 @@ const AdminOrdersPage = (props) => {
   const orders = useSelector(state => state.orders.adminsUndispatched)  
 
 
+
   const dispatch = useDispatch()
   const ordersDispatched = useSelector(state => state.orders.adminsDispatched)
   const [showDispatched, setShowDispatched] = React.useState(false);
@@ -83,71 +85,24 @@ const AdminOrdersPage = (props) => {
     setShowDispatched(true)
   }
 
-  const dispatchedOrdersDisplay = () => {
-    if (showDispatched) {
-      return (
-      <div className={classes.root}>
-        {ordersDispatched.map(order => 
-          
-<Accordion key={order.id}>
-<AccordionSummary
-  expandIcon={<ExpandMoreIcon />}
-  aria-controls="panel1c-content"
-  id="panel1c-header"
->
-  <div className={classes.column}>
-    <Typography className={classes.heading}>Tilaus {order.orderreceived}</Typography>
-  </div>
-  <div className={classes.column}>
-    <Typography className={classes.secondaryHeading}>{order.purchaseprice / 100} €</Typography>
-  </div>
-</AccordionSummary>
-<AccordionDetails className={classes.details}>
-  
+  const [expanded, setExpanded] = React.useState(false);
 
-  
-</AccordionDetails>
-<Divider />
-  <AccordionActions>  
-    <Button size="small">Cancel</Button>
-    <Button size="small" color="primary">Save</Button>
-  </AccordionActions>
-</Accordion>
+  const handleExpansion = (id) => (event, isExpanded) => {
+    if(expanded === id) { // expansion close
+      setExpanded(false)
+      return
+    }
 
-        )}
-      </div>
-    )}
-  }
+    const orderClicked = ordersDispatched.find(order => order.id == id)
+    if(orderClicked.orderDetails === undefined) dispatch(getDetailsForAdminsDispatchedOrder(id))  // fetch details if needed.
+    setExpanded(id)
+  };
 
-    return (
-    <div className={classes.root}>
-<Typography gutterBottom variant="h5" component="h2">
-  Lähettämättömät tilaukset
-</Typography>
-
-
-      {orders.map(order =>
-
-
-<Accordion key={order.id}>
-<AccordionSummary
-  expandIcon={<ExpandMoreIcon />}
-  aria-controls="panel1c-content"
-  id="panel1c-header"
->
-  <div className={classes.column}>
-    <Typography className={classes.heading}>Tilaus {order.orderreceived}</Typography>
-  </div>
-  <div className={classes.column}>
-    <Typography className={classes.secondaryHeading}>{order.purchaseprice / 100} €</Typography>
-  </div>
-</AccordionSummary>
-<AccordionDetails className={classes.details}>
-  
-  
-  
-
-  <div className={classesTable.column}>
+  const orderDetailsDisplay = (order) => {
+if(order.orderDetails !== undefined){
+  return (
+<>
+<div className={classesTable.column}>
     <TableContainer component={Paper}>
       <Table className={classesTable.table} size="small" aria-label="a dense table">
         <TableHead>
@@ -198,7 +153,74 @@ const AdminOrdersPage = (props) => {
     Email: {order.email} <br />
     </Typography>
   </div>
+</>    
+  )
+}
+  }
 
+
+  const dispatchedOrdersDisplay = () => {              
+    if (showDispatched) {
+      return (
+      <div className={classes.root}>
+        {ordersDispatched.map(order => 
+          
+<Accordion key={order.id} expanded={expanded === order.id} onChange={handleExpansion(order.id)}>
+<AccordionSummary
+  expandIcon={<ExpandMoreIcon />}
+  aria-controls="panel1c-content"
+  id="panel1c-header"
+>
+  <div className={classes.column}>
+    <Typography className={classes.heading}>Tilaus {order.orderreceived}</Typography>
+  </div>
+  <div className={classes.column}>
+    <Typography className={classes.secondaryHeading}>{order.purchaseprice / 100} €</Typography>
+  </div>
+</AccordionSummary>
+<AccordionDetails className={classes.details}>
+  {orderDetailsDisplay(order)}
+</AccordionDetails>
+<Divider />
+  <AccordionActions>  
+    <Button size="small">Cancel</Button>
+    <Button size="small" color="primary">Save</Button>
+  </AccordionActions>
+</Accordion>
+
+        )}
+      </div>
+    )}
+  }
+
+
+
+  
+    return (
+    <div className={classes.root}>
+<Typography gutterBottom variant="h5" component="h2">
+  Lähettämättömät tilaukset
+</Typography>
+
+
+      {orders.map(order =>
+
+
+<Accordion key={order.id}>
+<AccordionSummary
+  expandIcon={<ExpandMoreIcon />}
+  aria-controls="panel1c-content"
+  id="panel1c-header"
+>
+  <div className={classes.column}>
+    <Typography className={classes.heading}>Tilaus {order.orderreceived}</Typography>
+  </div>
+  <div className={classes.column}>
+    <Typography className={classes.secondaryHeading}>{order.purchaseprice / 100} €</Typography>
+  </div>
+</AccordionSummary>
+<AccordionDetails className={classes.details}>
+  {orderDetailsDisplay(order)}
 </AccordionDetails>
 <Divider />
   <AccordionActions>  

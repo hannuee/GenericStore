@@ -3,6 +3,11 @@ import orderService from '../services/orders'
 // customers state is "with details"       
 // cart is in the same format as Orders POST interface, but every item has also product name and time.
 // time is there just to work as an unique key for react when printing arrays, and also to identify order items to be deleted.
+
+// ALL adminsUndispatched have besides "details", also customer details.
+
+//  adminsDispatched has "details" and customer details in those, that admin has clicked for more info.
+
 const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], adminsDispatched: []}, action) => {
     switch (action.type) {
       case 'INIT_CUSTOMERS_ORDERS':
@@ -13,10 +18,10 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
         return {customers: state.customers, cart: state.cart, adminsUndispatched: action.data, adminsDispatched: state.adminsDispatched}
       case 'INIT_ADMINS_DISPATCHED_ORDERS':  
         return {customers: state.customers, cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: action.data}
-      case 'REPLACE_ADMINS_UNDISPATCHED':
+      case 'REPLACE_ADMINS_UNDISPATCHED':  // vaihda nimeä ja korjaa ongelma että ylikirjottaa asiakastiedot.
         const newAdmins = []
 
-        for(let order in state.adminsUndispatched){
+        for(let order of state.adminsUndispatched){
           if(order.id === action.data.id) {
             newAdmins.push({...action.data, orderDetails: order.orderDetails})
           } else {
@@ -25,6 +30,18 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
         }
 
         return {customers: state.customers, cart: state.cart, adminsUndispatched: newAdmins, adminsDispatched: state.adminsDispatched}
+      case 'REPLACE_ADMINS_DISPATCHED':
+          const ordersImmuted = []
+  
+          for(let order of state.adminsDispatched){
+            if(order.id === action.data.id) {
+              ordersImmuted.push({...action.data})
+            } else {
+              ordersImmuted.push(order)
+            }
+          }
+  
+        return {customers: state.customers, cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: ordersImmuted}
       case 'ADD_TO_CART':
         return {customers: state.customers, cart: state.cart.concat(action.data), adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched}
       case 'DELETE_FROM_CART':
@@ -94,6 +111,16 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
         data: orders
       })
     }
+  } 
+
+  export const getDetailsForAdminsDispatchedOrder = (id) => { 
+    return async dispatch => {
+      const order = await orderService.getOneWithDetails(id)
+      dispatch({
+        type: 'REPLACE_ADMINS_DISPATCHED',
+        data: order
+      })
+    }
   }
 
   export const initializeAdminsDispatchedOrders = () => { 
@@ -106,7 +133,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
 
-  export const modifyInternalNotes = (idAndInfoToModify) => {
+  export const modifyInternalNotes = (idAndInfoToModify) => {  // YLIKIRJOITTAA TÄLLÄ HETKELLÄ TILAUKSEN ASIAKATIEDOT!
     return async dispatch => {
       const order = await orderService.putInternalNotes(idAndInfoToModify)
       dispatch({
@@ -116,7 +143,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
   
-  export const markOrderAsDispatced = (id) => {
+  export const markOrderAsDispatced = (id) => {          // YLIKIRJOITTAA TÄLLÄ HETKELLÄ TILAUKSEN ASIAKATIEDOT!
     return async dispatch => {
       const order = await orderService.putOrderDispatced(id)
       dispatch({
