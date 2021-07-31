@@ -18,19 +18,32 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
         return {customers: state.customers, cart: state.cart, adminsUndispatched: action.data, adminsDispatched: state.adminsDispatched}
       case 'INIT_ADMINS_DISPATCHED_ORDERS':  
         return {customers: state.customers, cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: action.data}
-      case 'REPLACE_ADMINS_UNDISPATCHED':  // vaihda nimeä ja korjaa ongelma että ylikirjottaa asiakastiedot.
+      case 'REPLACE_ADMINS_UNDISPATCHED_KEEP_DETAILS':  
         const newAdmins = []
 
         for(let order of state.adminsUndispatched){
           if(order.id === action.data.id) {
-            newAdmins.push({...action.data, orderDetails: order.orderDetails})
+            newAdmins.push({...action.data, orderDetails: order.orderDetails, name: order.name, address: order.address, mobile: order.mobile, email: order.email})
           } else {
             newAdmins.push(order)
           }
         }
 
         return {customers: state.customers, cart: state.cart, adminsUndispatched: newAdmins, adminsDispatched: state.adminsDispatched}
-      case 'REPLACE_ADMINS_DISPATCHED':
+      case 'MODIFY_ADMINS_UNDISPATCHED_TRANSFER_TO_DISPATCHED_KEEP_DETAILS':  
+        const newUndispatched = []
+        let newDispatched = state.adminsDispatched
+
+        for(let order of state.adminsUndispatched){
+          if(order.id === action.data.id) {
+            newDispatched = state.adminsDispatched.concat({...action.data, orderDetails: order.orderDetails, name: order.name, address: order.address, mobile: order.mobile, email: order.email})
+          } else {
+            newUndispatched.push(order)
+          }
+        }
+
+        return {customers: state.customers, cart: state.cart, adminsUndispatched: newUndispatched, adminsDispatched: newDispatched}
+      case 'REPLACE_ADMINS_DISPATCHED_COMPLETELY':
           const ordersImmuted = []
   
           for(let order of state.adminsDispatched){
@@ -42,6 +55,18 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
           }
   
         return {customers: state.customers, cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: ordersImmuted}
+      case 'REPLACE_ADMINS_DISPATCHED_KEEP_DETAILS':
+          const ordersImmuted2 = []
+  
+          for(let order of state.adminsDispatched){
+            if(order.id === action.data.id) {
+              ordersImmuted2.push({...action.data, orderDetails: order.orderDetails, name: order.name, address: order.address, mobile: order.mobile, email: order.email})
+            } else {
+              ordersImmuted2.push(order)
+            }
+          }
+  
+        return {customers: state.customers, cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: ordersImmuted2}
       case 'ADD_TO_CART':
         return {customers: state.customers, cart: state.cart.concat(action.data), adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched}
       case 'DELETE_FROM_CART':
@@ -117,7 +142,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     return async dispatch => {
       const order = await orderService.getOneWithDetails(id)
       dispatch({
-        type: 'REPLACE_ADMINS_DISPATCHED',
+        type: 'REPLACE_ADMINS_DISPATCHED_COMPLETELY',
         data: order
       })
     }
@@ -133,21 +158,31 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
 
-  export const modifyInternalNotes = (idAndInfoToModify) => {  // YLIKIRJOITTAA TÄLLÄ HETKELLÄ TILAUKSEN ASIAKATIEDOT!
+  export const modifyAdminsUndispatchedInternalNotes = (idAndInternalNotes) => {  
     return async dispatch => {
-      const order = await orderService.putInternalNotes(idAndInfoToModify)
+      const order = await orderService.putInternalNotes(idAndInternalNotes)
       dispatch({
-        type: 'REPLACE_ADMINS_UNDISPATCHED',
+        type: 'REPLACE_ADMINS_UNDISPATCHED_KEEP_DETAILS',
+        data: order
+      })
+    }
+  }
+
+  export const modifyAdminsDispatchedInternalNotes = (idAndInternalNotes) => {  
+    return async dispatch => {
+      const order = await orderService.putInternalNotes(idAndInternalNotes)
+      dispatch({
+        type: 'REPLACE_ADMINS_DISPATCHED_KEEP_DETAILS',
         data: order
       })
     }
   }
   
-  export const markOrderAsDispatced = (id) => {          // YLIKIRJOITTAA TÄLLÄ HETKELLÄ TILAUKSEN ASIAKATIEDOT!
+  export const markOrderAsDispatched = (id) => {         
     return async dispatch => {
-      const order = await orderService.putOrderDispatced(id)
+      const order = await orderService.putOrderDispatched({id})
       dispatch({
-        type: 'REPLACE_ADMINS_UNDISPATCHED',
+        type: 'MODIFY_ADMINS_UNDISPATCHED_TRANSFER_TO_DISPATCHED_KEEP_DETAILS',
         data: order
       })
     }

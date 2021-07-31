@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { initializeAdminsDispatchedOrders } from '../reducers/orderReducer'
 import { getDetailsForAdminsDispatchedOrder } from '../reducers/orderReducer'
+import { markOrderAsDispatched } from '../reducers/orderReducer'
+
+import OrderDetails from './OrderDetails'
 
 // For the accordion:
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,6 +28,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+
+import TextField from '@material-ui/core/TextField';
 
 // For the accordion:
 const useStyles = makeStyles((theme) => ({
@@ -96,64 +101,18 @@ const AdminOrdersPage = (props) => {
     const orderClicked = ordersDispatched.find(order => order.id == id)
     if(orderClicked.orderDetails === undefined) dispatch(getDetailsForAdminsDispatchedOrder(id))  // fetch details if needed.
     setExpanded(id)
-  };
+  }
+
+  const handleMarkAsDispatched = (id) => () => {
+    dispatch(markOrderAsDispatched(id))
+  }
 
   const orderDetailsDisplay = (order) => {
 if(order.orderDetails !== undefined){
   return (
-<>
-<div className={classesTable.column}>
-    <TableContainer component={Paper}>
-      <Table className={classesTable.table} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Tuote</TableCell>
-            <TableCell align="right">Koko</TableCell>
-            <TableCell align="right">Hinta</TableCell>
-            <TableCell align="right">Määrä</TableCell>
-            <TableCell align="right">Hinta yhteensä</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-
-        {order.orderDetails.map(orderDetail => 
-
-            <TableRow key={orderDetail.name}>
-              <TableCell component="th" scope="row">{orderDetail.name}</TableCell>
-              <TableCell align="right">{orderDetail.priceandsize.size}</TableCell>
-              <TableCell align="right">{orderDetail.priceandsize.price / 100} €</TableCell>
-              <TableCell align="right">{orderDetail.quantity}</TableCell>
-              <TableCell align="right">{(orderDetail.priceandsize.price * orderDetail.quantity) / 100} €</TableCell>
-            </TableRow>
-
-          )}
-
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </div>
-
-
-
-
-  <div className={clsx(classes.column, classes.helper)}>
-    <Typography variant="caption">
-    Tilaustunnus: {order.id} <br /> 
-    Tilaus vastaanotettu: {order.orderreceived} <br />
-    Tuotteet lähetetty: {order.orderdispatched} <br /> 
-    Hinta: {order.purchaseprice} <br />
-    Lisätiedot: {order.customerinstructions}
-    <br /> <br /> 
-    Admin: <br /> 
-    Huomiot: {order.internalNotes} <br />
-    Asiakas ID: {order.customer_id} <br />
-    Nimi: {order.name} <br />
-    Osoite: {order.address} <br />
-    Puhelin: {order.mobile} <br />
-    Email: {order.email} <br />
-    </Typography>
-  </div>
-</>    
+  
+     <OrderDetails order={order} />
+  
   )
 }
   }
@@ -223,9 +182,8 @@ if(order.orderDetails !== undefined){
   {orderDetailsDisplay(order)}
 </AccordionDetails>
 <Divider />
-  <AccordionActions>  
-    <Button size="small">Cancel</Button>
-    <Button size="small" color="primary">Save</Button>
+  <AccordionActions>
+    <Button size="small" color="primary" onClick={handleMarkAsDispatched(order.id)}>Merkitse lähetetyksi</Button>
   </AccordionActions>
 </Accordion>
 
