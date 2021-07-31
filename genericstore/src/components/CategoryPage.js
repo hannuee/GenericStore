@@ -1,13 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import ProductAdditionForm from './ProductAdditionForm'
 import ProductCard from './ProductCard'
 
 import { Link } from "react-router-dom"
 import Button from '@material-ui/core/Button';
 
 const CategoryPage = (props) => {
-
-  const kokoTila = useSelector(state => state)
 
   const categoryDisplayed = useSelector(state => state.categories.find(category => category.id === props.id))
   const subCategories = useSelector(state => state.categories.filter(category => category.category_id === props.id))
@@ -21,6 +20,7 @@ const CategoryPage = (props) => {
         {categoryDisplayed.id}, {categoryDisplayed.category_id}, {categoryDisplayed.name}, {categoryDisplayed.description}
         
         <br />
+        <ProductAdditionForm categoryId={categoryDisplayed.id} />
         <br />
         
         {subCategories.map(category =>
