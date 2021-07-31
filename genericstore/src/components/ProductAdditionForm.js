@@ -24,20 +24,34 @@ const ProductAdditionForm = ({ categoryId }) => {
   const dispatch = useDispatch()
 
 
-  const [pricesAndSizes, setPricesAndSizes] = React.useState(0)
+  const [name, setName] = React.useState('')
+  const [description, setDescription] = React.useState('')
+  const [pricesAndSizes, setPricesAndSizes] = React.useState([{price: 5, size: ''}])
 
-  const handleChange = (event) => {
-    console.log(event.target.value)
+
+
+  const handleNameChange = (event) => {
+    setName(event.target.value)
   }
 
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value)
+  }
 
-  return (
-    <form className={classes.root} noValidate autoComplete="off">
-      <div>
-        <TextField required id="standard-required" label="Tuotteen nimi" />
-        <TextField id="standard-required" label="Kuvaus" />
-        <br />
-        <TextField id="standard-required" label="Koko" />
+  const handlePriceAndSizeChange = (indexModified, sizeOrPrice) => (event) => {
+    const newArray = []
+    pricesAndSizes.forEach((priceAndSize, index) => {
+      if(index === indexModified && sizeOrPrice === 'size') newArray.push({price: priceAndSize.price, size: event.target.value})
+      else if(index === indexModified && sizeOrPrice === 'price') newArray.push({price: event.target.value, size: priceAndSize.size})
+      else newArray.push(priceAndSize)
+    })
+    setPricesAndSizes(newArray)
+  }
+
+  const priceAndSizeInputsPrinter = () => {
+    return pricesAndSizes.map((priceAndSize, index) =>
+      <>
+        <TextField id="standard-required" label="Koko" value={priceAndSize.size} onChange={handlePriceAndSizeChange(index, 'size')} />
         <TextField
           id="standard-number"
           label="Hinta"
@@ -45,7 +59,21 @@ const ProductAdditionForm = ({ categoryId }) => {
           InputLabelProps={{
             shrink: true,
           }}
+          value={priceAndSize.price}
+          onChange={handlePriceAndSizeChange(index, 'price')}
         />
+      </>
+    )
+  }
+
+  return (
+    <form className={classes.root} noValidate autoComplete="off">
+      <div>
+        <TextField required id="standard-required" label="Tuotteen nimi" value={name} onChange={handleNameChange} />
+        <TextField multiline rows={2} id="standard-required" label="Kuvaus" value={description} onChange={handleDescriptionChange} />
+        <br />
+        {priceAndSizeInputsPrinter()}
+        <br />
         <Button size="small">poista</Button>
         <br />
         <Button size="small">lisää</Button>
