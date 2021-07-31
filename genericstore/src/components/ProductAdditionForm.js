@@ -1,8 +1,6 @@
-// Foundations for this component from: https://material-ui.com/components/cards/
-// Foundations for size selection from: https://material-ui.com/components/selects/
-
 import React from 'react';
 import { useDispatch } from 'react-redux'
+import { addNewProduct } from '../reducers/productReducer'
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -18,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ProductAdditionForm = ({ categoryId }) => {
+const ProductAdditionForm = ({ parentCategoryIdForNewProduct }) => {
   const classes = useStyles();
 
   const dispatch = useDispatch()
@@ -26,7 +24,7 @@ const ProductAdditionForm = ({ categoryId }) => {
 
   const [name, setName] = React.useState('')
   const [description, setDescription] = React.useState('')
-  const [pricesAndSizes, setPricesAndSizes] = React.useState([{price: 5, size: ''}])
+  const [pricesAndSizes, setPricesAndSizes] = React.useState([{price: 0, size: ''}])
 
 
 
@@ -42,13 +40,38 @@ const ProductAdditionForm = ({ categoryId }) => {
     const newArray = []
     pricesAndSizes.forEach((priceAndSize, index) => {
       if(index === indexModified && sizeOrPrice === 'size') newArray.push({price: priceAndSize.price, size: event.target.value})
-      else if(index === indexModified && sizeOrPrice === 'price') newArray.push({price: event.target.value, size: priceAndSize.size})
+      else if(index === indexModified && sizeOrPrice === 'price') newArray.push({price: Number(event.target.value), size: priceAndSize.size})
       else newArray.push(priceAndSize)
     })
     setPricesAndSizes(newArray)
   }
 
-  const priceAndSizeInputsPrinter = () => {
+  const handlePriceAndSizeDeleteField = (indexDeleted) => () => {
+    const newArray = []
+    pricesAndSizes.forEach((priceAndSize, index) => {
+      if(index != indexDeleted) newArray.push(priceAndSize)
+    })
+    setPricesAndSizes(newArray)
+  }
+
+  const handlePriceAndSizeAddField = () => {
+    setPricesAndSizes(pricesAndSizes.concat({price: 0, size: ''}))
+  }
+
+  const handleAddNewProduct = () => {
+    dispatch(addNewProduct(
+      {
+        parentCategoryId: parentCategoryIdForNewProduct,
+        name,
+        description,
+        pricesAndSizes,
+        available: true
+      }
+    ))
+
+  }
+
+  const priceAndSizeInputFields = () => {
     return pricesAndSizes.map((priceAndSize, index) =>
       <>
         <TextField id="standard-required" label="Koko" value={priceAndSize.size} onChange={handlePriceAndSizeChange(index, 'size')} />
@@ -62,6 +85,8 @@ const ProductAdditionForm = ({ categoryId }) => {
           value={priceAndSize.price}
           onChange={handlePriceAndSizeChange(index, 'price')}
         />
+        <Button size="small" onClick={handlePriceAndSizeDeleteField(index)}>poista</Button>
+        <br />
       </>
     )
   }
@@ -72,11 +97,12 @@ const ProductAdditionForm = ({ categoryId }) => {
         <TextField required id="standard-required" label="Tuotteen nimi" value={name} onChange={handleNameChange} />
         <TextField multiline rows={2} id="standard-required" label="Kuvaus" value={description} onChange={handleDescriptionChange} />
         <br />
-        {priceAndSizeInputsPrinter()}
+        {priceAndSizeInputFields()}
         <br />
-        <Button size="small">poista</Button>
         <br />
-        <Button size="small">lisää</Button>
+        <Button size="small" onClick={handlePriceAndSizeAddField}>Uusi hintatieto</Button>
+        <br />
+        <Button size="small" onClick={handleAddNewProduct}>Lisää tuote</Button>
 
       </div>
     </form>

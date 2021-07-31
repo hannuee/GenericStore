@@ -20,7 +20,7 @@ const CategoryPage = (props) => {
         {categoryDisplayed.id}, {categoryDisplayed.category_id}, {categoryDisplayed.name}, {categoryDisplayed.description}
         
         <br />
-        <ProductAdditionForm categoryId={categoryDisplayed.id} />
+        <ProductAdditionForm parentCategoryIdForNewProduct={categoryDisplayed.id} />
         <br />
         
         {subCategories.map(category =>
