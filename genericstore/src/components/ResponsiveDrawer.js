@@ -30,6 +30,7 @@ import MyOrdersPage from './MyOrdersPage'
 import MyCartPage from './MyCartPage'
 import AdminOrdersPage from './AdminOrdersPage'
 import CategoryAdditionForm from './CategoryAdditionForm'
+import CustomersPage from './CustomersPage'
 
 
 const drawerWidth = 240;
@@ -134,13 +135,19 @@ function ResponsiveDrawer(props) {
         </Link>
       </List>
 
-      <Divider />
+      <Divider />  
 
       <List>
         <Link to="/tilaukset" style={noDeco}>
           <ListItem button>   
             <ListItemIcon> <InboxIcon /> </ListItemIcon>
             <ListItemText primary="Tilaukset" />
+          </ListItem>
+        </Link>
+        <Link to="/asiakkaat" style={noDeco}>
+          <ListItem button>   
+            <ListItemIcon> <InboxIcon /> </ListItemIcon>
+            <ListItemText primary="Asiakkaat" />
           </ListItem>
         </Link>
       </List>
@@ -235,6 +242,9 @@ function ResponsiveDrawer(props) {
       </Route>
       <Route path="/uusikategoria">
           <CategoryAdditionForm parentCategoryIdForNewCategory={null} />
+      </Route>
+      <Route path="/asiakkaat">
+          <CustomersPage />
       </Route>
     </Switch>
 
