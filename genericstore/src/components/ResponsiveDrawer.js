@@ -31,6 +31,8 @@ import MyCartPage from './MyCartPage'
 import AdminOrdersPage from './AdminOrdersPage'
 import CategoryAdditionForm from './CategoryAdditionForm'
 import CustomersPage from './CustomersPage'
+import LoginPage from './LoginPage'
+import RegisterPage from './RegisterPage'
 
 
 const drawerWidth = 240;
@@ -121,12 +123,6 @@ function ResponsiveDrawer(props) {
             <ListItemText primary="Omat tilaukset" />
           </ListItem>
         </Link>
-        <Link to="/tiedot" style={noDeco}>
-          <ListItem button>   
-            <ListItemIcon> <MailIcon /> </ListItemIcon>
-            <ListItemText primary="Omat tiedot" />
-          </ListItem>
-        </Link>
         <Link to="/ostoskori" style={noDeco}>
           <ListItem button>   
             <ListItemIcon> <MailIcon /> </ListItemIcon>
@@ -148,6 +144,12 @@ function ResponsiveDrawer(props) {
           <ListItem button>   
             <ListItemIcon> <InboxIcon /> </ListItemIcon>
             <ListItemText primary="Asiakkaat" />
+          </ListItem>
+        </Link>
+        <Link to="/kirjautuminen" style={noDeco}>
+          <ListItem button>   
+            <ListItemIcon> <InboxIcon /> </ListItemIcon>
+            <ListItemText primary="Kirjaudu" />
           </ListItem>
         </Link>
       </List>
@@ -228,11 +230,6 @@ function ResponsiveDrawer(props) {
       </Route>
       <Route path="/omattilaukset">
           <MyOrdersPage />
-      </Route>      
-      <Route path="/tiedot">
-          <Typography paragraph>
-            Omat tiedot täällä.
-          </Typography>      
       </Route>
       <Route path="/ostoskori">
            <MyCartPage />
@@ -245,6 +242,12 @@ function ResponsiveDrawer(props) {
       </Route>
       <Route path="/asiakkaat">
           <CustomersPage />
+      </Route>
+      <Route path="/kirjautuminen">
+          <LoginPage />
+      </Route>
+      <Route path="/rekisteröityminen">
+          <RegisterPage />
       </Route>
     </Switch>
 

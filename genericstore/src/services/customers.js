@@ -3,12 +3,12 @@ import axios from 'axios'
 const baseUrl = 'http://localhost:3001/api/customers'
 
 const post = async (customerInfo) => {
-  const response = await axios.get(baseUrl, customerInfo)
+  const response = await axios.post(baseUrl, customerInfo)
   return response.data
 }
 
 const postLogin = async (credentials) => {
-  const response = await axios.get(baseUrl + '/login', credentials)
+  const response = await axios.post(baseUrl + '/login', credentials)
   return response.data
 }
 
