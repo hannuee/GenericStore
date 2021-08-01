@@ -6,7 +6,9 @@ const reducer = (state = [], action) => {
       return action.data
     case 'ADD_NEW_CATEGORY':
       return state.concat(action.data)
-    case 'REPLACE_CATEGORY':
+    case 'DELETE_CATEGORY': 
+      return state.filter(cetegory => cetegory.id !== action.data)
+    case 'REPLACE_CATEGORY': 
       return state.filter(cetegory => cetegory.id !== action.data.id).concat(action.data)
     default: return state
   }
@@ -31,6 +33,16 @@ export const addNewCategory = (newCategory) => {
     dispatch({
       type: 'ADD_NEW_CATEGORY',
       data: category
+    })
+  }
+}
+
+export const deleteCategory = (id) => {
+  return async dispatch => {
+    const category = await categoryService.deleteCategory(id)
+    dispatch({
+      type: 'DELETE_CATEGORY',
+      data: id
     })
   }
 }
