@@ -1,7 +1,5 @@
-// Foundations for this component from: https://material-ui.com/components/cards/
-// Foundations for size selection from: https://material-ui.com/components/selects/
-
 import React from 'react';
+import { useSelector } from 'react-redux'
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -31,6 +29,11 @@ import SkipNextIcon from '@material-ui/icons/SkipNext';
 import { useDispatch } from 'react-redux'
 import { addOrderItemToCart } from '../reducers/orderReducer'
 
+import Switch from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
+import { modifyAvailability } from '../reducers/productReducer'
+import { modifyCategory } from '../reducers/productReducer'
+import { modifyPricesAndSizes } from '../reducers/productReducer'
 
 
 const useStyles = makeStyles({
@@ -156,6 +159,142 @@ const ProductCard = ({ product }) => {
     }
   }
 
+
+
+  // For admin modification:
+
+  const categories = useSelector(state => state.categories) 
+
+  const [modifying, setModifying] = React.useState(false)
+
+  const [available, setAvailable] = React.useState(product.available)
+  const [pricesAndSizes, setPricesAndSizes] = React.useState(product.pricesandsizes)  // Kuten product admin formissa, paitsi init.
+  const [categorySelected, setCategorySelected] = React.useState(product.category_id)
+
+  const handleModificationStart = () => {
+    setModifying(true)
+  }
+
+  const handleModificationEnd = () => {
+    setModifying(false)
+  }
+
+  const handleAvailabilityChangeAndUpdate = () => {
+    dispatch(modifyAvailability(
+      {
+        id: product.id,
+        available: !available, 
+      }
+    ))
+    setAvailable(!available)  // Turha?????????????????????????????
+  }
+
+  const handlePriceAndSizeChange = (indexModified, sizeOrPrice) => (event) => {    // Kuten product admin formissa.
+    const newArray = []
+    pricesAndSizes.forEach((priceAndSize, index) => {
+      if(index === indexModified && sizeOrPrice === 'size') newArray.push({price: priceAndSize.price, size: event.target.value})
+      else if(index === indexModified && sizeOrPrice === 'price') newArray.push({price: Number(event.target.value), size: priceAndSize.size})
+      else newArray.push(priceAndSize)
+    })
+    setPricesAndSizes(newArray)
+  }
+
+  const handlePriceAndSizeDeleteField = (indexDeleted) => () => {    // Kuten product admin formissa.
+    const newArray = []
+    pricesAndSizes.forEach((priceAndSize, index) => {
+      if(index != indexDeleted) newArray.push(priceAndSize)
+    })
+    setPricesAndSizes(newArray)
+  }
+
+  const handlePriceAndSizeAddField = () => {       // Kuten product admin formissa.
+    setPricesAndSizes(pricesAndSizes.concat({price: 0, size: ''}))
+  }
+
+  const handlePriceAndSizeUpdate = () => {
+    dispatch(modifyPricesAndSizes(
+      {
+        id: product.id,
+        pricesAndSizes
+      }
+    ))
+  }
+
+  const handleCategoryChange = (event) => {
+    setCategorySelected(event.target.value)
+  }
+
+  const handleCategoryUpdate = () => {
+    dispatch(modifyCategory(
+      {
+        id: product.id,
+        parentCategoryId: categorySelected
+      }
+    ))
+  }
+
+  const modificationControls = () =>{
+    if(modifying) return (
+    <>
+    <br />
+      <Switch
+        checked={available}
+        onChange={handleAvailabilityChangeAndUpdate}
+        name="checkedA"
+        inputProps={{ 'aria-label': 'secondary checkbox' }}
+      />
+      <br />
+      {priceAndSizeInputFields()}
+      <Button size="small" onClick={handlePriceAndSizeAddField}>Uusi hintatieto</Button>
+      <Button size="small" onClick={handlePriceAndSizeUpdate}>Päivitä hintatiedot</Button>
+      <br />
+      {newCategorySelector()} <Button size="small" onClick={handleCategoryUpdate}>Päivitä kategoria</Button>
+      <br />
+      <Button size="small" onClick={handleModificationEnd}>Lopeta muokkaus</Button>
+    </>)
+    else return (
+      <Button size="small" onClick={handleModificationStart}>Muokkaa</Button>
+    )
+  }
+
+  const priceAndSizeInputFields = () => {         // Kuten product admin formissa.
+    return pricesAndSizes.map((priceAndSize, index) =>
+      <>
+        <TextField id="standard-required" label="Koko" value={priceAndSize.size} onChange={handlePriceAndSizeChange(index, 'size')} />
+        <TextField
+          id="standard-number"
+          label="Hinta"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={priceAndSize.price}
+          onChange={handlePriceAndSizeChange(index, 'price')}
+        />
+        <Button size="small" onClick={handlePriceAndSizeDeleteField(index)}>poista</Button>
+        <br />
+      </>
+    )
+  }
+
+  const newCategorySelector = () => 
+    <FormControl variant="outlined" className={classesSizeSelect.formControl}>
+        <InputLabel id="size-select">Tuotteen uusi kategoria</InputLabel>
+        <Select
+          labelId="size-select-label-id"
+          id="size-select-id"
+          value={categorySelected}
+          onChange={handleCategoryChange}
+          label="Tuotteen uusi kategoria"
+        >
+          {categories.map(category => <MenuItem value={category.id}>{category.name}</MenuItem> )}
+        </Select>
+      </FormControl>
+
+
+
+
+
   // For new card:
   const classesNewCard = useStylesNewCard();
   const themeNewCard = useTheme();
@@ -194,9 +333,6 @@ const ProductCard = ({ product }) => {
           label="Koko"
         >
           {product.pricesandsizes.map(priceAndSizeOption => <MenuItem value={priceAndSizeOption}>{priceAndSizeOption.size} - {priceAndSizeOption.price / 100} €</MenuItem> )}
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
         </Select>
       </FormControl>
 
@@ -206,6 +342,8 @@ const ProductCard = ({ product }) => {
       <Button size="small" color="primary" style={buttonStyle} onClick={handleAddToCart}>
         Lisää ostoskoriin
       </Button>
+
+      {modificationControls()}
 
       <Typography variant="body2" component="p" style={TypographyStylePrice}>{(priceAndSize.price / 100) * quantity} €</Typography>
 
