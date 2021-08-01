@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import ProductAdditionForm from './ProductAdditionForm'
+import CategoryAdditionForm from './CategoryAdditionForm'
 import ProductCard from './ProductCard'
 
 import { Link } from "react-router-dom"
@@ -21,6 +22,8 @@ const CategoryPage = (props) => {
         
         <br />
         <ProductAdditionForm parentCategoryIdForNewProduct={categoryDisplayed.id} />
+        <br />
+        <CategoryAdditionForm parentCategoryIdForNewCategory={categoryDisplayed.id} />
         <br />
         
         {subCategories.map(category =>

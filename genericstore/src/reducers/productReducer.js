@@ -4,9 +4,9 @@ const reducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_PRODUCTS':
       return action.data
-    case 'ADD_NEW':
+    case 'ADD_NEW_PRODUCT':
       return state.concat(action.data)
-    case 'REPLACE':
+    case 'REPLACE_PRODUCT':
       return state.filter(product => product.id !== action.data.id).concat(action.data)
     default: return state
   }
@@ -40,7 +40,7 @@ export const addNewProduct = (newProduct) => {
   return async dispatch => {
     const product = await productService.post(newProduct)
     dispatch({
-      type: 'ADD_NEW',
+      type: 'ADD_NEW_PRODUCT',
       data: product
     })
   }
@@ -50,7 +50,7 @@ export const modifyAvailability = (idAndInfoToModify) => {
   return async dispatch => {
     const product = await productService.putAvailable(idAndInfoToModify)
     dispatch({
-      type: 'REPLACE',
+      type: 'REPLACE_PRODUCT',
       data: product
     })
   }
@@ -60,7 +60,7 @@ export const modifyCategory = (idAndInfoToModify) => {
   return async dispatch => {
     const product = await productService.putNewCategory(idAndInfoToModify)
     dispatch({
-      type: 'REPLACE',
+      type: 'REPLACE_PRODUCT',
       data: product
     })
   }
@@ -70,7 +70,7 @@ export const modifyPricesAndSizes = (idAndInfoToModify) => {
   return async dispatch => {
     const product = await productService.putPricesAndSizes(idAndInfoToModify)
     dispatch({
-      type: 'REPLACE',
+      type: 'REPLACE_PRODUCT',
       data: product
     })
   }

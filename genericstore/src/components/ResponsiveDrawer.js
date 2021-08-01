@@ -18,6 +18,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
 import {
   Switch, Route, Link, useRouteMatch
@@ -28,6 +29,7 @@ import CategoryPage from './CategoryPage'
 import MyOrdersPage from './MyOrdersPage'
 import MyCartPage from './MyCartPage'
 import AdminOrdersPage from './AdminOrdersPage'
+import CategoryAdditionForm from './CategoryAdditionForm'
 
 
 const drawerWidth = 240;
@@ -102,6 +104,12 @@ function ResponsiveDrawer(props) {
         </Link>
       )}
       </List>
+
+      <Divider />
+
+      <Link to="/uusikategoria" style={noDeco}>
+        <Button size="small">Lisää pääkategoria</Button>
+      </Link>
 
       <Divider />
 
@@ -224,7 +232,10 @@ function ResponsiveDrawer(props) {
       </Route>
       <Route path="/tilaukset">
           <AdminOrdersPage />
-      </Route> 
+      </Route>
+      <Route path="/uusikategoria">
+          <CategoryAdditionForm parentCategoryIdForNewCategory={null} />
+      </Route>
     </Switch>
 
       </main>
