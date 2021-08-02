@@ -38,6 +38,11 @@ import { modifyAvailability } from '../reducers/productReducer'
 import { modifyCategory } from '../reducers/productReducer'
 import { modifyPricesAndSizes } from '../reducers/productReducer'
 
+import Collapse from '@material-ui/core/Collapse';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import EditIcon from '@material-ui/icons/Edit';
+import clsx from 'clsx';
+
 
 const useStyles = makeStyles({
   root: {
@@ -48,12 +53,12 @@ const useStyles = makeStyles({
   }
 });
 
-const MediaStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+const MediaStyle = {  // Lisää tarvittaessa CardMediaan: style={MediaStyle}
     float: 'left',
     marginRight: '10px'
 }
 
-const CardContentStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+const CardContentStyle = {  // Tarvittaessa:  <CardContent style={CardContentStyle}>
     padding: '10px'
 }
 
@@ -88,6 +93,11 @@ const useStylesSizeSelect = makeStyles((theme) => ({
 const useStylesNewCard = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    flexDirection: 'column' 
+  },
+  detailsWithMedia: {
+    display: 'flex',
+    flexDirection: 'row',
   },
   details: {
     display: 'flex',
@@ -95,6 +105,13 @@ const useStylesNewCard = makeStyles((theme) => ({
   },
   content: {
     flex: '1 0 auto',
+  },
+  nameLine: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  expandButton: {
+    float: 'right'
   },
   cover: {
     width: 151,
@@ -106,9 +123,16 @@ const useStylesNewCard = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
-  playIcon: {
-    height: 38,
-    width: 38,
+  // For new expansion functionality:
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
   },
 }));
 
@@ -324,6 +348,14 @@ const ProductCard = ({ product }) => {
 
 
 
+  // New Expansion button:
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+
 
 
   // For new card:
@@ -337,23 +369,43 @@ const ProductCard = ({ product }) => {
 // {product.added} JOS ADMIN
   return (
     <>
-    <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media} style={MediaStyle}
-          image="/reptile.jpg"
-          title="Contemplative Reptile"
-        />
-        <CardContent style={CardContentStyle}>
-          <Typography gutterBottom variant="h6" component="h2" style={TypographyStyle}>
-            {product.name}
-         </Typography>
+    <br /><br />
 
-          <Typography variant="body2" color="textSecondary" component="p">
+    <Card className={classesNewCard.root}>
+  
+      <div className={classesNewCard.detailsWithMedia}>
+
+      <CardMedia
+        className={classesNewCard.cover}
+        image="/reptile.jpg"
+        title="Live from space album cover"
+      />
+       <div className={classesNewCard.details}>
+
+        <CardContent className={classesNewCard.content}>
+
+        <div className={classesNewCard.nameLine}>
+          <Typography variant="h6" component="h2" style={TypographyStyle}>
+              {product.name}
+           </Typography>
+
+           <IconButton className={classesNewCard.expandButton}
+          className={clsx(classesNewCard.expand, {
+            [classesNewCard.expandOpen]: expanded,
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+          >
+            <EditIcon />
+          </IconButton>
+        </div>
+
+           <Typography variant="body2" color="textSecondary" component="p">
             {product.description} Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
             Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
-            
-      <br />
+          </Typography>
+
       <FormControl variant="outlined" className={classesSizeSelect.formControl}>
         <InputLabel id="size-select">Koko</InputLabel>
         <Select
@@ -367,7 +419,6 @@ const ProductCard = ({ product }) => {
         </Select>
       </FormControl>
 
-
       {quantityInput()}
 
       <Button size="small" color="primary" style={buttonStyle} onClick={handleAddToCart}>
@@ -378,44 +429,26 @@ const ProductCard = ({ product }) => {
 
       <Typography variant="body2" component="p" style={TypographyStylePrice}>{(priceAndSize.price / 100) * quantity} €</Typography>
 
-
-          </Typography>
         </CardContent>
-      </CardActionArea>
-    </Card>
-
-    <br /><br />
-
-
-    <Card className={classesNewCard.root}>
-    <CardMedia
-        className={classesNewCard.cover}
-        image="/reptile.jpg"
-        title="Live from space album cover"
-      />
-      <div className={classesNewCard.details}>
-        <CardContent className={classesNewCard.content}>
-          <Typography component="h5" variant="h5">
-            Live From Space
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
-            Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
-            Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
-          </Typography>
-        </CardContent>
-        <div className={classesNewCard.controls}>
-          <IconButton aria-label="previous">
-            {themeNewCard.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-          </IconButton>
-          <IconButton aria-label="play/pause">
-            <PlayArrowIcon className={classesNewCard.playIcon} />
-          </IconButton>
-          <IconButton aria-label="next">
-            {themeNewCard.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-          </IconButton>
         </div>
       </div>
+
+      <Collapse in={expanded} timeout="auto" unmountOnExit> 
+        <CardContent>
+          <Typography paragraph>
+            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
+            heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
+            browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
+            and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
+            pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
+            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
+          </Typography>
+          <Typography>
+            Set aside off of the heat to let rest for 10 minutes, and then serve.
+          </Typography>
+        </CardContent>
+      </Collapse>
+
     </Card>
 
 
