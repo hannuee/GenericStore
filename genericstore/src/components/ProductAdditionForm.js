@@ -2,6 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux'
 import { addNewProduct } from '../reducers/productReducer'
 
+import productService from '../services/products'
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -58,16 +61,31 @@ const ProductAdditionForm = ({ parentCategoryIdForNewProduct }) => {
     setPricesAndSizes(pricesAndSizes.concat({price: 0, size: ''}))
   }
 
-  const handleAddNewProduct = () => {
-    dispatch(addNewProduct(
-      {
+  const [disabled, setDisabled] = React.useState(false)
+
+  const handleAddNewProduct = async () => {
+    setDisabled(true)
+
+    try{
+      const product = await productService.post({
         parentCategoryId: parentCategoryIdForNewProduct,
         name,
         description,
         pricesAndSizes,
         available: true
-      }
-    ))
+      })
+      setName('')
+      setDescription('')
+      setPricesAndSizes([{price: 0, size: ''}])
+      setDisabled(false)
+      dispatch({
+        type: 'ADD_NEW_PRODUCT',
+        data: product
+      })
+    } 
+    catch(error) {
+      setDisabled(false)
+    }
 
   }
 
@@ -102,7 +120,7 @@ const ProductAdditionForm = ({ parentCategoryIdForNewProduct }) => {
         <br />
         <Button size="small" onClick={handlePriceAndSizeAddField}>Uusi hintatieto</Button>
         <br />
-        <Button size="small" onClick={handleAddNewProduct}>Lisää tuote</Button>
+        <Button size="small" disabled={disabled} onClick={handleAddNewProduct}>Lisää tuote</Button>
 
       </div>
     </form>

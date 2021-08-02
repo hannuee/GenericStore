@@ -89,7 +89,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
 
-  export const sendNewOrder = (cartItems) => {
+  export const sendNewOrder = (cartItems) => {   // SAA POISTAAAAAAAAAAAAAA
     return async dispatch => {
 
       for(let item of cartItems) {
@@ -110,7 +110,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
 
-  export const addOrderItemToCart = (productAndDetails) => {
+  export const addOrderItemToCart = (productAndDetails) => {      // SAA POISTAAAAAAAAAAAAAA
     return async dispatch => {
       dispatch({
         type: 'ADD_TO_CART',
@@ -119,7 +119,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
 
-  export const deleteItemFromCart = (product_time) => {
+  export const deleteItemFromCart = (product_time) => {           // SAA POISTAAAAAAAAAAAAAA
     return async dispatch => {
       dispatch({
         type: 'DELETE_FROM_CART',
@@ -128,7 +128,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
 
-  export const initializeAdminsUndispatchedOrdersWithDetails = () => { 
+  export const initializeAdminsUndispatchedOrdersWithDetails = () => {     
     return async dispatch => {
       const orders = await orderService.getUndispatchedWithDetails()
       dispatch({
@@ -138,7 +138,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   } 
 
-  export const getDetailsForAdminsDispatchedOrder = (id) => { 
+  export const getDetailsForAdminsDispatchedOrder = (id) => {
     return async dispatch => {
       const order = await orderService.getOneWithDetails(id)
       dispatch({
@@ -158,7 +158,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
 
-  export const modifyAdminsUndispatchedInternalNotes = (idAndInternalNotes) => {  
+  export const modifyAdminsUndispatchedInternalNotes = (idAndInternalNotes) => {      // SAA POISTAAAAAAAAAAAAAA   
     return async dispatch => {
       const order = await orderService.putInternalNotes(idAndInternalNotes)
       dispatch({
@@ -168,7 +168,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
 
-  export const modifyAdminsDispatchedInternalNotes = (idAndInternalNotes) => {  
+  export const modifyAdminsDispatchedInternalNotes = (idAndInternalNotes) => {      // SAA POISTAAAAAAAAAAAAAA
     return async dispatch => {
       const order = await orderService.putInternalNotes(idAndInternalNotes)
       dispatch({
@@ -178,7 +178,7 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
   
-  export const markOrderAsDispatched = (id) => {         
+  export const markOrderAsDispatched = (id) => {          
     return async dispatch => {
       const order = await orderService.putOrderDispatched({id})
       dispatch({

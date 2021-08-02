@@ -68,13 +68,21 @@ const CategoryPage = (props) => {
     setCategorySelected(event.target.value)
   }
 
-  const handleCategoryUpdate = () => {
-    dispatch(modifyParentCategory(
-      {
+  const handleCategoryUpdate = async () => {
+    try{
+      const category = await categoryService.putNewCategory({
         id: categoryDisplayed.id,
         parentCategoryId: categorySelected
-      }
-    ))
+      })
+      dispatch({
+        type: 'REPLACE_CATEGORY',
+        data: category
+      })
+      dispatch(displayNotificationForSeconds('Kategoria muutettu', 5))
+    } 
+    catch(error) {
+      dispatch(displayNotificationForSeconds('Kategorian muutto epäonnistui', 5))
+    }
   }
 
 

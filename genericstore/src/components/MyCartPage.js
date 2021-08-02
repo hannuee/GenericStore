@@ -1,12 +1,16 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
+import orderService from '../services/orders'
+
 // For delete order item:
 import { useDispatch } from 'react-redux'
 import { deleteItemFromCart } from '../reducers/orderReducer'
 import Button from '@material-ui/core/Button';
 
-import { sendNewOrder } from '../reducers/orderReducer'
+import { initializeCustomersOrdersWithDetails } from '../reducers/orderReducer'
+
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 
 // For table:
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,9 +35,43 @@ const MyOrdersPage = (props) => {
 
   const dispatch = useDispatch()
 
-  const handleDeleteFromCart = (product_time) => dispatch(deleteItemFromCart(product_time))
+  const handleDeleteFromCart = (product_time) => {
+    dispatch({
+      type: 'DELETE_FROM_CART',
+      data: product_time
+    })
+  }
 
-  const handleOrderSending = () => dispatch(sendNewOrder(cartItems))
+
+  const [disabled, setDisabled] = React.useState(false)
+
+  const handleOrderSending = async () => {
+    setDisabled(true)
+
+    try{
+      for(let item of cartItems) {
+        delete item.product_time
+        delete item.product_name
+      }
+
+      const response = await orderService.post(cartItems)
+
+      setDisabled(false)
+      // jos onnistuu niin ostoskorin tyhjennys:
+      dispatch({
+        type: 'CLEAR_CART'
+      })
+
+      // Tilaukset haetaan uudestaan koska Orders POST rajapinta ei tällä hetkellä palauta lisättyä tilausta.
+      // Kun tilaukset pyydetään Orders GET rajapinnoilta niin ne tulevat varmasti oikein, siten kun ne ovat tietokannassa.
+      dispatch(initializeCustomersOrdersWithDetails())
+      dispatch(displayNotificationForSeconds('Tilaus lähetetty', 5))
+    } 
+    catch(error) {
+      setDisabled(false)
+      dispatch(displayNotificationForSeconds('Tilauksen lähetys epäonnistui', 5))
+    }
+  }
 
   // For table:
   const classes = useStyles();
@@ -71,7 +109,7 @@ const MyOrdersPage = (props) => {
       </Table>
     </TableContainer>
 
-    <Button size="small" color="primary" onClick={handleOrderSending}>
+    <Button size="small" color="primary" disabled={disabled} onClick={handleOrderSending}>
       Lähetä tilaus
     </Button>
 </>

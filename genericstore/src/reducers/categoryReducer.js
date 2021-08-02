@@ -56,7 +56,7 @@ export const deleteCategory = (id) => {      // SAA POISTAAAAAAAAAAAAAA
   }
 }
 
-export const modifyParentCategory = (idAndInfoToModify) => {
+export const modifyParentCategory = (idAndInfoToModify) => {      // SAA POISTAAAAAAAAAAAAAA
   return async dispatch => {
     const category = await categoryService.putNewCategory(idAndInfoToModify)
     dispatch({

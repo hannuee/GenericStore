@@ -36,7 +36,7 @@ export const initializeAllProducts = () => {
   }
 }
 
-export const addNewProduct = (newProduct) => {
+export const addNewProduct = (newProduct) => {            // SAA POISTAAAAAAAAAAAAAA
   return async dispatch => {
     const product = await productService.post(newProduct)
     dispatch({
@@ -46,7 +46,7 @@ export const addNewProduct = (newProduct) => {
   }
 }
 
-export const modifyAvailability = (idAndInfoToModify) => {
+export const modifyAvailability = (idAndInfoToModify) => {       // SAA POISTAAAAAAAAAAAAAA
   return async dispatch => {
     const product = await productService.putAvailable(idAndInfoToModify)
     dispatch({
@@ -56,7 +56,7 @@ export const modifyAvailability = (idAndInfoToModify) => {
   }
 }
 
-export const modifyCategory = (idAndInfoToModify) => {
+export const modifyCategory = (idAndInfoToModify) => {           // SAA POISTAAAAAAAAAAAAAA
   return async dispatch => {
     const product = await productService.putNewCategory(idAndInfoToModify)
     dispatch({
@@ -66,7 +66,7 @@ export const modifyCategory = (idAndInfoToModify) => {
   }
 }
 
-export const modifyPricesAndSizes = (idAndInfoToModify) => {
+export const modifyPricesAndSizes = (idAndInfoToModify) => {      // SAA POISTAAAAAAAAAAAAAA  
   return async dispatch => {
     const product = await productService.putPricesAndSizes(idAndInfoToModify)
     dispatch({

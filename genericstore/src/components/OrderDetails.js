@@ -3,6 +3,9 @@ import { useDispatch } from 'react-redux'
 import { modifyAdminsDispatchedInternalNotes } from '../reducers/orderReducer'
 import { modifyAdminsUndispatchedInternalNotes } from '../reducers/orderReducer'
 
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import orderService from '../services/orders'
+
 // For the accordion:
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -75,9 +78,33 @@ const OrderDetails = ({order}) => {
   
   const dispatch = useDispatch()  
 
-  const handleInternalNotesSubmission = () => {
-      if (order.orderdispatched === null) dispatch(modifyAdminsUndispatchedInternalNotes({id: order.id, internalNotes: internalNoteField}))
-      else dispatch(modifyAdminsDispatchedInternalNotes({id: order.id, internalNotes: internalNoteField}))
+  const handleInternalNotesSubmission = async () => {
+      if (order.orderdispatched === null) {
+        try{
+          const modifiedOrder = await orderService.putInternalNotes({id: order.id, internalNotes: internalNoteField})
+          dispatch({
+            type: 'REPLACE_ADMINS_UNDISPATCHED_KEEP_DETAILS',
+            data: modifiedOrder
+          })
+          dispatch(displayNotificationForSeconds('Tilauksen huomio muutettu', 5))   // VISUAALINE FEEDBACK??????????????????????????
+        } 
+        catch(error) {
+          dispatch(displayNotificationForSeconds('Tilauksen huomion muuttaminen epäonnistui', 5))
+        }
+      }
+      else {
+        try{
+          const modifiedOrder = await orderService.putInternalNotes({id: order.id, internalNotes: internalNoteField})
+          dispatch({
+            type: 'REPLACE_ADMINS_DISPATCHED_KEEP_DETAILS',
+            data: modifiedOrder
+          })
+          dispatch(displayNotificationForSeconds('Tilauksen huomio muutettu', 5))   // VISUAALINE FEEDBACK??????????????????????????
+        } 
+        catch(error) {
+          dispatch(displayNotificationForSeconds('Tilauksen huomion muuttaminen epäonnistui', 5))
+        }
+      }
   }
 
 

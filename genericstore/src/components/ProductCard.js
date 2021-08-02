@@ -9,6 +9,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+import productService from '../services/products'
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+
 // For size selection and quantity selection:
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -137,7 +140,11 @@ const ProductCard = ({ product }) => {
     const product_time = new Date().getTime()
     const product_name = product.name 
     const product_id = product.id
-    dispatch(addOrderItemToCart({product_time, product_name, product_id, priceAndSize, quantity}))
+    dispatch({
+      type: 'ADD_TO_CART',
+      data: {product_time, product_name, product_id, priceAndSize, quantity}
+    })
+    // JONKINLAINEN PALAUTE TÄHÄN ETTÄ ASIAKAS TIETÄÄ ETTÄ NYT ON TUOTE LISÄTTY OSTOSKORIINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
   }
 
   const quantityInput = () => {
@@ -179,14 +186,22 @@ const ProductCard = ({ product }) => {
     setModifying(false)
   }
 
-  const handleAvailabilityChangeAndUpdate = () => {
-    dispatch(modifyAvailability(
-      {
+  const handleAvailabilityChangeAndUpdate = async () => {
+    try{
+      const addedProduct = await productService.putAvailable({
         id: product.id,
         available: !available, 
-      }
-    ))
-    setAvailable(!available)  // Turha?????????????????????????????
+      })
+      setAvailable(!available)
+      dispatch({
+        type: 'REPLACE_PRODUCT',
+        data: addedProduct
+      })
+      dispatch(displayNotificationForSeconds('Tuotteen saatavuus muutettu', 5))
+    } 
+    catch(error) {
+      dispatch(displayNotificationForSeconds('Tuotteen saatavuuden muuttaminen epäonnistui', 5))
+    }
   }
 
   const handlePriceAndSizeChange = (indexModified, sizeOrPrice) => (event) => {    // Kuten product admin formissa.
@@ -211,26 +226,42 @@ const ProductCard = ({ product }) => {
     setPricesAndSizes(pricesAndSizes.concat({price: 0, size: ''}))
   }
 
-  const handlePriceAndSizeUpdate = () => {
-    dispatch(modifyPricesAndSizes(
-      {
+  const handlePriceAndSizeUpdate = async () => {
+    try{
+      const modifiedProduct = await productService.putPricesAndSizes({
         id: product.id,
         pricesAndSizes
-      }
-    ))
+      })
+      dispatch({
+        type: 'REPLACE_PRODUCT',
+        data: modifiedProduct
+      })
+      dispatch(displayNotificationForSeconds('Tuotteen hintatiedot muutettu', 5))
+    } 
+    catch(error) {
+      dispatch(displayNotificationForSeconds('Tuotteen hintatietojen muunttaminen epäonnistui', 5))
+    }
   }
 
   const handleCategoryChange = (event) => {
     setCategorySelected(event.target.value)
   }
 
-  const handleCategoryUpdate = () => {
-    dispatch(modifyCategory(
-      {
+  const handleCategoryUpdate = async () => {
+    try{
+      const productModified = await productService.putNewCategory({
         id: product.id,
         parentCategoryId: categorySelected
-      }
-    ))
+      })
+      dispatch({
+        type: 'REPLACE_PRODUCT',
+        data: productModified
+      })
+      dispatch(displayNotificationForSeconds('Tuotteen kategoria muutettu', 5))
+    } 
+    catch(error) {
+      dispatch(displayNotificationForSeconds('Tuotteen kategorian muuttaminen epäonnistui', 5))
+    }
   }
 
   const modificationControls = () =>{
