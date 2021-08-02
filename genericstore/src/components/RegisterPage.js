@@ -7,9 +7,10 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import {useHistory} from 'react-router-dom'
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 
 
-
+import customerService from '../services/customers'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,21 +54,26 @@ const RegisterPage = () => {
 
   // Buttoniin: disabled={disabled}
   const [disabled, setDisabled] = React.useState(false)
+  
+  const handleAddNewCustomer = async () => {
+    setDisabled(true)
 
-  const redirect = () => {
-    history.push('/kirjautuminen')
-  }
-
-  const handleAddNewCustomer = () => {
-    dispatch(addNewCustomer(
-      {
-        name,
-        address,
-        mobile,
-        email,
-        password
-      }, setDisabled, redirect
-    ))
+      try{
+        await customerService.post({
+          name,
+          address,
+          mobile,
+          email,
+          password
+        })
+        history.push('/kirjautuminen')
+        dispatch(displayNotificationForSeconds('Rekisteröityminen onnistui', 5))
+      }
+      catch(error){
+        if (error.response.data.error.includes('violates unique constraint')) dispatch(displayNotificationForSeconds('Virheellinen sähköpostiosoite', 5))
+        else dispatch(displayNotificationForSeconds('Rekisteröityminen epäonnistui', 5))
+        setDisabled(false)
+      }
   }
 
   return (

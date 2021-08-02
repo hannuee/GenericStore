@@ -2,6 +2,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux'
 import { logInWithCredentials } from '../reducers/customerReducer'
 
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import customerService from '../services/customers'
+import {useHistory} from 'react-router-dom'
+
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -21,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
 const LoginPage = () => {
   const classes = useStyles();
 
+  const history = useHistory()
+
   const dispatch = useDispatch()
 
   const [email, setEmail] = React.useState('')
@@ -33,13 +39,27 @@ const LoginPage = () => {
     setPassword(event.target.value)
   }
 
-  const handleLogIn = () => {
-    dispatch(logInWithCredentials(
-      {
+  const [disabled, setDisabled] = React.useState(false)
+
+  const handleLogIn = async () => {
+    setDisabled(true)
+
+    try{
+      const customerNameAndToken = await customerService.postLogin({
         email,
         password
-      }
-    ))
+      })
+      dispatch({
+        type: 'ADD_LOGGED_IN',
+        data: customerNameAndToken
+      })
+      history.push('/')
+    } 
+    catch(error) {
+      if (error.response.data.error.includes('Incorrect email or password')) dispatch(displayNotificationForSeconds('Virheellinen sähköpostiosoite tai salasana', 5))
+      else dispatch(displayNotificationForSeconds('Sisäänkirjautuminen epäonnistui', 5))
+      setDisabled(false)
+    }
   }
 
   return (
@@ -48,7 +68,7 @@ const LoginPage = () => {
         <TextField required id="standard-required" label="Sähköposti" value={email} onChange={handleEmailChange} />
         <TextField required id="standard-required" label="Salasana" value={password} onChange={handlePasswordChange} />
         <br />
-        <Button size="small" onClick={handleLogIn}>Kirjaudu sisään</Button>
+        <Button size="small" disabled={disabled} onClick={handleLogIn}>Kirjaudu sisään</Button>
         <br />
         <br />
         <Link to="/rekisteroityminen">

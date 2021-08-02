@@ -24,7 +24,7 @@ const reducer = (state = {}, action) => {
   
   // Action creators:
   
-  export const logInWithCredentials = (credentials) => {
+  export const logInWithCredentials = (credentials) => {           // SAA POISTAAAAAAAAAAAAAAAAA
     return async dispatch => {
       const customerNameAndToken = await customerService.postLogin(credentials)
       dispatch({
@@ -34,7 +34,7 @@ const reducer = (state = {}, action) => {
     }
   }
 
-  export const addNewCustomer = (customer, setDisabled, redirect) => {
+  export const addNewCustomer = (customer, setDisabled, redirect) => {   // SAA POISTAAAAAAAAAAAAAAAAA
     return async dispatch => {
       setDisabled(true)
 

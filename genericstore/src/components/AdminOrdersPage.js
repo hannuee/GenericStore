@@ -7,6 +7,10 @@ import { markOrderAsDispatched } from '../reducers/orderReducer'
 
 import OrderDetails from './OrderDetails'
 
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+
+import orderService from '../services/orders'
+
 // For the accordion:
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -103,8 +107,17 @@ const AdminOrdersPage = (props) => {
     setExpanded(id)
   }
 
-  const handleMarkAsDispatched = (id) => () => {
-    dispatch(markOrderAsDispatched(id))
+  const handleMarkAsDispatched = (id) => async () => {
+    try{
+      const modifiedOrder = await orderService.putOrderDispatched({id})
+      dispatch({
+        type: 'MODIFY_ADMINS_UNDISPATCHED_TRANSFER_TO_DISPATCHED_KEEP_DETAILS',
+        data: modifiedOrder
+      })
+    } 
+    catch(error) {
+      dispatch(displayNotificationForSeconds('Tilauksen merkitseminen toimitetuksi epäonnistui', 5))
+    }
   }
 
   const orderDetailsDisplay = (order) => {
