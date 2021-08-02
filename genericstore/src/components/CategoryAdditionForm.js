@@ -1,6 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux'
 import { addNewCategory } from '../reducers/categoryReducer'
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+
+import categoryService from '../services/categories'
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -27,20 +30,35 @@ const CategoryAdditionForm = ({ parentCategoryIdForNewCategory }) => {
   const handleNameChange = (event) => {
     setName(event.target.value)
   }
-
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value)
   }
 
-  const handleAddNewCategory = () => {
-    dispatch(addNewCategory(
-      {
+  const [disabled, setDisabled] = React.useState(false)
+  
+  const handleAddNewCategory = async () => {
+    setDisabled(true)
+
+    try{
+      const category = await categoryService.post({
         parentCategoryId: parentCategoryIdForNewCategory,
         name,
         description
-      }
-    ))
+      })
+      setName('')
+      setDescription('')
+      setDisabled(false)
+      dispatch({
+        type: 'ADD_NEW_CATEGORY',
+        data: category
+      })
+      dispatch(displayNotificationForSeconds('Kategoria lisätty!', 5))
+    } 
+    catch(error) {
+      setDisabled(false)
+    }
   }
+
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
@@ -48,7 +66,7 @@ const CategoryAdditionForm = ({ parentCategoryIdForNewCategory }) => {
         <TextField required id="standard-required" label="Kategorian nimi" value={name} onChange={handleNameChange} />
         <TextField multiline rows={2} id="standard-required" label="Kuvaus" value={description} onChange={handleDescriptionChange} />
         <br />
-        <Button size="small" onClick={handleAddNewCategory}>Lisää kategoria</Button>
+        <Button size="small" disabled={disabled} onClick={handleAddNewCategory}>Lisää kategoria</Button>
       </div>
     </form>
   )

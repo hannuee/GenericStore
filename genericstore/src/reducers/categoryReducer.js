@@ -27,17 +27,26 @@ export const initializeCategories = () => {
 }
 
 
-export const addNewCategory = (newCategory) => {
+export const addNewCategory = (newCategory, setDisabled, ClearForm) => {    // SAA POISTAAAAAAAAAAAAAA
   return async dispatch => {
-    const category = await categoryService.post(newCategory)
-    dispatch({
-      type: 'ADD_NEW_CATEGORY',
-      data: category
-    })
+    setDisabled(true)
+
+    try{
+      const category = await categoryService.post(newCategory)
+      ClearForm()
+      setDisabled(false)
+      dispatch({
+        type: 'ADD_NEW_CATEGORY',
+        data: category
+      })
+    } 
+    catch(error) {
+      setDisabled(false)
+    }
   }
 }
 
-export const deleteCategory = (id) => {
+export const deleteCategory = (id) => {      // SAA POISTAAAAAAAAAAAAAA
   return async dispatch => {
     const category = await categoryService.deleteCategory(id)
     dispatch({

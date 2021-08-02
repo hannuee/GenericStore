@@ -87,6 +87,8 @@ function ResponsiveDrawer(props) {
 
   const categories = useSelector(state => state.categories)  // Kat haku tilasta MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
 
+  const notification = useSelector(state => state.notification.text)  // Kat haku tilasta MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -95,7 +97,7 @@ function ResponsiveDrawer(props) {
     <div>
       <div className={classes.toolbar} />
       
-      
+      {notification}
       
       <List>
       {categories.filter(category => category.category_id === null).map(category =>
@@ -246,7 +248,7 @@ function ResponsiveDrawer(props) {
       <Route path="/kirjautuminen">
           <LoginPage />
       </Route>
-      <Route path="/rekisteröityminen">
+      <Route path="/rekisteroityminen">
           <RegisterPage />
       </Route>
     </Switch>

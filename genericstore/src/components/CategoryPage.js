@@ -7,6 +7,10 @@ import ProductCard from './ProductCard'
 import { deleteCategory } from '../reducers/categoryReducer'
 import { modifyParentCategory } from '../reducers/categoryReducer'
 
+import categoryService from '../services/categories'
+import {useHistory} from 'react-router-dom'
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+
 import { Link } from "react-router-dom"
 import Button from '@material-ui/core/Button';
 
@@ -30,15 +34,26 @@ const CategoryPage = (props) => {
 
   const dispatch = useDispatch()
 
+  const history = useHistory()
+
   const categoryDisplayed = useSelector(state => state.categories.find(category => category.id === props.id))
   const subCategories = useSelector(state => state.categories.filter(category => category.category_id === props.id))
   const products = useSelector(state => state.products.filter(product => product.category_id === props.id))
 
-  const handleDeleteCategory = () => {  // NÄYTÄ NAPPI VAIN JOS KATEGORIA ON TYHJÄ, MUUTEN NÄYTÄ DISABLED NAPPI!!!!!!!!!!!!!!!!
-    dispatch(deleteCategory(categoryDisplayed.id))
-    // TÄNNE REDIRECT ETUSIVULLEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+  const handleDeleteCategory = async () => {
+    try{
+      const category = await categoryService.deleteCategory(categoryDisplayed.id)
+      history.push('/')
+      dispatch({
+        type: 'DELETE_CATEGORY',
+        data: categoryDisplayed.id
+      })
+      dispatch(displayNotificationForSeconds('Kategoria poistettu', 5))
+    }
+    catch(error) {
+      dispatch(displayNotificationForSeconds('Kategorian poisto epäonnistui', 5))
+    }
   }
-
 
 
   // Kategorian muuttamiseen, harkitse refaktorointi Product Card vastaavien kanssaaaaaaaaaaaaaaaaa:
@@ -61,6 +76,16 @@ const CategoryPage = (props) => {
       }
     ))
   }
+
+
+  const categoryDeleteButton = () => {
+    if(subCategories.length === 0 && products.length === 0) return (
+      <Button size="small" onClick={handleDeleteCategory}>Poista kategoria</Button>
+      )   
+    // NÄYTÄ TÄÄLLÄ OHJE ETTÄ KATEGORIAN TULEE OLLA TYHJÄ JOTTA VOI POISTAA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  }
+ 
+
 
   const newCategorySelector = () => 
     <FormControl variant="outlined" className={classesSizeSelect.formControl}>
@@ -86,7 +111,7 @@ const CategoryPage = (props) => {
         <br />
 
         {categoryDisplayed.id}, {categoryDisplayed.category_id}, {categoryDisplayed.name}, {categoryDisplayed.description} 
-        <Button size="small" onClick={handleDeleteCategory}>Poista kategoria</Button> 
+        {categoryDeleteButton()}
 
         {newCategorySelector()} <Button size="small" onClick={handleCategoryUpdate}>Päivitä kategoria</Button>
         

@@ -51,7 +51,7 @@ const LoginPage = () => {
         <Button size="small" onClick={handleLogIn}>Kirjaudu sisään</Button>
         <br />
         <br />
-        <Link to="/rekisteröityminen">
+        <Link to="/rekisteroityminen">
           <Button size="small">Rekisteröidy</Button>
         </Link>
       </div>

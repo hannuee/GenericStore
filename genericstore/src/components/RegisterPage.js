@@ -6,6 +6,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import {useHistory} from 'react-router-dom'
+
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +25,8 @@ const RegisterPage = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch()
+
+  const history = useHistory()
 
   const [name, setName] = React.useState('')
   const [address, setAddress] = React.useState('')
@@ -43,6 +50,14 @@ const RegisterPage = () => {
     setPassword(event.target.value)
   }
 
+
+  // Buttoniin: disabled={disabled}
+  const [disabled, setDisabled] = React.useState(false)
+
+  const redirect = () => {
+    history.push('/kirjautuminen')
+  }
+
   const handleAddNewCustomer = () => {
     dispatch(addNewCustomer(
       {
@@ -51,7 +66,7 @@ const RegisterPage = () => {
         mobile,
         email,
         password
-      }
+      }, setDisabled, redirect
     ))
   }
 
@@ -64,7 +79,7 @@ const RegisterPage = () => {
         <TextField required id="standard-required" label="Sähköposti" value={email} onChange={handleEmailChange} />
         <TextField required id="standard-required" label="Salasana" value={password} onChange={handlePasswordChange} />
         <br />
-        <Button size="small" onClick={handleAddNewCustomer}>Lähetä</Button>
+        <Button size="small" disabled={disabled} onClick={handleAddNewCustomer}>Lähetä</Button>
       </div>
     </form>
   )

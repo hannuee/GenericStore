@@ -34,10 +34,19 @@ const reducer = (state = {}, action) => {
     }
   }
 
-  export const addNewCustomer = (customer) => {
+  export const addNewCustomer = (customer, setDisabled, redirect) => {
     return async dispatch => {
-      const response = await customerService.post(customer)
-      // Vastaus onnistumisesta notifikaation dispatchilla, sitten redirect kirjautumissivulle.
+      setDisabled(true)
+
+      try{
+        await customerService.post(customer)
+        redirect()
+      }
+      catch(error){
+        if (error.response.data.error.includes('violates unique constraint')) console.log('Email varattu')
+        else console.log('Joku muu error')
+        setDisabled(false)
+      }
     }
   }
 
