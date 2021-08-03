@@ -29,7 +29,6 @@ const ParentCategoryUpdateForm = ({product}) => {
 
     const classesSizeSelect = useStylesSizeSelect();
 
-    // Controlled form:
     const [categorySelected, setCategorySelected] = React.useState(product.category_id)
     const handleCategoryChange = (event) => {
         setCategorySelected(event.target.value)

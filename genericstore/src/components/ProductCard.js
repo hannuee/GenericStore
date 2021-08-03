@@ -2,7 +2,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux'
 import productService from '../services/products'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
-import ParentCategoryUpdateForm from '../assistingComponents/ParentCategoryUpdateForm'
+import ParentCategoryUpdateForm from '../assistingComponents/ParentCategoryUpdateForm'  
+import AvailabilityUpdateSwitch from '../assistingComponents/AvailabilityUpdateSwitch'
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,7 +19,6 @@ import Select from '@material-ui/core/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
-import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Collapse from '@material-ui/core/Collapse';
 import EditIcon from '@material-ui/icons/Edit';
@@ -167,26 +167,7 @@ const ProductCard = ({ product }) => {
 
   // For admin modification:
 
-  const [available, setAvailable] = React.useState(product.available)
   const [pricesAndSizes, setPricesAndSizes] = React.useState(product.pricesandsizes)  // Kuten product admin formissa, paitsi init.
-
-  const handleAvailabilityChangeAndUpdate = async () => {
-    try{
-      const addedProduct = await productService.putAvailable({
-        id: product.id,
-        available: !available, 
-      })
-      setAvailable(!available)
-      dispatch({
-        type: 'REPLACE_PRODUCT',
-        data: addedProduct
-      })
-      dispatch(displayNotificationForSeconds('Tuotteen saatavuus muutettu', 5))
-    } 
-    catch(error) {
-      dispatch(displayNotificationForSeconds('Tuotteen saatavuuden muuttaminen epäonnistui', 5))
-    }
-  }
 
   const handlePriceAndSizeChange = (indexModified, sizeOrPrice) => (event) => {    // Kuten product admin formissa.
     const newArray = []
@@ -241,14 +222,7 @@ const ProductCard = ({ product }) => {
     <Divider orientation="vertical" flexItem />
     <div className={classesNewCard.verticalLayout}>    
       <div className={classesNewCard.horizontalLayout} style={switchAndCategoryModStyle}>
-      <Typography variant="body2" color="textSecondary" component="p">Piilotettu asiakkailta</Typography>
-      <Switch
-        checked={available}
-        onChange={handleAvailabilityChangeAndUpdate}
-        name="checkedA"
-        inputProps={{ 'aria-label': 'secondary checkbox' }}
-      />
-      <Typography variant="body2" color="textSecondary" component="p">Tuote näkyvillä</Typography>
+        <AvailabilityUpdateSwitch product={product}/>
       </div>
       <div className={classesNewCard.horizontalLayout} style={switchAndCategoryModStyle}>
         <ParentCategoryUpdateForm product={product}/>
