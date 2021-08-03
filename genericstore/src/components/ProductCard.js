@@ -1,92 +1,49 @@
 import React from 'react';
-import { useSelector } from 'react-redux'
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux'
+import productService from '../services/products'
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import ParentCategoryUpdateForm from '../assistingComponents/ParentCategoryUpdateForm'
+
+// Material UI:
+import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
-import productService from '../services/products'
-import { displayNotificationForSeconds } from '../reducers/notificationReducer'
-
-// For size selection and quantity selection:
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Input from '@material-ui/core/Input';
-
-// For new card exclusive:
 import IconButton from '@material-ui/core/IconButton';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
-
-// In order to add product to cart:
-import { useDispatch } from 'react-redux'
-import { addOrderItemToCart } from '../reducers/orderReducer'
-
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import { modifyAvailability } from '../reducers/productReducer'
-import { modifyCategory } from '../reducers/productReducer'
-import { modifyPricesAndSizes } from '../reducers/productReducer'
-
 import Collapse from '@material-ui/core/Collapse';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
 import clsx from 'clsx';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Divider from '@material-ui/core/Divider';
 
-
-const useStyles = makeStyles({
-  root: {
-  },
-  media: {
-    height: 130,
-    width: 150
-  }
-});
-
-const MediaStyle = {  // Lisää tarvittaessa CardMediaan: style={MediaStyle}
-    float: 'left',
-    marginRight: '10px'
-}
-
-const CardContentStyle = {  // Tarvittaessa:  <CardContent style={CardContentStyle}>
-    padding: '10px'
-}
-
-const TypographyStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-    
-}
-
-const TypographyStylePrice = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+const TypographyStylePrice = {  
   color: 'red',
   float: 'right',
   margin: '10px'
 }
 
-const buttonStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+const buttonStyle = {  
     float: 'right'
 }
 
-const switchAndCategoryModStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+const switchAndCategoryModStyle = {  
   alignItems: 'center',
   marginLeft: '30px'
 }
 
-const floatRight = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+const floatRight = {
   float: 'right'
 }
-
 
 // For size and quantity selection:
 const useStylesSizeSelect = makeStyles((theme) => ({
@@ -158,18 +115,17 @@ const useStylesNewCard = makeStyles((theme) => ({
 
 
 const ProductCard = ({ product }) => {
-  const classes = useStyles();
 
+  const dispatch = useDispatch()
+  const classesSizeSelect = useStylesSizeSelect();
+  const classesNewCard = useStylesNewCard();
 
  // For size and quantity selection:
-
-  const classesSizeSelect = useStylesSizeSelect();
 
   const [priceAndSize, setPriceAndSize] = React.useState(product.pricesandsizes[0])
   const [quantity, setQuantity] = React.useState(1);
 
   const handleChange = (event) => {
-    console.log(event.target.value)
     setPriceAndSize(event.target.value)
   }
   const handleQuantityChange = (event) => {
@@ -178,7 +134,6 @@ const ProductCard = ({ product }) => {
     else setQuantity(0)
   }
 
-  const dispatch = useDispatch()
 
   const handleAddToCart = () => {
     const product_time = new Date().getTime()
@@ -210,19 +165,10 @@ const ProductCard = ({ product }) => {
     }
   }
 
-  // For new card:
-  const classesNewCard = useStylesNewCard();
-  const themeNewCard = useTheme();
-
-
-
   // For admin modification:
-
-  const categories = useSelector(state => state.categories) 
 
   const [available, setAvailable] = React.useState(product.available)
   const [pricesAndSizes, setPricesAndSizes] = React.useState(product.pricesandsizes)  // Kuten product admin formissa, paitsi init.
-  const [categorySelected, setCategorySelected] = React.useState(product.category_id)
 
   const handleAvailabilityChangeAndUpdate = async () => {
     try{
@@ -281,27 +227,6 @@ const ProductCard = ({ product }) => {
     }
   }
 
-  const handleCategoryChange = (event) => {
-    setCategorySelected(event.target.value)
-  }
-
-  const handleCategoryUpdate = async () => {
-    try{
-      const productModified = await productService.putNewCategory({
-        id: product.id,
-        parentCategoryId: categorySelected
-      })
-      dispatch({
-        type: 'REPLACE_PRODUCT',
-        data: productModified
-      })
-      dispatch(displayNotificationForSeconds('Tuotteen kategoria muutettu', 5))
-    } 
-    catch(error) {
-      dispatch(displayNotificationForSeconds('Tuotteen kategorian muuttaminen epäonnistui', 5))
-    }
-  }
-
   const modificationControls = () =>
     <>
     <div className={classesNewCard.horizontalLayout}>
@@ -326,13 +251,12 @@ const ProductCard = ({ product }) => {
       <Typography variant="body2" color="textSecondary" component="p">Tuote näkyvillä</Typography>
       </div>
       <div className={classesNewCard.horizontalLayout} style={switchAndCategoryModStyle}>
-      {newCategorySelector()} <Button size="small" onClick={handleCategoryUpdate}>Päivitä kategoria</Button>
+        <ParentCategoryUpdateForm product={product}/>
       </div>
     </div>
 
     </div>
     </>
-
 
   const priceAndSizeInputFields = () => {         // Kuten product admin formissa.
     return pricesAndSizes.map((priceAndSize, index) =>
@@ -358,22 +282,6 @@ const ProductCard = ({ product }) => {
       </>
     )
   }
-
-  const newCategorySelector = () => 
-    <FormControl variant="outlined" className={classesSizeSelect.formControl}>
-        <InputLabel id="size-select">Tuotteen uusi kategoria</InputLabel>
-        <Select
-          labelId="size-select-label-id"
-          id="size-select-id"
-          value={categorySelected}
-          onChange={handleCategoryChange}
-          label="Tuotteen uusi kategoria"
-        >
-          {categories.map(category => <MenuItem value={category.id}>{category.name}</MenuItem> )}
-        </Select>
-      </FormControl>
-
-
 
   // New Expansion button:
   const [expanded, setExpanded] = React.useState(false);
@@ -405,7 +313,7 @@ const ProductCard = ({ product }) => {
         <CardContent className={classesNewCard.content}>
 
         <div className={classesNewCard.nameLine}>
-          <Typography variant="h6" component="h2" style={TypographyStyle}>
+          <Typography variant="h6" component="h2">
               {product.name}
            </Typography>
 
