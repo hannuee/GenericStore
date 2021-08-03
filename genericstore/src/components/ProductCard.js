@@ -21,7 +21,6 @@ const switchAndCategoryModStyle = {
   marginLeft: '30px'
 }
 
-
 // For new card:
 const useStylesNewCard = makeStyles((theme) => ({
   root: {
@@ -83,35 +82,25 @@ const ProductCard = ({ product }) => {
 
   const classesNewCard = useStylesNewCard();
 
-  // For admin modification:
+  const [expanded, setExpanded] = React.useState(false)
+
+  const handleExpandClick = () => setExpanded(!expanded)
 
   const modificationControls = () =>
-    <>
     <div className={classesNewCard.horizontalLayout}>
-    
-    <div className={classesNewCard.verticalLayout}>  
-      <PricesAndSizesUpdateForm product={product}/>
-    </div>
-    <Divider orientation="vertical" flexItem />
-    <div className={classesNewCard.verticalLayout}>    
-      <div className={classesNewCard.horizontalLayout} style={switchAndCategoryModStyle}>
-        <AvailabilityUpdateSwitch product={product}/>
+      <div className={classesNewCard.verticalLayout}>
+        <PricesAndSizesUpdateForm product={product} />
       </div>
-      <div className={classesNewCard.horizontalLayout} style={switchAndCategoryModStyle}>
-        <ParentCategoryUpdateForm product={product}/>
+      <Divider orientation="vertical" flexItem />
+      <div className={classesNewCard.verticalLayout}>
+        <div className={classesNewCard.horizontalLayout} style={switchAndCategoryModStyle}>
+          <AvailabilityUpdateSwitch product={product} />
+        </div>
+        <div className={classesNewCard.horizontalLayout} style={switchAndCategoryModStyle}>
+          <ParentCategoryUpdateForm product={product} />
+        </div>
       </div>
     </div>
-
-    </div>
-    </>
-
-
-  // New Expansion button:
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
 
 // {product.id}
@@ -120,57 +109,55 @@ const ProductCard = ({ product }) => {
 // {product.added} JOS ADMIN
   return (
     <>
-    <br /><br />
+      <Card className={classesNewCard.root}>
 
-    <Card className={classesNewCard.root}>
-  
-      <div className={classesNewCard.horizontalLayout}>
+        <div className={classesNewCard.horizontalLayout}>
 
-      <CardMedia
-        className={classesNewCard.cover}
-        image="/reptile.jpg"
-        title="Live from space album cover"
-      />
-       <div className={classesNewCard.verticalLayout}>
+          <CardMedia
+            className={classesNewCard.cover}
+            image="/reptile.jpg"
+            title="Live from space album cover"
+          />
+          <div className={classesNewCard.verticalLayout}>
 
-        <CardContent className={classesNewCard.content}>
+            <CardContent className={classesNewCard.content}>
 
-        <div className={classesNewCard.nameLine}>
-          <Typography variant="h6" component="h2">
-              {product.name}
-           </Typography>
+              <div className={classesNewCard.nameLine}>
+                <Typography variant="h6" component="h2">
+                  {product.name}
+                </Typography>
 
-           <IconButton className={classesNewCard.expandButton}
-          className={clsx(classesNewCard.expand, {
-            [classesNewCard.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-          >
-            <EditIcon />   
-          </IconButton>
+                <IconButton className={classesNewCard.expandButton}
+                  className={clsx(classesNewCard.expand, {
+                    [classesNewCard.expandOpen]: expanded,
+                  })}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <EditIcon />
+                </IconButton>
+              </div>
+
+              <Typography variant="body2" color="textSecondary" component="p">
+                {product.description} Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
+                Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
+              </Typography>
+
+              <AddToShoppingCartForm product={product} />
+
+            </CardContent>
+          </div>
         </div>
 
-           <Typography variant="body2" color="textSecondary" component="p">
-            {product.description} Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
-            Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
-          </Typography>
-          
-          <AddToShoppingCartForm product={product}/>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Divider />
+          <CardContent>
+            {modificationControls()}
+          </CardContent>
+        </Collapse>
 
-        </CardContent>
-        </div>
-      </div>
-
-      <Collapse in={expanded} timeout="auto" unmountOnExit> 
-      <Divider />
-        <CardContent>
-          {modificationControls()}
-        </CardContent>
-      </Collapse>
-
-    </Card>
+      </Card>
 
 
     </>
