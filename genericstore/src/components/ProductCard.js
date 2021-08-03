@@ -2,7 +2,7 @@ import React from 'react';
 import AddToShoppingCartForm from '../assistingComponents/AddToShoppingCartForm'
 import ParentCategoryUpdateForm from '../assistingComponents/ParentCategoryUpdateForm'  
 import AvailabilityUpdateSwitch from '../assistingComponents/AvailabilityUpdateSwitch' 
-import PricesAndSizesUpdateForm from '../assistingComponents/PricesAndSizesUpdateForm'  
+import PricesAndSizesForm from '../assistingComponents/PricesAndSizesForm'  
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';
@@ -89,7 +89,7 @@ const ProductCard = ({ product }) => {
   const modificationControls = () =>
     <div className={classesNewCard.horizontalLayout}>
       <div className={classesNewCard.verticalLayout}>
-        <PricesAndSizesUpdateForm product={product} />
+        <PricesAndSizesForm product={product} />            {/* PricesAndSizesForm is used here in Update-mode */}
       </div>
       <Divider orientation="vertical" flexItem />
       <div className={classesNewCard.verticalLayout}>

@@ -25,14 +25,34 @@ const useStylesNewCard = makeStyles((theme) => ({
   }
 }));
 
-
-const PricesAndSizesUpdateForm = ({product}) => {
+// Update-mode (function as an independent form in order to update some product's pricesAndSizes data): product, undefined, undefined
+// Set-mode (feed pricesAndSizes data to parent): undefined, pricesAndSizesParent, setPricesAndSizesParent
+const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesParent}) => {
 
     const dispatch = useDispatch()
 
     const classesNewCard = useStylesNewCard();
 
-    const [pricesAndSizes, setPricesAndSizes] = React.useState(product.pricesandsizes) 
+
+    // Mode switching:
+
+    let initState
+    if(product === undefined) initState = pricesAndSizesParent  // Set-mode
+    else initState = product.pricesandsizes                     // Update-mode
+
+    const [pricesAndSizesOwn, setPricesAndSizesOwn] = React.useState(initState) 
+    
+    let pricesAndSizes
+    let setPricesAndSizes
+    if(product === undefined) {  // Set-mode
+      pricesAndSizes = pricesAndSizesParent
+      setPricesAndSizes = setPricesAndSizesParent
+    }
+    else {                      // Update-mode
+      pricesAndSizes = pricesAndSizesOwn
+      setPricesAndSizes = setPricesAndSizesOwn
+    }
+
 
     const handlePriceAndSizeChange = (indexModified, sizeOrPrice) => (event) => {    // Kuten product admin formissa.
         const newArray = []
@@ -73,6 +93,9 @@ const PricesAndSizesUpdateForm = ({product}) => {
         }
       }
 
+    const showSendUpdateButtonIfUpdateMode = () => {
+      if(product != undefined) return <Button variant="contained" color="primary" onClick={handlePriceAndSizeUpdate} className={classesNewCard.button}> Tallenna hintatiedot </Button>
+    }
 
     return (
     <>
@@ -98,11 +121,11 @@ const PricesAndSizesUpdateForm = ({product}) => {
     )}
     <br />
       <div className={classesNewCard.horizontalLayout}>
-      <Button variant="contained" color="primary" onClick={handlePriceAndSizeUpdate} className={classesNewCard.button}> Tallenna hintatiedot </Button>
+      {showSendUpdateButtonIfUpdateMode()}
       <Button size="small" onClick={handlePriceAndSizeAddField}> Uusi hintatieto</Button>   
       </div> 
     </>
     )
 }
 
-export default PricesAndSizesUpdateForm
+export default PricesAndSizesForm
