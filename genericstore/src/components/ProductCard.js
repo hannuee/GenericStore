@@ -1,57 +1,25 @@
 import React from 'react';
-import { useDispatch } from 'react-redux'
+import AddToShoppingCartForm from '../assistingComponents/AddToShoppingCartForm'
 import ParentCategoryUpdateForm from '../assistingComponents/ParentCategoryUpdateForm'  
 import AvailabilityUpdateSwitch from '../assistingComponents/AvailabilityUpdateSwitch' 
-import PricesAndSizesUpdateForm from '../assistingComponents/PricesAndSizesUpdateForm' 
+import PricesAndSizesUpdateForm from '../assistingComponents/PricesAndSizesUpdateForm'  
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import EditIcon from '@material-ui/icons/Edit';
 import clsx from 'clsx';
 import Divider from '@material-ui/core/Divider';
 
-const TypographyStylePrice = {  
-  color: 'red',
-  float: 'right',
-  margin: '10px'
-}
-
-const buttonStyle = {  
-    float: 'right'
-}
-
 const switchAndCategoryModStyle = {  
   alignItems: 'center',
   marginLeft: '30px'
 }
-
-const floatRight = {
-  float: 'right'
-}
-
-// For size and quantity selection:
-const useStylesSizeSelect = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
 
 
 // For new card:
@@ -106,61 +74,14 @@ const useStylesNewCard = makeStyles((theme) => ({
     }),
   },
   expandOpen: {
-    transform: 'rotate(180deg)',
+    transform: 'rotate(90deg)',
   },
 }));
 
 
 const ProductCard = ({ product }) => {
 
-  const dispatch = useDispatch()
-  const classesSizeSelect = useStylesSizeSelect();
   const classesNewCard = useStylesNewCard();
-
- // For size and quantity selection:
-
-  const [priceAndSize, setPriceAndSize] = React.useState(product.pricesandsizes[0])
-  const [quantity, setQuantity] = React.useState(1);
-
-  const handleChange = (event) => {
-    setPriceAndSize(event.target.value)
-  }
-  const handleQuantityChange = (event) => {
-    const quantityInput = Number(event.target.value)
-    if (quantityInput >= 0) setQuantity(quantityInput)
-    else setQuantity(0)
-  }
-
-
-  const handleAddToCart = () => {
-    const product_time = new Date().getTime()
-    const product_name = product.name 
-    const product_id = product.id
-    dispatch({
-      type: 'ADD_TO_CART',
-      data: {product_time, product_name, product_id, priceAndSize, quantity}
-    })
-    // JONKINLAINEN PALAUTE TÄHÄN ETTÄ ASIAKAS TIETÄÄ ETTÄ NYT ON TUOTE LISÄTTY OSTOSKORIINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-  }
-
-  const quantityInput = () => {
-    if(quantity > 0){
-      return (
-      <FormControl variant="outlined" className={classesSizeSelect.formControl}>
-        <InputLabel htmlFor="component-outlined">Lukumäärä</InputLabel>
-        <OutlinedInput id="lukumaara" value={quantity} onChange={handleQuantityChange} label="Lukumäärä" type="number" />
-      </FormControl>
-      )   
-    } else {
-      return (
-      <FormControl error variant="outlined" className={classesSizeSelect.formControl}>
-        <InputLabel htmlFor="component-outlined-error">Lukumäärä</InputLabel>
-        <OutlinedInput id="lukumaara-error" value={quantity} onChange={handleQuantityChange} label="Lukumäärä" type="number" />
-        <FormHelperText id="lukumaara-error-text">Error!!!!!</FormHelperText>
-      </FormControl>
-      )
-    }
-  }
 
   // For admin modification:
 
@@ -235,27 +156,8 @@ const ProductCard = ({ product }) => {
             {product.description} Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
             Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller 
           </Typography>
-
-      <FormControl variant="outlined" className={classesSizeSelect.formControl}>
-        <InputLabel id="size-select">Koko</InputLabel>
-        <Select
-          labelId="size-select-label-id"
-          id="size-select-id"
-          value={priceAndSize}
-          onChange={handleChange}
-          label="Koko"
-        >
-          {product.pricesandsizes.map(priceAndSizeOption => <MenuItem value={priceAndSizeOption}>{priceAndSizeOption.size} - {priceAndSizeOption.price / 100} €</MenuItem> )}
-        </Select>
-      </FormControl>
-
-      {quantityInput()}
-
-      <Button size="small" color="primary" style={buttonStyle} onClick={handleAddToCart}>
-        Lisää ostoskoriin
-      </Button>
-
-      <Typography variant="body2" component="p" style={TypographyStylePrice}>{(priceAndSize.price / 100) * quantity} €</Typography>
+          
+          <AddToShoppingCartForm product={product}/>
 
         </CardContent>
         </div>
