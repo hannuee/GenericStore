@@ -42,6 +42,8 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
 import clsx from 'clsx';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import Divider from '@material-ui/core/Divider';
 
 
 const useStyles = makeStyles({
@@ -76,6 +78,15 @@ const buttonStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
     float: 'right'
 }
 
+const switchAndCategoryModStyle = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  alignItems: 'center',
+  marginLeft: '30px'
+}
+
+const floatRight = {  // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  float: 'right'
+}
+
 
 // For size and quantity selection:
 const useStylesSizeSelect = makeStyles((theme) => ({
@@ -95,13 +106,19 @@ const useStylesNewCard = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column' 
   },
-  detailsWithMedia: {
+  horizontalLayout: {
     display: 'flex',
     flexDirection: 'row',
   },
-  details: {
+  verticalLayout: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  floatLeft: {
+    float: 'left'
+  },
+  floatRight: {
+    float: 'right'
   },
   content: {
     flex: '1 0 auto',
@@ -112,6 +129,9 @@ const useStylesNewCard = makeStyles((theme) => ({
   },
   expandButton: {
     float: 'right'
+  },
+  button: {
+    marginTop: theme.spacing(2),
   },
   cover: {
     width: 151,
@@ -190,25 +210,19 @@ const ProductCard = ({ product }) => {
     }
   }
 
+  // For new card:
+  const classesNewCard = useStylesNewCard();
+  const themeNewCard = useTheme();
+
 
 
   // For admin modification:
 
   const categories = useSelector(state => state.categories) 
 
-  const [modifying, setModifying] = React.useState(false)
-
   const [available, setAvailable] = React.useState(product.available)
   const [pricesAndSizes, setPricesAndSizes] = React.useState(product.pricesandsizes)  // Kuten product admin formissa, paitsi init.
   const [categorySelected, setCategorySelected] = React.useState(product.category_id)
-
-  const handleModificationStart = () => {
-    setModifying(true)
-  }
-
-  const handleModificationEnd = () => {
-    setModifying(false)
-  }
 
   const handleAvailabilityChangeAndUpdate = async () => {
     try{
@@ -288,33 +302,42 @@ const ProductCard = ({ product }) => {
     }
   }
 
-  const modificationControls = () =>{
-    if(modifying) return (
+  const modificationControls = () =>
     <>
-    <br />
+    <div className={classesNewCard.horizontalLayout}>
+    
+    <div className={classesNewCard.verticalLayout}>  
+      {priceAndSizeInputFields()} 
+      <div className={classesNewCard.horizontalLayout}>
+      <Button variant="contained" color="primary" onClick={handlePriceAndSizeUpdate} className={classesNewCard.button}> Tallenna hintatiedot </Button>
+      <Button size="small" onClick={handlePriceAndSizeAddField}> Uusi hintatieto</Button>   
+      </div> 
+    </div>
+    <Divider orientation="vertical" flexItem />
+    <div className={classesNewCard.verticalLayout}>    
+      <div className={classesNewCard.horizontalLayout} style={switchAndCategoryModStyle}>
+      <Typography variant="body2" color="textSecondary" component="p">Piilotettu asiakkailta</Typography>
       <Switch
         checked={available}
         onChange={handleAvailabilityChangeAndUpdate}
         name="checkedA"
         inputProps={{ 'aria-label': 'secondary checkbox' }}
       />
-      <br />
-      {priceAndSizeInputFields()}
-      <Button size="small" onClick={handlePriceAndSizeAddField}>Uusi hintatieto</Button>
-      <Button size="small" onClick={handlePriceAndSizeUpdate}>Päivitä hintatiedot</Button>
-      <br />
+      <Typography variant="body2" color="textSecondary" component="p">Tuote näkyvillä</Typography>
+      </div>
+      <div className={classesNewCard.horizontalLayout} style={switchAndCategoryModStyle}>
       {newCategorySelector()} <Button size="small" onClick={handleCategoryUpdate}>Päivitä kategoria</Button>
-      <br />
-      <Button size="small" onClick={handleModificationEnd}>Lopeta muokkaus</Button>
-    </>)
-    else return (
-      <Button size="small" onClick={handleModificationStart}>Muokkaa</Button>
-    )
-  }
+      </div>
+    </div>
+
+    </div>
+    </>
+
 
   const priceAndSizeInputFields = () => {         // Kuten product admin formissa.
     return pricesAndSizes.map((priceAndSize, index) =>
       <>
+      <div className={classesNewCard.horizontalLayout}>
         <TextField id="standard-required" label="Koko" value={priceAndSize.size} onChange={handlePriceAndSizeChange(index, 'size')} />
         <TextField
           id="standard-number"
@@ -326,7 +349,11 @@ const ProductCard = ({ product }) => {
           value={priceAndSize.price}
           onChange={handlePriceAndSizeChange(index, 'price')}
         />
-        <Button size="small" onClick={handlePriceAndSizeDeleteField(index)}>poista</Button>
+
+        <IconButton onClick={handlePriceAndSizeDeleteField(index)}>
+            <HighlightOffIcon />  
+        </IconButton>
+      </div>
         <br />
       </>
     )
@@ -356,13 +383,6 @@ const ProductCard = ({ product }) => {
   };
 
 
-
-
-  // For new card:
-  const classesNewCard = useStylesNewCard();
-  const themeNewCard = useTheme();
-
-
 // {product.id}
 // {product.category_id}
 // {product.available} JOS ADMIN
@@ -373,14 +393,14 @@ const ProductCard = ({ product }) => {
 
     <Card className={classesNewCard.root}>
   
-      <div className={classesNewCard.detailsWithMedia}>
+      <div className={classesNewCard.horizontalLayout}>
 
       <CardMedia
         className={classesNewCard.cover}
         image="/reptile.jpg"
         title="Live from space album cover"
       />
-       <div className={classesNewCard.details}>
+       <div className={classesNewCard.verticalLayout}>
 
         <CardContent className={classesNewCard.content}>
 
@@ -397,7 +417,7 @@ const ProductCard = ({ product }) => {
           aria-expanded={expanded}
           aria-label="show more"
           >
-            <EditIcon />
+            <EditIcon />   
           </IconButton>
         </div>
 
@@ -425,8 +445,6 @@ const ProductCard = ({ product }) => {
         Lisää ostoskoriin
       </Button>
 
-      {modificationControls()}
-
       <Typography variant="body2" component="p" style={TypographyStylePrice}>{(priceAndSize.price / 100) * quantity} €</Typography>
 
         </CardContent>
@@ -434,18 +452,9 @@ const ProductCard = ({ product }) => {
       </div>
 
       <Collapse in={expanded} timeout="auto" unmountOnExit> 
+      <Divider />
         <CardContent>
-          <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-            heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-            browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
-            and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
-            pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
-            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-          </Typography>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then serve.
-          </Typography>
+          {modificationControls()}
         </CardContent>
       </Collapse>
 
