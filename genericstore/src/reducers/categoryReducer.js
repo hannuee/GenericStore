@@ -1,4 +1,5 @@
 import categoryService from '../services/categories'
+import CategoryTreeProcessors from '../utils/CategoryTreeProcessors'
 
 const reducer = (state = [], action) => {
   switch (action.type) {
@@ -19,6 +20,7 @@ const reducer = (state = [], action) => {
 export const initializeCategories = () => {
   return async dispatch => {
     const categories = await categoryService.getAll()
+
     dispatch({
       type: 'INIT_CATEGORIES',
       data: categories
