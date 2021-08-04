@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import ProductAdditionForm from './ProductAdditionForm'
 import CategoryAdditionForm from './CategoryAdditionForm'
 import ProductCard from './ProductCard'
 import { deleteCategory } from '../reducers/categoryReducer'
@@ -124,7 +123,7 @@ const CategoryPage = (props) => {
         {newCategorySelector()} <Button size="small" onClick={handleCategoryUpdate}>Päivitä kategoria</Button>
         
         <br />
-        <ProductAdditionForm parentCategoryIdForNewProduct={categoryDisplayed.id} />
+        <ProductCard parentCategoryIdForNewProduct={categoryDisplayed.id} />
         <br />
         <CategoryAdditionForm parentCategoryIdForNewCategory={categoryDisplayed.id} />
         <br />
