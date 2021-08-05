@@ -1,3 +1,10 @@
+const getAsListOfIdsAndPaths = (categories) => {
+    const categoriesTree = buildTree(categories)
+    const listOfCategoryIdsAndPaths = getNodeCategoryIdsAndPaths(categoriesTree)
+    return listOfCategoryIdsAndPaths
+}
+
+
 const buildTree = (categories) => {
     const categoriesMap = new Map()
 
@@ -40,4 +47,28 @@ const recursiveChildrenAdder = (node, categoriesMap) => {
     }
 }
 
-export default { buildTree }
+
+const getNodeCategoryIdsAndPaths = (root) => {
+    const nodesAndPaths = []
+    const path = ''
+
+    recursiveNodePathPrinter(root, path, nodesAndPaths)
+
+    return nodesAndPaths
+}
+
+const recursiveNodePathPrinter = (node, path, nodesAndPaths) => {
+    let pathContinued = path
+    if(node.nodeCategory !== null) {
+        if(path !== '') pathContinued += ' - '
+        pathContinued += node.nodeCategory.name
+        nodesAndPaths.push({id: node.nodeCategory.id, path: pathContinued})
+    }
+
+    for(let child in node){
+        if(child !== 'nodeCategory') recursiveNodePathPrinter(node[child], pathContinued, nodesAndPaths)
+    }
+}
+
+
+export default { getAsListOfIdsAndPaths }
