@@ -1,5 +1,4 @@
 import categoryService from '../services/categories'
-import CategoryTreeProcessors from '../utils/CategoryTreeProcessors'
 
 const reducer = (state = [], action) => {
   switch (action.type) {

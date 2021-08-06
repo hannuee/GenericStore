@@ -1,9 +1,17 @@
-const getAsListOfIdsAndPaths = (categories) => {
+export const getAsListOfIdsAndPaths = (categories) => {
     const categoriesTree = buildTree(categories)
     const listOfCategoryIdsAndPaths = getNodeCategoryIdsAndPaths(categoriesTree)
     return listOfCategoryIdsAndPaths
 }
 
+export const getIdsAndNamesOnPathToId = (categories, idToFind) => {
+    const categoriesTree = buildTree(categories)
+    const idsAndNamesOnPath = getIdsAndNamesOnPath(categoriesTree, idToFind)
+    return idsAndNamesOnPath
+}
+
+
+// Helpers:
 
 const buildTree = (categories) => {
     const categoriesMap = new Map()
@@ -71,4 +79,24 @@ const recursiveNodePathPrinter = (node, path, nodesAndPaths) => {
 }
 
 
-export default { getAsListOfIdsAndPaths }
+const getIdsAndNamesOnPath = (root, idToFind) => {
+    return recursivePathFinder(root, idToFind, [])
+}
+
+const recursivePathFinder = (node, idToFind, idsAndNodesOnAPath) => {
+    let newIdsAndNodesOnAPath
+
+    if(node.nodeCategory !== null) {
+        newIdsAndNodesOnAPath = [...idsAndNodesOnAPath, {id: node.nodeCategory.id, name: node.nodeCategory.name}]
+        if(node.nodeCategory.id === idToFind) return newIdsAndNodesOnAPath
+    } else {
+        newIdsAndNodesOnAPath = idsAndNodesOnAPath
+    }
+
+    for(let child in node){
+        if(child !== 'nodeCategory') {
+            const possibleAnswer = recursivePathFinder(node[child], idToFind, newIdsAndNodesOnAPath)
+            if(possibleAnswer !== undefined) return possibleAnswer
+        }
+    }
+}

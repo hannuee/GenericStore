@@ -2,7 +2,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import CategoryAdditionForm from './CategoryAdditionForm'
-import ProductCard from './ProductCard'
+import ProductCard from './ProductCard'  
+import BreadcrumbsLinks from '../assistingComponents/BreadcrumbsLinks'
 import { deleteCategory } from '../reducers/categoryReducer'
 import { modifyParentCategory } from '../reducers/categoryReducer'
 
@@ -108,16 +109,10 @@ const CategoryPage = (props) => {
         </Select>
       </FormControl>
 
-
-
-
-
     return (
       <>
+        <BreadcrumbsLinks categoryId={categoryDisplayed.id} /> {categoryDisplayed.description} 
         <br />
-        <br />
-
-        {categoryDisplayed.id}, {categoryDisplayed.category_id}, {categoryDisplayed.name}, {categoryDisplayed.description} 
         {categoryDeleteButton()}
 
         {newCategorySelector()} <Button size="small" onClick={handleCategoryUpdate}>Päivitä kategoria</Button>
