@@ -21,6 +21,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 
+import { getAsListOfIdsAndPaths } from '../utils/CategoryTreeProcessors'
+
 // Kategorian muuttamiseen:
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -179,7 +181,7 @@ const CategoryPage = (props) => {
           onChange={handleCategoryChange}
           label="Tuotteen uusi kategoria"
         >
-          {categories.map(category => <MenuItem value={category.id}>{category.name}</MenuItem> )}
+          {getAsListOfIdsAndPaths(categories).map(item => <MenuItem value={item.id}>{item.path}</MenuItem> )}
         </Select>
       </FormControl>
 

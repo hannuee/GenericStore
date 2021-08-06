@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import productService from '../services/products'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import { getAsListOfIdsAndPaths } from '../utils/CategoryTreeProcessors'
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';
@@ -63,7 +64,7 @@ const ParentCategoryUpdateForm = ({product}) => {
           onChange={handleCategoryChange}
           label="Tuotteen uusi kategoria"
         >
-          {categories.map(category => <MenuItem value={category.id}>{category.name}</MenuItem> )}
+          {getAsListOfIdsAndPaths(categories).map(item => <MenuItem value={item.id}>{item.path}</MenuItem> )}
         </Select>
       </FormControl>
 
