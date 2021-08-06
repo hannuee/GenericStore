@@ -17,6 +17,10 @@ import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import Paper from '@material-ui/core/Paper';
 
+import EditIcon from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
+import clsx from 'clsx';
+
 // Kategorian muuttamiseen:
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -30,6 +34,22 @@ const useStylesSizeSelect = makeStyles((theme) => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+}));
+
+const useStylesNewCard = makeStyles((theme) => ({
+  expandButton: {
+    float: 'right'
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(90deg)',
   },
 }));
 
@@ -62,6 +82,7 @@ const CategoryPage = (props) => {
   // Kategorian muuttamiseen, harkitse refaktorointi Product Card vastaavien kanssaaaaaaaaaaaaaaaaa:
 
   const classesSizeSelect = useStylesSizeSelect();
+  const classesNewCard = useStylesNewCard();
 
   const categories = useSelector(state => state.categories) 
 
@@ -95,22 +116,18 @@ const CategoryPage = (props) => {
       )   
     // NÄYTÄ TÄÄLLÄ OHJE ETTÄ KATEGORIAN TULEE OLLA TYHJÄ JOTTA VOI POISTAA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   }
- 
 
 
 
   const [showNewProductForm, setShowNewProductForm] = React.useState(false);
   const [showNewCategoryForm, setShowNewCategoryForm] = React.useState(false);
-  const [showCategoryModificationControls, setShowCategoryModificationControls] = React.useState(false);
+  const [expandedCategoryModificationControls, setExpandedCategoryModificationControls] = React.useState(false)
 
   const handleShowNewProductForm = () => {
     setShowNewProductForm(true)
   }
   const handleShowNewCategoryForm = () => {
     setShowNewCategoryForm(true)
-  }
-  const handleShowCategoryModificationControls = () => {
-    setShowCategoryModificationControls(true)
   }
 
   const handleCloseNewProductForm = () => {
@@ -119,9 +136,11 @@ const CategoryPage = (props) => {
   const handleCloseNewCategoryForm = () => {
     setShowNewCategoryForm(false)
   }
-  const handleCloseCategoryModificationControls = () => {
-    setShowCategoryModificationControls(false)
+
+  const handleExpandCategoryModificationControls = () => {
+    setExpandedCategoryModificationControls(!expandedCategoryModificationControls)
   }
+
 
   const newProductForm = () =>
     <div>
@@ -139,10 +158,9 @@ const CategoryPage = (props) => {
 
   const categoryModificationControls = () =>
     <div>
-      <Collapse in={showCategoryModificationControls} timeout="auto" unmountOnExit>
+      <Collapse in={expandedCategoryModificationControls} timeout="auto" unmountOnExit>
       <Paper>
         {newCategorySelector()} <Button size="small" onClick={handleCategoryUpdate}>Päivitä kategoria</Button>
-        <Button size="small" color="primary" onClick={handleCloseCategoryModificationControls}>KIINNI</Button>
         <br />
         {categoryDeleteButton()}
       </Paper>
@@ -168,10 +186,19 @@ const CategoryPage = (props) => {
     return (
       <>
         <BreadcrumbsLinks categoryId={categoryDisplayed.id} /> {categoryDisplayed.description} 
-        <br />
+        <IconButton className={classesNewCard.expandButton}
+                  className={clsx(classesNewCard.expand, {
+                    [classesNewCard.expandOpen]: expandedCategoryModificationControls,
+                  })}
+                  onClick={handleExpandCategoryModificationControls}
+                  aria-expanded={expandedCategoryModificationControls}
+                  aria-label="show more"
+                >
+                  <EditIcon />
+                </IconButton>
+
         <Button size="small" color="primary" onClick={handleShowNewProductForm}>uusi tuote</Button>
         <Button size="small" color="primary" onClick={handleShowNewCategoryForm}>uusi alakategoria</Button>
-        <Button size="small" color="primary" onClick={handleShowCategoryModificationControls}>kategorian muokkaus</Button>
         {newProductForm()}
         {newCategoryForm()}
         {categoryModificationControls()}
