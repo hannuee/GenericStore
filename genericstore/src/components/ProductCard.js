@@ -92,9 +92,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-// Product display -mode: product, undefined
-// Product addition -mode: undefined, parentCategoryIdForNewProduct
-const ProductCard = ({ product, parentCategoryIdForNewProduct }) => {
+// Product display -mode: product, undefined, undefined
+// Product addition -mode: undefined, parentCategoryIdForNewProduct, handleCloseNewProductForm
+const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewProductForm }) => {
 
   const classesNewCard = useStylesNewCard();
 
@@ -129,6 +129,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct }) => {
         pricesAndSizes,
         available: true
       })
+      if(handleCloseNewProductForm !== undefined) handleCloseNewProductForm()
       setName('')
       setDescription('')
       setPricesAndSizes([{price: 0, size: ''}])
@@ -210,6 +211,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct }) => {
       <>
 <PricesAndSizesForm pricesAndSizesParent={pricesAndSizes} setPricesAndSizesParent={setPricesAndSizes} />
 <Button size="small" disabled={disabled} onClick={handleAddNewProduct}>Lisää tuote</Button>
+<Button size="small" color="primary" disabled={disabled} onClick={handleCloseNewProductForm}>KIINNI</Button>
 </>
       )
     }

@@ -9,6 +9,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import Paper from '@material-ui/core/Paper';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const CategoryAdditionForm = ({ parentCategoryIdForNewCategory }) => {
+// handleCloseNewCategoryForm is optional, and giving it causes a close form -button to be shown on the form.
+const CategoryAdditionForm = ({ parentCategoryIdForNewCategory, handleCloseNewCategoryForm }) => {
   const classes = useStyles();
 
   const dispatch = useDispatch()
@@ -45,6 +48,7 @@ const CategoryAdditionForm = ({ parentCategoryIdForNewCategory }) => {
         name,
         description
       })
+      if(handleCloseNewCategoryForm !== undefined) handleCloseNewCategoryForm()
       setName('')
       setDescription('')
       setDisabled(false)
@@ -60,16 +64,24 @@ const CategoryAdditionForm = ({ parentCategoryIdForNewCategory }) => {
     }
   }
 
+  const closeFormButtonOrNothing = () => {
+    if(handleCloseNewCategoryForm !== undefined) {
+      return <Button size="small" color="primary" disabled={disabled} onClick={handleCloseNewCategoryForm}>KIINNI</Button>
+    }
+  }
+
 
   return (
+    <Paper>
     <form className={classes.root} noValidate autoComplete="off">
       <div>
         <TextField required id="standard-required" label="Kategorian nimi" value={name} onChange={handleNameChange} />
-        <TextField multiline rows={2} id="standard-required" label="Kuvaus" value={description} onChange={handleDescriptionChange} />
-        <br />
+        <TextField id="standard-required" label="Kuvaus" value={description} onChange={handleDescriptionChange} />
         <Button size="small" disabled={disabled} onClick={handleAddNewCategory}>Lisää kategoria</Button>
+        {closeFormButtonOrNothing()}
       </div>
     </form>
+    </Paper>
   )
 }
 

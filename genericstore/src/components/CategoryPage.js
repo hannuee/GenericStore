@@ -14,6 +14,9 @@ import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import { Link } from "react-router-dom"
 import Button from '@material-ui/core/Button';
 
+import Collapse from '@material-ui/core/Collapse';
+import Paper from '@material-ui/core/Paper';
+
 // Kategorian muuttamiseen:
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -95,6 +98,59 @@ const CategoryPage = (props) => {
  
 
 
+
+  const [showNewProductForm, setShowNewProductForm] = React.useState(false);
+  const [showNewCategoryForm, setShowNewCategoryForm] = React.useState(false);
+  const [showCategoryModificationControls, setShowCategoryModificationControls] = React.useState(false);
+
+  const handleShowNewProductForm = () => {
+    setShowNewProductForm(true)
+  }
+  const handleShowNewCategoryForm = () => {
+    setShowNewCategoryForm(true)
+  }
+  const handleShowCategoryModificationControls = () => {
+    setShowCategoryModificationControls(true)
+  }
+
+  const handleCloseNewProductForm = () => {
+    setShowNewProductForm(false)
+  }
+  const handleCloseNewCategoryForm = () => {
+    setShowNewCategoryForm(false)
+  }
+  const handleCloseCategoryModificationControls = () => {
+    setShowCategoryModificationControls(false)
+  }
+
+  const newProductForm = () =>
+    <div>
+      <Collapse in={showNewProductForm} timeout="auto" unmountOnExit>
+        <ProductCard parentCategoryIdForNewProduct={categoryDisplayed.id} handleCloseNewProductForm={handleCloseNewProductForm} />
+      </Collapse>
+    </div>
+
+  const newCategoryForm = () =>
+    <div>
+      <Collapse in={showNewCategoryForm} timeout="auto" unmountOnExit>
+        <CategoryAdditionForm parentCategoryIdForNewCategory={categoryDisplayed.id} handleCloseNewCategoryForm={handleCloseNewCategoryForm} />
+      </Collapse>
+    </div>
+
+  const categoryModificationControls = () =>
+    <div>
+      <Collapse in={showCategoryModificationControls} timeout="auto" unmountOnExit>
+      <Paper>
+        {newCategorySelector()} <Button size="small" onClick={handleCategoryUpdate}>Päivitä kategoria</Button>
+        <Button size="small" color="primary" onClick={handleCloseCategoryModificationControls}>KIINNI</Button>
+        <br />
+        {categoryDeleteButton()}
+      </Paper>
+      </Collapse>
+    </div>
+
+
+
   const newCategorySelector = () => 
     <FormControl variant="outlined" className={classesSizeSelect.formControl}>
         <InputLabel id="size-select">Tuotteen uusi kategoria</InputLabel>
@@ -113,14 +169,13 @@ const CategoryPage = (props) => {
       <>
         <BreadcrumbsLinks categoryId={categoryDisplayed.id} /> {categoryDisplayed.description} 
         <br />
-        {categoryDeleteButton()}
-
-        {newCategorySelector()} <Button size="small" onClick={handleCategoryUpdate}>Päivitä kategoria</Button>
-        
+        <Button size="small" color="primary" onClick={handleShowNewProductForm}>uusi tuote</Button>
+        <Button size="small" color="primary" onClick={handleShowNewCategoryForm}>uusi alakategoria</Button>
+        <Button size="small" color="primary" onClick={handleShowCategoryModificationControls}>kategorian muokkaus</Button>
+        {newProductForm()}
+        {newCategoryForm()}
+        {categoryModificationControls()}
         <br />
-        <ProductCard parentCategoryIdForNewProduct={categoryDisplayed.id} />
-        <br />
-        <CategoryAdditionForm parentCategoryIdForNewCategory={categoryDisplayed.id} />
         <br />
         
         {subCategories.map(category =>
