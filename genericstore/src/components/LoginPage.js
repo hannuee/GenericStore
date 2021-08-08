@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { logInWithCredentials } from '../reducers/customerReducer'
 
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import { initializeAllProducts } from '../reducers/productReducer'
 import customerService from '../services/customers'
 import {useHistory} from 'react-router-dom'
 
@@ -53,6 +54,9 @@ const LoginPage = () => {
         type: 'ADD_LOGGED_IN',
         data: tokenAndInfo
       })
+
+      dispatch(initializeAllProducts(tokenAndInfo.token))
+
       history.push('/')
       // ANNA NOOTTI ONNISTUMISESTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     } 

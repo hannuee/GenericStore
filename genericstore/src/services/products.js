@@ -9,28 +9,28 @@ const getAvailable = async () => {
 
 // For admin:
 
-const getAll = async () => {
-  const response = await axios.get(baseUrl)
+const getAll = async (adminToken) => {
+  const response = await axios.get(baseUrl, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const post = async (newProduct) => {
-  const response = await axios.post(baseUrl, newProduct)
+const post = async (newProduct, adminToken) => {
+  const response = await axios.post(baseUrl, newProduct, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const putAvailable = async (idAndInfoToModify) => {
-  const response = await axios.put(baseUrl + '/available', idAndInfoToModify)
+const putAvailable = async (idAndInfoToModify, adminToken) => {
+  const response = await axios.put(baseUrl + '/available', idAndInfoToModify, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const putNewCategory = async (idAndInfoToModify) => {
-  const response = await axios.put(baseUrl + '/newCategory', idAndInfoToModify)
+const putNewCategory = async (idAndInfoToModify, adminToken) => {
+  const response = await axios.put(baseUrl + '/newCategory', idAndInfoToModify, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const putPricesAndSizes = async (idAndInfoToModify) => {
-  const response = await axios.put(baseUrl + '/pricesAndSizes', idAndInfoToModify)
+const putPricesAndSizes = async (idAndInfoToModify, adminToken) => {
+  const response = await axios.put(baseUrl + '/pricesAndSizes', idAndInfoToModify, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 

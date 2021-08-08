@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import productService from '../services/products'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 
@@ -33,6 +34,7 @@ const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesPar
 
     const classesNewCard = useStylesNewCard();
 
+    const admin = useSelector(state => state.customers.loggedIn)
 
     // Mode switching:
 
@@ -81,7 +83,7 @@ const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesPar
           const modifiedProduct = await productService.putPricesAndSizes({
             id: product.id,
             pricesAndSizes
-          })
+          }, admin.token)
           dispatch({
             type: 'REPLACE_PRODUCT',
             data: modifiedProduct

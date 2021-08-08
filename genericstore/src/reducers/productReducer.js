@@ -26,9 +26,9 @@ export const initializeAvailableProducts = () => {
 
 
 
-export const initializeAllProducts = () => {
+export const initializeAllProducts = (adminToken) => {
   return async dispatch => {
-    const products = await productService.getAll()
+    const products = await productService.getAll(adminToken)
     dispatch({
       type: 'INIT_PRODUCTS',
       data: products

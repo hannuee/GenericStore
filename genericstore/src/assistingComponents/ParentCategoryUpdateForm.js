@@ -26,6 +26,7 @@ const useStylesSizeSelect = makeStyles((theme) => ({
 const ParentCategoryUpdateForm = ({product}) => {
 
     const categories = useSelector(state => state.categories) // For admin modification.
+    const admin = useSelector(state => state.customers.loggedIn)
     const dispatch = useDispatch()
 
     const classesSizeSelect = useStylesSizeSelect();
@@ -40,7 +41,7 @@ const ParentCategoryUpdateForm = ({product}) => {
           const productModified = await productService.putNewCategory({
             id: product.id,
             parentCategoryId: categorySelected
-          })
+          }, admin.token)
           dispatch({
             type: 'REPLACE_PRODUCT',
             data: productModified

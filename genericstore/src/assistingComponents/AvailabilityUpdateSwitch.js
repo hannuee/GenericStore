@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import productService from '../services/products'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
@@ -12,6 +13,8 @@ const AvailabilityUpdateSwitch = ({product}) => {
 
     const dispatch = useDispatch()
 
+    const admin = useSelector(state => state.customers.loggedIn)
+
     const [available, setAvailable] = React.useState(product.available)
     
     const handleAvailabilityChangeAndUpdate = async () => {
@@ -19,7 +22,7 @@ const AvailabilityUpdateSwitch = ({product}) => {
           const addedProduct = await productService.putAvailable({
             id: product.id,
             available: !available, 
-          })
+          }, admin.token)
           setAvailable(!available)
           dispatch({
             type: 'REPLACE_PRODUCT',

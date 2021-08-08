@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux'
 import AddToShoppingCartForm from '../assistingComponents/AddToShoppingCartForm'
 import ParentCategoryUpdateForm from '../assistingComponents/ParentCategoryUpdateForm'  
 import AvailabilityUpdateSwitch from '../assistingComponents/AvailabilityUpdateSwitch' 
@@ -98,10 +99,11 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
 
   const classesNewCard = useStylesNewCard();
 
+  const admin = useSelector(state => state.customers.loggedIn)
+
   const [expanded, setExpanded] = React.useState(false)
 
   const handleExpandClick = () => setExpanded(!expanded)
-
 
   // Product Addition Form:
   const classes = useStyles();
@@ -128,7 +130,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
         description,
         pricesAndSizes,
         available: true
-      })
+      }, admin.token)
       if(handleCloseNewProductForm !== undefined) handleCloseNewProductForm()
       setName('')
       setDescription('')
