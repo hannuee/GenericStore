@@ -59,11 +59,11 @@ const CategoryAdditionForm = ({ parentCategoryIdForNewCategory, handleCloseNewCa
         type: 'ADD_NEW_CATEGORY',
         data: category
       })
-      dispatch(displayNotificationForSeconds('Kategoria lisätty', 5))
+      dispatch(displayNotificationForSeconds('Kategoria lisätty', 'success', 5))
     } 
     catch(error) {
       setDisabled(false)
-      dispatch(displayNotificationForSeconds('Kategorian lisäys epäonnistui', 5))
+      dispatch(displayNotificationForSeconds('Kategorian lisäys epäonnistui', 'error', 5))
     }
   }
 

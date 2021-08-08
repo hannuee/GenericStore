@@ -88,10 +88,10 @@ const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesPar
             type: 'REPLACE_PRODUCT',
             data: modifiedProduct
           })
-          dispatch(displayNotificationForSeconds('Tuotteen hintatiedot muutettu', 5))
+          dispatch(displayNotificationForSeconds('Tuotteen hintatiedot muutettu', 'success', 5))
         } 
         catch(error) {
-          dispatch(displayNotificationForSeconds('Tuotteen hintatietojen muunttaminen epäonnistui', 5))
+          dispatch(displayNotificationForSeconds('Tuotteen hintatietojen muunttaminen epäonnistui', 'error', 5))
         }
       }
 

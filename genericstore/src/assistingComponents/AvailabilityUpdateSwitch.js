@@ -28,10 +28,10 @@ const AvailabilityUpdateSwitch = ({product}) => {
             type: 'REPLACE_PRODUCT',
             data: addedProduct
           })
-          dispatch(displayNotificationForSeconds('Tuotteen saatavuus muutettu', 5))
+          dispatch(displayNotificationForSeconds('Tuotteen saatavuus muutettu', 'success', 5))
         } 
         catch(error) {
-          dispatch(displayNotificationForSeconds('Tuotteen saatavuuden muuttaminen epäonnistui', 5))
+          dispatch(displayNotificationForSeconds('Tuotteen saatavuuden muuttaminen epäonnistui', 'error', 5))
         }
       }
 

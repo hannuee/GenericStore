@@ -46,10 +46,10 @@ const ParentCategoryUpdateForm = ({product}) => {
             type: 'REPLACE_PRODUCT',
             data: productModified
           })
-          dispatch(displayNotificationForSeconds('Tuotteen kategoria muutettu', 5))
+          dispatch(displayNotificationForSeconds('Tuotteen kategoria muutettu', 'success', 5))
         } 
         catch(error) {
-          dispatch(displayNotificationForSeconds('Tuotteen kategorian muuttaminen epäonnistui', 5))
+          dispatch(displayNotificationForSeconds('Tuotteen kategorian muuttaminen epäonnistui', 'error', 5))
         }
       }
   

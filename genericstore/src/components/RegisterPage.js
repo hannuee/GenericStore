@@ -67,11 +67,11 @@ const RegisterPage = () => {
           password
         })
         history.push('/kirjautuminen')
-        dispatch(displayNotificationForSeconds('Rekisteröityminen onnistui', 5))
+        dispatch(displayNotificationForSeconds('Rekisteröityminen onnistui', 'success', 5))
       }
       catch(error){
-        if (error.response.data.error.includes('violates unique constraint')) dispatch(displayNotificationForSeconds('Virheellinen sähköpostiosoite', 5))
-        else dispatch(displayNotificationForSeconds('Rekisteröityminen epäonnistui', 5))
+        if (error.response.data.error.includes('violates unique constraint')) dispatch(displayNotificationForSeconds('Virheellinen sähköpostiosoite', 'error', 5))
+        else dispatch(displayNotificationForSeconds('Rekisteröityminen epäonnistui', 'error', 5))
         setDisabled(false)
       }
   }

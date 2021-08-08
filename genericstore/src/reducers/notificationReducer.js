@@ -1,25 +1,26 @@
 const initialState = {
     text: '',
+    severity: '',   // success, info, warning, error
     timeoutID: null
   }
-  
+
   const reducer = (state = initialState, action) => {
     switch (action.type) {
       case 'CHANGE':
         if (state.timeoutID !== null) clearTimeout(state.timeoutID)
         return action.data
       case 'CLEAR':
-          return {text: '', timeoutID: null}
+          return {text: '', severity: '', timeoutID: null}
       default: return state
     }
   }
   
-  export const displayNotificationForSeconds = (text, seconds) => {
+  export const displayNotificationForSeconds = (text, severity, seconds) => {
     return async dispatch => {
       const timeoutID = setTimeout(() => {dispatch({ type: 'CLEAR' })}, seconds*1000)
       dispatch({
         type: 'CHANGE',
-        data: { text, timeoutID }
+        data: { text, severity, timeoutID }
       })
     }
   }

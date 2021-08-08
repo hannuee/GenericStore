@@ -66,11 +66,11 @@ const MyOrdersPage = (props) => {
       // Tilaukset haetaan uudestaan koska Orders POST rajapinta ei tällä hetkellä palauta lisättyä tilausta.
       // Kun tilaukset pyydetään Orders GET rajapinnoilta niin ne tulevat varmasti oikein, siten kun ne ovat tietokannassa.
       dispatch(initializeCustomersOrdersWithDetails(customer.token))
-      dispatch(displayNotificationForSeconds('Tilaus lähetetty', 5))
+      dispatch(displayNotificationForSeconds('Tilaus lähetetty', 'success', 5))
     } 
     catch(error) {
       setDisabled(false)
-      dispatch(displayNotificationForSeconds('Tilauksen lähetys epäonnistui', 5))
+      dispatch(displayNotificationForSeconds('Tilauksen lähetys epäonnistui', 'error', 5))
     }
   }
 

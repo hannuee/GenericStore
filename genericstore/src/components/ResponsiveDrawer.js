@@ -36,6 +36,8 @@ import CustomersPage from './CustomersPage'
 import LoginPage from './LoginPage'
 import RegisterPage from './RegisterPage'
 
+import Notification from '../assistingComponents/Notification'
+
 
 const drawerWidth = 240;
 
@@ -87,9 +89,7 @@ function ResponsiveDrawer(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const categories = useSelector(state => state.categories)  // Kat haku tilasta MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-
-  const notification = useSelector(state => state.notification.text)  // Kat haku tilasta MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  const categories = useSelector(state => state.categories)
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -110,8 +110,6 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-      
-      {notification}
       
       <List>
       {categories.filter(category => category.category_id === null).map(category =>
@@ -269,6 +267,7 @@ function ResponsiveDrawer(props) {
       </Route>
     </Switch>
 
+    <Notification />
       </main>
     </div>
   );

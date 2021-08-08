@@ -120,7 +120,7 @@ const AdminOrdersPage = (props) => {
       })
     } 
     catch(error) {
-      dispatch(displayNotificationForSeconds('Tilauksen merkitseminen toimitetuksi epäonnistui', 5))
+      dispatch(displayNotificationForSeconds('Tilauksen merkitseminen toimitetuksi epäonnistui', 'error', 5))
     }
   }
 

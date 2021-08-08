@@ -62,11 +62,12 @@ const LoginPage = () => {
       window.localStorage.setItem('genericStoreUser', JSON.stringify(tokenAndInfo)) 
 
       history.push('/')
-      // ANNA NOOTTI ONNISTUMISESTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+      dispatch(displayNotificationForSeconds('Tervetuloa!', 'success', 5))
     } 
     catch(error) {
-      if (error.response.data.error.includes('Incorrect email or password')) dispatch(displayNotificationForSeconds('Virheellinen sähköpostiosoite tai salasana', 5))
-      else dispatch(displayNotificationForSeconds('Sisäänkirjautuminen epäonnistui', 5))
+      if (error.response.data.error.includes('Incorrect email or password')) dispatch(displayNotificationForSeconds('Virheellinen sähköpostiosoite tai salasana', 'error', 5))
+      else dispatch(displayNotificationForSeconds('Sisäänkirjautuminen epäonnistui', 'error', 5))
       setDisabled(false)
     }
   }

@@ -89,10 +89,10 @@ const OrderDetails = ({order}) => {
             type: 'REPLACE_ADMINS_UNDISPATCHED_KEEP_DETAILS',
             data: modifiedOrder
           })
-          dispatch(displayNotificationForSeconds('Tilauksen huomio muutettu', 5))   // VISUAALINE FEEDBACK??????????????????????????
+          dispatch(displayNotificationForSeconds('Tilauksen huomio muutettu', 'success', 5))   // VISUAALINE FEEDBACK??????????????????????????
         } 
         catch(error) {
-          dispatch(displayNotificationForSeconds('Tilauksen huomion muuttaminen epäonnistui', 5))
+          dispatch(displayNotificationForSeconds('Tilauksen huomion muuttaminen epäonnistui', 'error', 5))
         }
       }
       else {
@@ -102,10 +102,10 @@ const OrderDetails = ({order}) => {
             type: 'REPLACE_ADMINS_DISPATCHED_KEEP_DETAILS',
             data: modifiedOrder
           })
-          dispatch(displayNotificationForSeconds('Tilauksen huomio muutettu', 5))   // VISUAALINE FEEDBACK??????????????????????????
+          dispatch(displayNotificationForSeconds('Tilauksen huomio muutettu', 'success', 5))   // VISUAALINE FEEDBACK??????????????????????????
         } 
         catch(error) {
-          dispatch(displayNotificationForSeconds('Tilauksen huomion muuttaminen epäonnistui', 5))
+          dispatch(displayNotificationForSeconds('Tilauksen huomion muuttaminen epäonnistui', 'error', 5))
         }
       }
   }

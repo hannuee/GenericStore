@@ -75,10 +75,10 @@ const CategoryPage = (props) => {
         type: 'DELETE_CATEGORY',
         data: categoryDisplayed.id
       })
-      dispatch(displayNotificationForSeconds('Kategoria poistettu', 5))
+      dispatch(displayNotificationForSeconds('Kategoria poistettu', 'success', 5))
     }
     catch(error) {
-      dispatch(displayNotificationForSeconds('Kategorian poisto epäonnistui', 5))
+      dispatch(displayNotificationForSeconds('Kategorian poisto epäonnistui', 'error', 5))
     }
   }
 
@@ -106,10 +106,10 @@ const CategoryPage = (props) => {
         type: 'REPLACE_CATEGORY',
         data: category
       })
-      dispatch(displayNotificationForSeconds('Kategoria muutettu', 5))
+      dispatch(displayNotificationForSeconds('Kategoria muutettu', 'success', 5))
     } 
     catch(error) {
-      dispatch(displayNotificationForSeconds('Kategorian muutto epäonnistui', 5))
+      dispatch(displayNotificationForSeconds('Kategorian muutto epäonnistui', 'error', 5))
     }
   }
 
