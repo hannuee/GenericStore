@@ -32,6 +32,7 @@ const useStyles = makeStyles({
 const MyOrdersPage = (props) => {
 
   const cartItems = useSelector(state => state.orders.cart)
+  const customer = useSelector(state => state.customers.loggedIn)
 
   const dispatch = useDispatch()
 
@@ -54,7 +55,7 @@ const MyOrdersPage = (props) => {
         delete item.product_name
       }
 
-      const response = await orderService.post(cartItems)
+      const response = await orderService.post(cartItems, customer.token)
 
       setDisabled(false)
       // jos onnistuu niin ostoskorin tyhjennys:
@@ -64,7 +65,7 @@ const MyOrdersPage = (props) => {
 
       // Tilaukset haetaan uudestaan koska Orders POST rajapinta ei tällä hetkellä palauta lisättyä tilausta.
       // Kun tilaukset pyydetään Orders GET rajapinnoilta niin ne tulevat varmasti oikein, siten kun ne ovat tietokannassa.
-      dispatch(initializeCustomersOrdersWithDetails())
+      dispatch(initializeCustomersOrdersWithDetails(customer.token))
       dispatch(displayNotificationForSeconds('Tilaus lähetetty', 5))
     } 
     catch(error) {

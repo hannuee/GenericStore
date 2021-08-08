@@ -2,13 +2,15 @@ import axios from 'axios'
 
 const baseUrl = 'http://localhost:3001/api/orders'
 
-const getOfCustomerWithDetails = async () => {
-  const response = await axios.get(baseUrl + '/ofCustomerWithDetails/1')
+// For customer:
+
+const getOfCustomerWithDetails = async (customerToken) => {
+  const response = await axios.get(baseUrl + '/ofCustomerWithDetails', { headers: { authorization: 'bearer ' + customerToken } })
   return response.data
 }
 
-const post = async (order) => {
-  const response = await axios.post(baseUrl, order)
+const post = async (order, customerToken) => {
+  const response = await axios.post(baseUrl, order, { headers: { authorization: 'bearer ' + customerToken } })
   return response.data
 }
 

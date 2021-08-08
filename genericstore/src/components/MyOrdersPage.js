@@ -68,8 +68,10 @@ const MyOrdersPage = (props) => {
 
   const dispatch = useDispatch()
 
+  const customer = useSelector(state => state.customers.loggedIn)
+
   // SIIRRÄ ONNISTUNEEN KIRJAUTUMISEN JÄLKEISEEN HETKEEN, KUNHAN SE OSIO ON TEHTY, JA ONNISTUNEEN TILAUKSEN TEKO HETKEEN.
-  useEffect(() => dispatch(initializeCustomersOrdersWithDetails()), [dispatch])
+  useEffect(() => dispatch(initializeCustomersOrdersWithDetails(customer.token)), [dispatch])
 
   // For the accordion:
   const classes = useStyles();

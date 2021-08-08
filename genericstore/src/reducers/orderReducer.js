@@ -79,9 +79,9 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
   
   // Action creators:
   
-  export const initializeCustomersOrdersWithDetails = () => {
+  export const initializeCustomersOrdersWithDetails = (customerToken) => {
     return async dispatch => {
-      const orders = await orderService.getOfCustomerWithDetails()
+      const orders = await orderService.getOfCustomerWithDetails(customerToken)
       dispatch({
         type: 'INIT_CUSTOMERS_ORDERS',
         data: orders

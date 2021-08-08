@@ -7,6 +7,8 @@ const getAll = async () => {
   return response.data
 }
 
+// For admin:
+
 const post = async (newCategory, adminToken) => {
   const response = await axios.post(baseUrl, newCategory, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data

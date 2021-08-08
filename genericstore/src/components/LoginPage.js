@@ -57,7 +57,7 @@ const LoginPage = () => {
         data: tokenAndInfo
       })
 
-      dispatch(initializeAllProducts(tokenAndInfo.token))
+      if(tokenAndInfo.admin !== undefined) dispatch(initializeAllProducts(tokenAndInfo.token))
 
       history.push('/')
       // ANNA NOOTTI ONNISTUMISESTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
