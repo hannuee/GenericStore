@@ -1,6 +1,8 @@
 // Mainly copy-pasted this component from material-ui.com/components/drawers/, slightly modified and all visible text replaced with own text.
 
 import React from 'react';
+import { useDispatch } from 'react-redux'
+import {useHistory} from 'react-router-dom'
 // import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -80,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ResponsiveDrawer(props) {
-  const { window } = props;
+  const windowForMUI = props.window;
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -88,6 +90,18 @@ function ResponsiveDrawer(props) {
   const categories = useSelector(state => state.categories)  // Kat haku tilasta MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
 
   const notification = useSelector(state => state.notification.text)  // Kat haku tilasta MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('genericStoreUser')
+    dispatch({
+      type: 'ADD_LOGGED_IN',
+      data: null
+    })
+    history.push('/')
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -112,9 +126,11 @@ function ResponsiveDrawer(props) {
 
       <Divider />
 
-      <Link to="/uusikategoria" style={noDeco}>
+      <Link to="/uusikategoria" style={noDeco}>   
         <Button size="small">Lisää pääkategoria</Button>
       </Link>
+
+      <Button size="small" onClick={handleLogout}>Kirjaudu ulos</Button>
 
       <Divider />
 
@@ -159,7 +175,7 @@ function ResponsiveDrawer(props) {
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = windowForMUI !== undefined ? () => windowForMUI().document.body : undefined;
 
 
   // MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD:

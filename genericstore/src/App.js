@@ -16,6 +16,18 @@ console.log('PITÄIS ALUSTAAAAAAAAAAAAA')
   useEffect(() => {console.log('ALUSTUSSSSSSSSSSSSSSSS'); dispatch(initializeCategories())}, [dispatch])
   useEffect(() => dispatch(initializeAvailableProducts()), [dispatch])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('genericStoreUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      dispatch({
+        type: 'ADD_LOGGED_IN',
+        data: user
+      })
+    }
+  }, [dispatch])
+
+
 
   return (
     <div>

@@ -59,6 +59,8 @@ const LoginPage = () => {
 
       if(tokenAndInfo.admin !== undefined) dispatch(initializeAllProducts(tokenAndInfo.token))
 
+      window.localStorage.setItem('genericStoreUser', JSON.stringify(tokenAndInfo)) 
+
       history.push('/')
       // ANNA NOOTTI ONNISTUMISESTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     } 
