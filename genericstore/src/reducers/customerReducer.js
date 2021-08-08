@@ -51,9 +51,9 @@ const reducer = (state = {loggedIn: null}, action) => {
   }
 
 
-  export const initializeCustomers = () => {
+  export const initializeCustomers = (adminToken) => {
     return async dispatch => {
-      const customers = await customerService.getAll()
+      const customers = await customerService.getAll(adminToken)
       dispatch({
         type: 'INIT_CUSTOMERS',
         data: customers
@@ -61,9 +61,9 @@ const reducer = (state = {loggedIn: null}, action) => {
     }
   }
 
-  export const getDetailsForCustomer = (id) => {
+  export const getDetailsForCustomer = (id, adminToken) => {
     return async dispatch => {
-      const customer = await customerService.getOneWithDetails(id)
+      const customer = await customerService.getOneWithDetails(id, adminToken)
       dispatch({
         type: 'REPLACE_CUSTOMER',
         data: customer

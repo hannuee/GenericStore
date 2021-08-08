@@ -12,13 +12,15 @@ const postLogin = async (credentials) => {
   return response.data
 }
 
-const getAll = async () => {
-  const response = await axios.get(baseUrl)
+// For admin:
+
+const getAll = async (adminToken) => {
+  const response = await axios.get(baseUrl, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const getOneWithDetails = async (id) => {
-  const response = await axios.get(baseUrl + '/' + id)
+const getOneWithDetails = async (id, adminToken) => {
+  const response = await axios.get(baseUrl + '/' + id, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 

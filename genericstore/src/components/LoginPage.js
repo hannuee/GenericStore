@@ -7,6 +7,8 @@ import { initializeAllProducts } from '../reducers/productReducer'
 import customerService from '../services/customers'
 import {useHistory} from 'react-router-dom'
 
+import { initializeCustomers } from '../reducers/customerReducer'
+
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';

@@ -2,8 +2,7 @@ import React, {useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux' 
 
-import { getDetailsForCustomer } from '../reducers/customerReducer'
-import { initializeCustomers } from '../reducers/customerReducer'
+import { initializeCustomers, getDetailsForCustomer } from '../reducers/customerReducer'
 
 // For the accordion:
 import { makeStyles } from '@material-ui/core/styles';
@@ -67,13 +66,15 @@ const useStylesTable = makeStyles({
 
 const CustomersPage = (props) => {
 
-  useEffect(() => dispatch(initializeCustomers()), [dispatch])  // onnistumisen tarkastus!!!!!!!!!!!!!!!!!!!!! ja asynciks?????????
+
+  const dispatch = useDispatch()
+  const admin = useSelector(state => state.customers.loggedIn)
+
+  useEffect(() => dispatch(initializeCustomers(admin.token)), [dispatch])
 
   // For the accordion:
   const classes = useStyles();
-
-  const dispatch = useDispatch()
-
+  
   const customers = useSelector(state => state.customers.adminsCustomers)
 
 
@@ -88,7 +89,7 @@ const CustomersPage = (props) => {
     }
 
     const customerClicked = customers.find(customer => customer.id == id)
-    if(customerClicked.address === undefined) dispatch(getDetailsForCustomer(id))  // fetch details if needed.
+    if(customerClicked.address === undefined) dispatch(getDetailsForCustomer(id, admin.token))  // fetch details if needed.
     setExpanded(id)
   }
 
