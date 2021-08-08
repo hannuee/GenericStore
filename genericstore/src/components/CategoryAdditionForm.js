@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { addNewCategory } from '../reducers/categoryReducer'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 const CategoryAdditionForm = ({ parentCategoryIdForNewCategory, handleCloseNewCategoryForm }) => {
   const classes = useStyles();
 
+  const adminToken = useSelector(state => state.customers.loggedIn.token)
+
   const dispatch = useDispatch()
 
   const [name, setName] = React.useState('')
@@ -47,7 +50,7 @@ const CategoryAdditionForm = ({ parentCategoryIdForNewCategory, handleCloseNewCa
         parentCategoryId: parentCategoryIdForNewCategory,
         name,
         description
-      })
+      }, adminToken)
       if(handleCloseNewCategoryForm !== undefined) handleCloseNewCategoryForm()
       setName('')
       setDescription('')

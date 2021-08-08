@@ -25,7 +25,7 @@ const useStylesSizeSelect = makeStyles((theme) => ({
 
 const ParentCategoryUpdateForm = ({product}) => {
 
-    const categories = useSelector(state => state.categories) // For admin modification.   
+    const categories = useSelector(state => state.categories) // For admin modification.
     const dispatch = useDispatch()
 
     const classesSizeSelect = useStylesSizeSelect();

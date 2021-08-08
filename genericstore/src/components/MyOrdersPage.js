@@ -1,5 +1,8 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+
+import { initializeCustomersOrdersWithDetails } from '../reducers/orderReducer'
 
 // For the accordion:
 import { makeStyles } from '@material-ui/core/styles';
@@ -62,6 +65,11 @@ const useStylesTable = makeStyles({
 // {order.id}, {order.customer_id}, {order.orderreceived}, {order.orderdispatched}, {order.purchaseprice}, {order.customerinstructions}
 
 const MyOrdersPage = (props) => {
+
+  const dispatch = useDispatch()
+
+  // SIIRRÄ ONNISTUNEEN KIRJAUTUMISEN JÄLKEISEEN HETKEEN, KUNHAN SE OSIO ON TEHTY, JA ONNISTUNEEN TILAUKSEN TEKO HETKEEN.
+  useEffect(() => dispatch(initializeCustomersOrdersWithDetails()), [dispatch])
 
   // For the accordion:
   const classes = useStyles();

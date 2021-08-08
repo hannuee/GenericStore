@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux' 
 
 import { getDetailsForCustomer } from '../reducers/customerReducer'
+import { initializeCustomers } from '../reducers/customerReducer'
 
 // For the accordion:
 import { makeStyles } from '@material-ui/core/styles';
@@ -65,6 +66,8 @@ const useStylesTable = makeStyles({
 
 
 const CustomersPage = (props) => {
+
+  useEffect(() => dispatch(initializeCustomers()), [dispatch])  // onnistumisen tarkastus!!!!!!!!!!!!!!!!!!!!! ja asynciks?????????
 
   // For the accordion:
   const classes = useStyles();

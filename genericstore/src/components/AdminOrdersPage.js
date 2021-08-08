@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { initializeAdminsDispatchedOrders } from '../reducers/orderReducer'
 import { getDetailsForAdminsDispatchedOrder } from '../reducers/orderReducer'
 import { markOrderAsDispatched } from '../reducers/orderReducer'
+import { initializeAdminsUndispatchedOrdersWithDetails } from '../reducers/orderReducer'
 
 import OrderDetails from './OrderDetails'
 
@@ -89,6 +90,8 @@ const AdminOrdersPage = (props) => {
   const ordersDispatched = useSelector(state => state.orders.adminsDispatched)
   const [showDispatched, setShowDispatched] = React.useState(false);
 
+  useEffect(() => dispatch(initializeAdminsUndispatchedOrdersWithDetails()), [dispatch])
+    
   const handleShowDispatchedOrders = () => {
     dispatch(initializeAdminsDispatchedOrders())
     setShowDispatched(true)

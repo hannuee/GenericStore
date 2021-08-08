@@ -7,18 +7,18 @@ const getAll = async () => {
   return response.data
 }
 
-const post = async (newCategory) => {
-  const response = await axios.post(baseUrl, newCategory)
+const post = async (newCategory, adminToken) => {
+  const response = await axios.post(baseUrl, newCategory, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const deleteCategory = async (id) => {
-  const response = await axios.delete(baseUrl + '/' + id)
+const deleteCategory = async (id, adminToken) => {
+  const response = await axios.delete(baseUrl + '/' + id, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const putNewCategory = async (idAndInfoToModify) => {
-  const response = await axios.put(baseUrl + '/newCategory', idAndInfoToModify)
+const putNewCategory = async (idAndInfoToModify, adminToken) => {
+  const response = await axios.put(baseUrl + '/newCategory', idAndInfoToModify, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 

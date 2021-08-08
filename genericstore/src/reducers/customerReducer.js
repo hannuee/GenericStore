@@ -1,6 +1,6 @@
 import customerService from '../services/customers'
 
-const reducer = (state = {}, action) => {
+const reducer = (state = {loggedIn: null}, action) => {
     switch (action.type) {
       case 'ADD_LOGGED_IN':
         return {...state, loggedIn: action.data}

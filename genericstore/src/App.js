@@ -4,9 +4,7 @@ import { useDispatch } from 'react-redux'
 import ResponsiveDrawer from './components/ResponsiveDrawer'
 import { initializeCategories } from './reducers/categoryReducer'
 import { initializeAvailableProducts } from './reducers/productReducer'
-import { initializeCustomersOrdersWithDetails } from './reducers/orderReducer'
-import { initializeAdminsUndispatchedOrdersWithDetails } from './reducers/orderReducer'
-import { initializeCustomers } from './reducers/customerReducer'
+
 //import Container from '@material-ui/core/Container'
 
 import { BrowserRouter as Router } from "react-router-dom"
@@ -17,12 +15,7 @@ const App = () => {
 console.log('PITÄIS ALUSTAAAAAAAAAAAAA')
   useEffect(() => {console.log('ALUSTUSSSSSSSSSSSSSSSS'); dispatch(initializeCategories())}, [dispatch])
   useEffect(() => dispatch(initializeAvailableProducts()), [dispatch])
-  useEffect(() => dispatch(initializeCustomers()), [dispatch])  // onnistumisen tarkastus!!!!!!!!!!!!!!!!!!!!! ja asynciks?????????
 
-  // SIIRRÄ ONNISTUNEEN KIRJAUTUMISEN JÄLKEISEEN HETKEEN, KUNHAN SE OSIO ON TEHTY, JA ONNISTUNEEN TILAUKSEN TEKO HETKEEN.
-  useEffect(() => dispatch(initializeCustomersOrdersWithDetails()), [dispatch])
-
-  useEffect(() => dispatch(initializeAdminsUndispatchedOrdersWithDetails()), [dispatch])
 
   return (
     <div>

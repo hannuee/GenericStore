@@ -45,15 +45,16 @@ const LoginPage = () => {
     setDisabled(true)
 
     try{
-      const customerNameAndToken = await customerService.postLogin({
+      const tokenAndInfo = await customerService.postLogin({
         email,
         password
       })
       dispatch({
         type: 'ADD_LOGGED_IN',
-        data: customerNameAndToken
+        data: tokenAndInfo
       })
       history.push('/')
+      // ANNA NOOTTI ONNISTUMISESTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     } 
     catch(error) {
       if (error.response.data.error.includes('Incorrect email or password')) dispatch(displayNotificationForSeconds('Virheellinen sähköpostiosoite tai salasana', 5))

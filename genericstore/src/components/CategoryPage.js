@@ -65,9 +65,11 @@ const CategoryPage = (props) => {
   const subCategories = useSelector(state => state.categories.filter(category => category.category_id === props.id))
   const products = useSelector(state => state.products.filter(product => product.category_id === props.id))
 
+  const admin = useSelector(state => state.customers.loggedIn)
+
   const handleDeleteCategory = async () => {
     try{
-      const category = await categoryService.deleteCategory(categoryDisplayed.id)
+      const category = await categoryService.deleteCategory(categoryDisplayed.id, admin.token)
       history.push('/')
       dispatch({
         type: 'DELETE_CATEGORY',
@@ -86,7 +88,7 @@ const CategoryPage = (props) => {
   const classesSizeSelect = useStylesSizeSelect();
   const classesNewCard = useStylesNewCard();
 
-  const categories = useSelector(state => state.categories) 
+  const categories = useSelector(state => state.categories)
 
   const [categorySelected, setCategorySelected] = React.useState(categoryDisplayed.id)
 
@@ -99,7 +101,7 @@ const CategoryPage = (props) => {
       const category = await categoryService.putNewCategory({
         id: categoryDisplayed.id,
         parentCategoryId: categorySelected
-      })
+      }, admin.token)
       dispatch({
         type: 'REPLACE_CATEGORY',
         data: category
