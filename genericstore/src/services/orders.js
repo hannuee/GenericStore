@@ -14,28 +14,28 @@ const post = async (order) => {
 
 // For admin:
 
-const getOneWithDetails = async (id) => {
-  const response = await axios.get(baseUrl + '/details/' + id)
+const getOneWithDetails = async (id, adminToken) => {
+  const response = await axios.get(baseUrl + '/details/' + id, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const getUndispatchedWithDetails = async () => {
-  const response = await axios.get(baseUrl + '/undispatchedWithDetails')
+const getUndispatchedWithDetails = async (adminToken) => {
+  const response = await axios.get(baseUrl + '/undispatchedWithDetails', { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const getDispatched = async () => {
-  const response = await axios.get(baseUrl + '/dispatched')
+const getDispatched = async (adminToken) => {
+  const response = await axios.get(baseUrl + '/dispatched', { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const putInternalNotes = async (idAndInfoToModify) => {
-  const response = await axios.put(baseUrl + '/internalNotes', idAndInfoToModify)
+const putInternalNotes = async (idAndInfoToModify, adminToken) => {
+  const response = await axios.put(baseUrl + '/internalNotes', idAndInfoToModify, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 
-const putOrderDispatched = async (id) => {
-  const response = await axios.put(baseUrl + '/orderDispatced', id)
+const putOrderDispatched = async (id, adminToken) => {
+  const response = await axios.put(baseUrl + '/orderDispatced', id, { headers: { authorization: 'bearer ' + adminToken } })
   return response.data
 }
 

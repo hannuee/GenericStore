@@ -79,21 +79,22 @@ const AdminOrdersPage = (props) => {
   // For the accordion:
   const classes = useStyles();
 
+  const dispatch = useDispatch()
+  const admin = useSelector(state => state.customers.loggedIn)
+  useEffect(() => dispatch(initializeAdminsUndispatchedOrdersWithDetails(admin.token)), [dispatch])
+
   // For table:
   const classesTable = useStylesTable();
+
 
   const orders = useSelector(state => state.orders.adminsUndispatched)  
 
 
-
-  const dispatch = useDispatch()
   const ordersDispatched = useSelector(state => state.orders.adminsDispatched)
   const [showDispatched, setShowDispatched] = React.useState(false);
-
-  useEffect(() => dispatch(initializeAdminsUndispatchedOrdersWithDetails()), [dispatch])
     
   const handleShowDispatchedOrders = () => {
-    dispatch(initializeAdminsDispatchedOrders())
+    dispatch(initializeAdminsDispatchedOrders(admin.token))
     setShowDispatched(true)
   }
 
@@ -106,13 +107,13 @@ const AdminOrdersPage = (props) => {
     }
 
     const orderClicked = ordersDispatched.find(order => order.id == id)
-    if(orderClicked.orderDetails === undefined) dispatch(getDetailsForAdminsDispatchedOrder(id))  // fetch details if needed.
+    if(orderClicked.orderDetails === undefined) dispatch(getDetailsForAdminsDispatchedOrder(id, admin.token))  // fetch details if needed.
     setExpanded(id)
   }
 
   const handleMarkAsDispatched = (id) => async () => {
     try{
-      const modifiedOrder = await orderService.putOrderDispatched({id})
+      const modifiedOrder = await orderService.putOrderDispatched({id}, admin.token)
       dispatch({
         type: 'MODIFY_ADMINS_UNDISPATCHED_TRANSFER_TO_DISPATCHED_KEEP_DETAILS',
         data: modifiedOrder

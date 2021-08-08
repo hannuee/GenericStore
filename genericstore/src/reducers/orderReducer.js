@@ -128,9 +128,9 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
 
-  export const initializeAdminsUndispatchedOrdersWithDetails = () => {     
+  export const initializeAdminsUndispatchedOrdersWithDetails = (adminToken) => {     
     return async dispatch => {
-      const orders = await orderService.getUndispatchedWithDetails()
+      const orders = await orderService.getUndispatchedWithDetails(adminToken)
       dispatch({
         type: 'INIT_ADMINS_UNDISPATCHED_ORDERS',
         data: orders
@@ -138,9 +138,9 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   } 
 
-  export const getDetailsForAdminsDispatchedOrder = (id) => {
+  export const getDetailsForAdminsDispatchedOrder = (id, adminToken) => {
     return async dispatch => {
-      const order = await orderService.getOneWithDetails(id)
+      const order = await orderService.getOneWithDetails(id, adminToken)
       dispatch({
         type: 'REPLACE_ADMINS_DISPATCHED_COMPLETELY',
         data: order
@@ -148,9 +148,9 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
     }
   }
 
-  export const initializeAdminsDispatchedOrders = () => { 
+  export const initializeAdminsDispatchedOrders = (adminToken) => { 
     return async dispatch => {
-      const orders = await orderService.getDispatched()
+      const orders = await orderService.getDispatched(adminToken)
       dispatch({
         type: 'INIT_ADMINS_DISPATCHED_ORDERS',
         data: orders

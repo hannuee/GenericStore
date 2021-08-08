@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { modifyAdminsDispatchedInternalNotes } from '../reducers/orderReducer'
 import { modifyAdminsUndispatchedInternalNotes } from '../reducers/orderReducer'
 
@@ -68,6 +69,8 @@ const OrderDetails = ({order}) => {
   // For table:
   const classesTable = useStylesTable();
 
+  const admin = useSelector(state => state.customers.loggedIn)
+
 
   const [internalNoteField, setinternalNoteField] = React.useState(order.internalnotes);
 
@@ -81,7 +84,7 @@ const OrderDetails = ({order}) => {
   const handleInternalNotesSubmission = async () => {
       if (order.orderdispatched === null) {
         try{
-          const modifiedOrder = await orderService.putInternalNotes({id: order.id, internalNotes: internalNoteField})
+          const modifiedOrder = await orderService.putInternalNotes({id: order.id, internalNotes: internalNoteField}, admin.token)
           dispatch({
             type: 'REPLACE_ADMINS_UNDISPATCHED_KEEP_DETAILS',
             data: modifiedOrder
@@ -94,7 +97,7 @@ const OrderDetails = ({order}) => {
       }
       else {
         try{
-          const modifiedOrder = await orderService.putInternalNotes({id: order.id, internalNotes: internalNoteField})
+          const modifiedOrder = await orderService.putInternalNotes({id: order.id, internalNotes: internalNoteField}, admin.token)
           dispatch({
             type: 'REPLACE_ADMINS_DISPATCHED_KEEP_DETAILS',
             data: modifiedOrder
