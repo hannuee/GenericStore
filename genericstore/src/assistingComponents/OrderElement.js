@@ -1,28 +1,19 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { modifyAdminsDispatchedInternalNotes } from '../reducers/orderReducer'
-import { modifyAdminsUndispatchedInternalNotes } from '../reducers/orderReducer'
 import { getDetailsForAdminsDispatchedOrder } from '../reducers/orderReducer'
-
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import orderService from '../services/orders'
 
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Divider from '@material-ui/core/Divider';
-
-// For the accordion:
+// Material UI:
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionActions from '@material-ui/core/AccordionActions';
-
-// For table:
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -30,7 +21,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 
 // For the accordion:
@@ -69,7 +61,10 @@ const useStylesTable = makeStyles({
   }, 
 });  
 
-
+// Displays order and its details for admin and for customer.
+// For admin: Displays extra details about the order.
+// For admin: Fetches the details of dispatched order on demand.
+// For admin: Displays some controls.
 const OrderElement = ({order}) => {
 
   const dispatch = useDispatch()
@@ -174,8 +169,8 @@ const OrderElement = ({order}) => {
     )
   }
 
-  const adminMarkAsDispatched = () => {   // FUNTSI MITEN NÄYTTÄÄ TÄÄ VAIN JOS UNDISPATCHEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-    if(user.admin !== undefined) return (
+  const adminMarkAsDispatched = () => {  
+    if(user.admin != undefined && order.orderdispatched == null) return (
       <Button size="small" color="primary" onClick={handleMarkAsDispatched}>Merkitse lähetetyksi</Button>
     )
   }

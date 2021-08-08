@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { initializeAdminsDispatchedOrders } from '../reducers/orderReducer'
 import { initializeAdminsUndispatchedOrdersWithDetails } from '../reducers/orderReducer'
-import OrderElement from './OrderElement'
+import OrderElement from '../assistingComponents/OrderElement'
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';

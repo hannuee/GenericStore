@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { initializeCustomersOrdersWithDetails } from '../reducers/orderReducer'
-import OrderElement from './OrderElement'
+import OrderElement from '../assistingComponents/OrderElement'
 
 import { makeStyles } from '@material-ui/core/styles'
 
