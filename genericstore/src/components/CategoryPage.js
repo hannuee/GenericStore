@@ -13,6 +13,7 @@ import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 
 import { Link } from "react-router-dom"
 import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
 
 import Collapse from '@material-ui/core/Collapse';
 import Paper from '@material-ui/core/Paper';
@@ -37,11 +38,24 @@ const useStylesSizeSelect = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  chipStyle: {
+    margin: theme.spacing(0.5),
+  },
+  horizontalLayout: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  horizontalLayoutEnd: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
 }));
 
 const useStylesNewCard = makeStyles((theme) => ({
   expandButton: {
-    float: 'right'
+    float: 'left'  // ????????????? ei toimi
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -188,18 +202,22 @@ const CategoryPage = (props) => {
 
 
     return (
-      <>
-        <BreadcrumbsLinks categoryId={categoryDisplayed.id} /> {categoryDisplayed.description} 
-        <IconButton className={classesNewCard.expandButton}
-                  className={clsx(classesNewCard.expand, {
-                    [classesNewCard.expandOpen]: expandedCategoryModificationControls,
-                  })}
-                  onClick={handleExpandCategoryModificationControls}
-                  aria-expanded={expandedCategoryModificationControls}
-                  aria-label="show more"
-                >
-                  <EditIcon />
-                </IconButton>
+      <> 
+        <div className={classesSizeSelect.horizontalLayout}>
+          <BreadcrumbsLinks categoryId={categoryDisplayed.id} />
+          {categoryDisplayed.description}
+          <IconButton className={classesNewCard.expandButton}
+            className={clsx(classesNewCard.expand, {
+              [classesNewCard.expandOpen]: expandedCategoryModificationControls,
+            })}
+            onClick={handleExpandCategoryModificationControls}
+            aria-expanded={expandedCategoryModificationControls}
+            aria-label="show more"
+          >
+            <EditIcon />
+          </IconButton>
+        </div>
+        
 
         <Button size="small" color="primary" onClick={handleShowNewProductForm}>uusi tuote</Button>
         <Button size="small" color="primary" onClick={handleShowNewCategoryForm}>uusi alakategoria</Button>
@@ -207,16 +225,11 @@ const CategoryPage = (props) => {
         {newCategoryForm()}
         {categoryModificationControls()}
         <br />
-        <br />
         
         {subCategories.map(category =>
-
           <Link to={`/kategoriat/${category.id}`} key={category.id}>
-            <Button size="small" color="primary" >
-              {category.name}, {category.description}
-            </Button>
+            <Chip label={category.name} clickable color="primary" className={classesSizeSelect.chipStyle} />
           </Link>
-
         )}
 
         <br />

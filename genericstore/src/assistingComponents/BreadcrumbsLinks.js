@@ -9,10 +9,12 @@ import { useSelector } from 'react-redux'
 import { getIdsAndNamesOnPathToId } from '../utils/CategoryTreeProcessors'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
+  crumbs: {
+    marginRight: theme.spacing(3),
+  },
+  links: {
+    textDecoration: 'none',
+    color: '#6f6f6f'
   },
 }));
 
@@ -23,15 +25,13 @@ const BreadcrumbsLinks = ({categoryId}) => {
   const classes = useStyles();
 
   return (
-      <div className={classes.root}>
-          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb" className={classes.crumbs}>
               {getIdsAndNamesOnPathToId(categories, categoryId).map(idAndName =>
-                  <Link to={`/kategoriat/${idAndName.id}`} key={idAndName.id}>
+                  <Link to={`/kategoriat/${idAndName.id}`} key={idAndName.id} className={classes.links}>
                       {idAndName.name}
                   </Link>
               )}
           </Breadcrumbs>
-      </div>
   );
 }
 
