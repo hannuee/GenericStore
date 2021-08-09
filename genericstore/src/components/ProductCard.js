@@ -71,7 +71,6 @@ const useStylesNewCard = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
-  // For new expansion functionality:
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
@@ -96,34 +95,24 @@ const useStyles = makeStyles((theme) => ({
 // Product display -mode: product, undefined, undefined
 // Product addition -mode: undefined, parentCategoryIdForNewProduct, handleCloseNewProductForm
 const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewProductForm }) => {
-
   const classesNewCard = useStylesNewCard();
-
+  
   const admin = useSelector(state => state.customers.loggedIn)
-
-  const [expanded, setExpanded] = React.useState(false)
-
-  const handleExpandClick = () => setExpanded(!expanded)
-
-  // Product Addition Form:
-  const classes = useStyles();
   const dispatch = useDispatch()
-  const [disabled, setDisabled] = React.useState(false)
-  const [name, setName] = React.useState('')
-  const [description, setDescription] = React.useState('')
-  const [pricesAndSizes, setPricesAndSizes] = React.useState([{price: 0, size: ''}])
 
-  const handleNameChange = (event) => {
-    setName(event.target.value)
-  }
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value)
-  }
+  const [name, setName] = React.useState('')  // Product addition form.
+  const [description, setDescription] = React.useState('')  // Product addition form.
+  const [pricesAndSizes, setPricesAndSizes] = React.useState([{price: 0, size: ''}])  // Product addition form.
+  const [disabled, setDisabled] = React.useState(false)  // Disable product addition form when sending data.
+  const [expanded, setExpanded] = React.useState(false)  // Admin control panel expansion.
+
+  const handleNameChange = (event) => setName(event.target.value)
+  const handleDescriptionChange = (event) => setDescription(event.target.value)
+  const handleExpandClick = () => setExpanded(!expanded)
 
   const handleAddNewProduct = async () => {
     setDisabled(true)
-
-    try{
+    try {
       const product = await productService.post({
         parentCategoryId: parentCategoryIdForNewProduct,
         name,
@@ -131,92 +120,80 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
         pricesAndSizes,
         available: true
       }, admin.token)
-      if(handleCloseNewProductForm !== undefined) handleCloseNewProductForm()
+      handleCloseNewProductForm()
       setName('')
       setDescription('')
-      setPricesAndSizes([{price: 0, size: ''}])
-      setDisabled(false)
+      setPricesAndSizes([{ price: 0, size: '' }])
       dispatch({
         type: 'ADD_NEW_PRODUCT',
         data: product
       })
-    } 
-    catch(error) {
-      setDisabled(false)
     }
-
+    catch (error) {
+    }
+    setDisabled(false)
   }
 
-
+  // SUBCOMPONENTS:
 
   const TitleOrFieldForIt = () => {
-    if (product != undefined) {
-      return (
-        <Typography variant="h6" component="h2">
-                  {product.name}
-                </Typography>
-      )
-    }
-    else {
-      return (
-        <TextField required id="standard-required" label="Tuotteen nimi" value={name} onChange={handleNameChange} />
-      )
-    }
+    if (product != undefined) return (
+      <Typography variant="h6" component="h2">
+        {product.name}
+      </Typography>
+    )
+    else return (
+      <TextField required id="standard-required" label="Tuotteen nimi" value={name} onChange={handleNameChange} />
+    )
+  }
+
+  const VisibilityInfoOrNothing = () => {
+    if (product != undefined && !product.available) return (
+      <Typography variant="body2" color="textSecondary" component="p">
+        &nbsp;&nbsp;&nbsp; Tuote on piilotettu asiakkailta
+      </Typography>
+    )
+
   }
 
   const EditButtonOrNothing = () => {
-    if (product != undefined) {
-      return (
-        <IconButton className={classesNewCard.expandButton}
-                  className={clsx(classesNewCard.expand, {
-                    [classesNewCard.expandOpen]: expanded,
-                  })}
-                  onClick={handleExpandClick}
-                  aria-expanded={expanded}
-                  aria-label="show more"
-                >
-                  <EditIcon />
-                </IconButton>
-      )
-    }
-    else {
-      return (
-        null
-      )
-    }
+    if (product != undefined) return (
+      <IconButton className={classesNewCard.expandButton}
+        className={clsx(classesNewCard.expand, {
+          [classesNewCard.expandOpen]: expanded,
+        })}
+        onClick={handleExpandClick}
+        aria-expanded={expanded}
+        aria-label="show more"
+      >
+        <EditIcon />
+      </IconButton>
+    )
   }
 
   const DescriptionOrFieldForIt = () => {
-    if (product != undefined) {
-      return (
-        <Typography variant="body2" color="textSecondary" component="p">
-                {product.description} Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
-                Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
-              </Typography>
-      )
-    }
-    else {
-      return (
-        <TextField multiline rows={2} id="standard-required" label="Kuvaus" value={description} onChange={handleDescriptionChange} />
-      )
-    }
+    if (product != undefined) return (
+      <Typography variant="body2" color="textSecondary" component="p">
+        {product.description} Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
+        Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
+      </Typography>
+    )
+    else return (
+      <TextField multiline rows={2} id="standard-required" label="Kuvaus" value={description} onChange={handleDescriptionChange} />
+    )
   }
 
   const ToCartOrPricesAndSizesInputAndSend = () => {
-    if (product != undefined) {
-      return (
-        <AddToShoppingCartForm product={product} />
-      )
-    }
-    else {
-      return (
+    if (product != undefined) return (
+      <AddToShoppingCartForm product={product} />
+    )
+    else return (
       <>
-<PricesAndSizesForm pricesAndSizesParent={pricesAndSizes} setPricesAndSizesParent={setPricesAndSizes} />
-<Button size="small" disabled={disabled} onClick={handleAddNewProduct}>Lisää tuote</Button>
-<Button size="small" color="primary" disabled={disabled} onClick={handleCloseNewProductForm}>KIINNI</Button>
-</>
-      )
-    }
+        <PricesAndSizesForm pricesAndSizesParent={pricesAndSizes} setPricesAndSizesParent={setPricesAndSizes} />
+        <Button size="small" disabled={disabled} onClick={handleAddNewProduct}>Lisää tuote</Button>
+        <Button size="small" color="primary" disabled={disabled} onClick={handleCloseNewProductForm}>KIINNI</Button>
+      </>
+    )
   }
 
   const adminControlsOrNothing = () => {
@@ -243,46 +220,30 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
     )
   }
 
-// {product.id}
-// {product.category_id}
-// {product.available} JOS ADMIN
-// {product.added} JOS ADMIN
+  // MAIN COMPONENT:
+
   return (
-    <>
-      <Card className={classesNewCard.root}>
-
-        <div className={classesNewCard.horizontalLayout}>
-
-          <CardMedia
-            className={classesNewCard.cover}
-            image="/reptile.jpg"
-            title="Live from space album cover"
-          />
-          <div className={classesNewCard.verticalLayout}>
-
-            <CardContent className={classesNewCard.content}>
-
-              <div className={classesNewCard.nameLine}>
-                {TitleOrFieldForIt()}
-
-                {EditButtonOrNothing()}
-              </div>
-
-
-              {DescriptionOrFieldForIt()}
-
-              {ToCartOrPricesAndSizesInputAndSend()}
-
-            </CardContent>
-          </div>
+    <Card className={classesNewCard.root}>
+      <div className={classesNewCard.horizontalLayout}>
+        <CardMedia
+          className={classesNewCard.cover}
+          image="/reptile.jpg"
+          title="Live from space album cover"
+        />
+        <div className={classesNewCard.verticalLayout}>
+          <CardContent className={classesNewCard.content}>
+            <div className={classesNewCard.nameLine}>   
+              {TitleOrFieldForIt()}
+              {VisibilityInfoOrNothing()}
+              {EditButtonOrNothing()}
+            </div>
+            {DescriptionOrFieldForIt()}
+            {ToCartOrPricesAndSizesInputAndSend()}
+          </CardContent>
         </div>
-
-        {adminControlsOrNothing()}
-
-      </Card>
-
-
-    </>
+      </div>
+      {adminControlsOrNothing()}
+    </Card>
   )
 }
 
