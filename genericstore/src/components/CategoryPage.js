@@ -171,8 +171,6 @@ const CategoryPage = (props) => {
       </Collapse>
     </div>
 
-
-
   const newCategorySelector = () => 
     <FormControl variant="outlined" className={classesSizeSelect.formControl}>
         <InputLabel id="size-select">Tuotteen uusi kategoria</InputLabel>
@@ -186,6 +184,8 @@ const CategoryPage = (props) => {
           {getAsListOfIdsAndPaths(categories).map(item => <MenuItem value={item.id}>{item.path}</MenuItem> )}
         </Select>
       </FormControl>
+
+
 
     return (
       <>

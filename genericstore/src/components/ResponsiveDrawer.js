@@ -41,18 +41,21 @@ import Notification from '../assistingComponents/Notification'
 
 const drawerWidth = 240;
 
-const customStyleColor = {  // AppBar MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-    background: '#ff99ff',
-    boxShadow: '0px 0px'
+const customStyleColor = {  
+    background: '#dbdbdb',  // Yläpalkin taustaväri
+    height: 47,
+    boxShadow: '0px 0px'  // Tää päälle niin yläpalkista poistuu 3D efekti.
 }
 
-const noDeco = {  // Link MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-  textDecoration: 'none'
+const noDeco = {  // Linkeille
+  textDecoration: 'none',
+  color: '#6f6f6f'
 }
 
 const useStyles = makeStyles((theme) => ({    
   root: {
     display: 'flex',
+    //background: '#fff7e2 ',
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -61,10 +64,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBar: {
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-    },
+    zIndex: theme.zIndex.drawer + 1,  // Tää pois ja alta päälle niin menu siirtyy takas yläpalkin päälle.
+//    [theme.breakpoints.up('sm')]: {
+//      width: `calc(100% - ${drawerWidth}px)`,
+//      marginLeft: drawerWidth,
+//    },
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -72,13 +76,19 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  listItem: {
+    paddingTop: '3px',
+    paddingBottom: '3px',
+  },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
+    backgroundColor: '#fafafa',  // Menun taustaväri.
+    border: '0px'
   },
   content: {
-    flexGrow: 1,
+    flexGrow: 1,  
     padding: theme.spacing(3),
   },
 }));
@@ -90,7 +100,6 @@ function ResponsiveDrawer(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const categories = useSelector(state => state.categories)
-
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -114,7 +123,7 @@ function ResponsiveDrawer(props) {
       <List>
       {categories.filter(category => category.category_id === null).map(category =>
         <Link to={`/kategoriat/${category.id}`} style={noDeco} key={category.id}>
-          <ListItem button>   
+          <ListItem button className={classes.listItem}>   
             <ListItemIcon> <InboxIcon /> </ListItemIcon>
             <ListItemText primary={category.name} />
           </ListItem>
@@ -185,7 +194,7 @@ function ResponsiveDrawer(props) {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar} style={customStyleColor}>
-        <Toolbar>
+        <Toolbar >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -196,7 +205,7 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Responsive drawer
+            Geneerinen kauppa
           </Typography>
         </Toolbar>
       </AppBar>
@@ -233,11 +242,6 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-
-
-
-
-
 
 
     <Switch>
