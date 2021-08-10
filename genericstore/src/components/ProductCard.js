@@ -32,7 +32,7 @@ const switchAndCategoryModStyle = {
 const useStylesNewCard = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    flexDirection: 'column' 
+    flexDirection: 'column',
   },
   horizontalLayout: {
     display: 'flex',
@@ -50,13 +50,13 @@ const useStylesNewCard = makeStyles((theme) => ({
   },
   content: {
     flex: '1 0 auto',
+    padding: '7px',
+    paddingLeft: '13px',
   },
   nameLine: {
     display: 'flex',
-    flexDirection: 'row'
-  },
-  expandButton: {
-    float: 'right'
+    flexDirection: 'row',
+    marginBottom: '3px'
   },
   button: {
     marginTop: theme.spacing(2),
@@ -65,21 +65,20 @@ const useStylesNewCard = makeStyles((theme) => ({
     width: 151,
     minWidth: 151,
   },
-  controls: {
-    display: 'flex',
-    alignItems: 'center',
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+  marginBottom: {
+    marginBottom: '3px',
   },
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
+    padding: '3px',
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest,
     }),
   },
   expandOpen: {
     transform: 'rotate(90deg)',
+    padding: '3px',
   },
 }));
 
@@ -158,7 +157,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
 
   const EditButtonOrNothing = () => {
     if (product != undefined) return (
-      <IconButton className={classesNewCard.expandButton}
+      <IconButton
         className={clsx(classesNewCard.expand, {
           [classesNewCard.expandOpen]: expanded,
         })}
@@ -171,9 +170,9 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
     )
   }
 
-  const DescriptionOrFieldForIt = () => {
+  const DescriptionOrFieldForIt = () => {   
     if (product != undefined) return (
-      <Typography variant="body2" color="textSecondary" component="p">
+      <Typography variant="body2" color="textSecondary" component="p" className={classesNewCard.marginBottom}>
         {product.description} Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
         Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
       </Typography>

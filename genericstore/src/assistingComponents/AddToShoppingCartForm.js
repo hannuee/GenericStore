@@ -12,27 +12,52 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 // For size and quantity selection:
 const useStylesSizeSelect = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
+      marginLeft: '0px',
       minWidth: 120,
+    },
+    formControlQuantity: {
+      margin: theme.spacing(1),
+      width: 85,
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
+    },
+    horizontalUpperLayout: {
+      //display: 'flex',
+      //flexDirection: 'row',
+      //alignItems: 'center',
+      width: '100%', // extra
+    },
+    marginPlease: {
+      margin: theme.spacing(1),
+    },
+    horizontalLayoutLeft: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      //width: '50%',
+      float: 'left', // extra
+    },
+    horizontalLayoutRight: {
+      display: 'flex',
+      flexDirection: 'row-reverse',
+      alignItems: 'center',
+      //width: '50%',
+      float: 'right', // extra
     },
   }));
 
   const TypographyStylePrice = {  
     color: 'red',
-    float: 'right',
-    margin: '10px'
-  }
-  
-  const buttonStyle = {  
-      float: 'right'
+    margin: '10px',
+    fontSize: '20px',
+    fontWeight: 450,
   }
 
 const AddToShoppingCartForm = ({product}) => {
@@ -49,8 +74,8 @@ const AddToShoppingCartForm = ({product}) => {
   }
   const handleQuantityChange = (event) => {
     const quantityInput = Number(event.target.value)
-    if (quantityInput >= 0) setQuantity(quantityInput)
-    else setQuantity(0)
+    if (quantityInput >= 1) setQuantity(quantityInput)
+    else setQuantity(1)
   }
 
 
@@ -66,27 +91,15 @@ const AddToShoppingCartForm = ({product}) => {
   }
 
 
-    const quantityInput = () => {
-        if(quantity > 0){
-          return (
-          <FormControl variant="outlined" className={classesSizeSelect.formControl}>
-            <InputLabel htmlFor="component-outlined">Lukumäärä</InputLabel>
-            <OutlinedInput id="lukumaara" value={quantity} onChange={handleQuantityChange} label="Lukumäärä" type="number" />
-          </FormControl>
-          )   
-        } else {
-          return (
-          <FormControl error variant="outlined" className={classesSizeSelect.formControl}>
-            <InputLabel htmlFor="component-outlined-error">Lukumäärä</InputLabel>
-            <OutlinedInput id="lukumaara-error" value={quantity} onChange={handleQuantityChange} label="Lukumäärä" type="number" />
-            <FormHelperText id="lukumaara-error-text">Error!!!!!</FormHelperText>
-          </FormControl>
-          )
-        }
-      }
+    const quantityInput = () => 
+      <FormControl variant="outlined" className={classesSizeSelect.formControlQuantity}>
+        <InputLabel htmlFor="component-outlined">Lukumäärä</InputLabel>
+        <OutlinedInput id="lukumaara" value={quantity} onChange={handleQuantityChange} label="Lukumäärä" type="number" />
+      </FormControl>
 
-  return (
-    <>
+  return (  
+    <div className={classesSizeSelect.horizontalUpperLayout}>
+      <div className={classesSizeSelect.horizontalLayoutLeft}>
       <FormControl variant="outlined" className={classesSizeSelect.formControl}>
         <InputLabel id="size-select">Koko</InputLabel>
         <Select
@@ -101,13 +114,24 @@ const AddToShoppingCartForm = ({product}) => {
       </FormControl>
 
       {quantityInput()}
+      </div>
 
-      <Button size="small" color="primary" style={buttonStyle} onClick={handleAddToCart}>
-        Lisää ostoskoriin
+      <div className={classesSizeSelect.horizontalLayoutRight}>
+      <Button
+        variant="outlined"
+        color="primary"
+        size="medium"
+        className={classesSizeSelect.marginPlease}
+        onClick={handleAddToCart}
+        startIcon={<ShoppingCartIcon />}
+      >
+        ostoskoriin
       </Button>
 
       <Typography variant="body2" component="p" style={TypographyStylePrice}>{(priceAndSize.price / 100) * quantity} €</Typography> 
-    </>
+      </div>
+      
+    </div>
   )
 }
 
