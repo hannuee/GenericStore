@@ -90,12 +90,18 @@ const AddToShoppingCartForm = ({product}) => {
     // JONKINLAINEN PALAUTE TÄHÄN ETTÄ ASIAKAS TIETÄÄ ETTÄ NYT ON TUOTE LISÄTTY OSTOSKORIINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
   }
 
+  const centsToPrice = new Intl.NumberFormat('fi-FI', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 
-    const quantityInput = () => 
-      <FormControl variant="outlined" className={classesSizeSelect.formControlQuantity}>
-        <InputLabel htmlFor="component-outlined">Lukumäärä</InputLabel>
-        <OutlinedInput id="lukumaara" value={quantity} onChange={handleQuantityChange} label="Lukumäärä" type="number" />
-      </FormControl>
+  const quantityInput = () =>
+    <FormControl variant="outlined" className={classesSizeSelect.formControlQuantity}>
+      <InputLabel htmlFor="component-outlined">Lukumäärä</InputLabel>
+      <OutlinedInput id="lukumaara" value={quantity} onChange={handleQuantityChange} label="Lukumäärä" type="number" />
+    </FormControl>
 
   return (  
     <div className={classesSizeSelect.horizontalUpperLayout}>
@@ -128,7 +134,7 @@ const AddToShoppingCartForm = ({product}) => {
         ostoskoriin
       </Button>
 
-      <Typography variant="body2" component="p" style={TypographyStylePrice}>{(priceAndSize.price / 100) * quantity} €</Typography> 
+      <Typography variant="body2" component="p" style={TypographyStylePrice}>{centsToPrice.format((priceAndSize.price*quantity)/100)}</Typography> 
       </div>
       
     </div>
