@@ -21,6 +21,10 @@ import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Divider from '@material-ui/core/Divider';
+import SaveIcon from '@material-ui/icons/Save';
 
 import { getAsListOfIdsAndPaths } from '../utils/CategoryTreeProcessors'
 
@@ -30,6 +34,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
+
 const useStylesSizeSelect = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -41,21 +46,36 @@ const useStylesSizeSelect = makeStyles((theme) => ({
   chipStyle: {
     margin: theme.spacing(0.5),
   },
-  horizontalLayout: {
+
+  horizontalUpperLayout: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },
-  horizontalLayoutEnd: {
+  horizontalLayoutLeft: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
+    width: '50%',
+  },
+  horizontalLayoutRight: {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    width: '50%',
+  },
+  marginPlease: {
+    margin: theme.spacing(1),
+  },
+  select: {
+    margin: theme.spacing(1),
+    minWidth: 250
   },
 }));
 
 const useStylesNewCard = makeStyles((theme) => ({
   expandButton: {
-    float: 'left'  // ????????????? ei toimi
+    float: 'left'  
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -100,7 +120,7 @@ const CategoryPage = (props) => {
   // Kategorian muuttamiseen, harkitse refaktorointi Product Card vastaavien kanssaaaaaaaaaaaaaaaaa:
 
   const classesSizeSelect = useStylesSizeSelect();
-  const classesNewCard = useStylesNewCard();
+  const classesNewCard = useStylesNewCard(); 
 
   const categories = useSelector(state => state.categories)
 
@@ -128,10 +148,24 @@ const CategoryPage = (props) => {
   }
 
 
-  const categoryDeleteButton = () => {
+  const categoryDeleteButtonOrInstructions = () => {
     if(subCategories.length === 0 && products.length === 0) return (
-      <Button size="small" onClick={handleDeleteCategory}>Poista kategoria</Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        startIcon={<DeleteIcon />}
+        className={classesSizeSelect.marginPlease}
+        onClick={handleDeleteCategory}
+      >
+        Poista kategoria
+      </Button>
+
       )   
+    else return (
+      <Typography variant="body2" color="textSecondary" component="p" className={classesSizeSelect.marginPlease}>
+        Kategorian on oltava tyhjä jotta sen voi poistaa
+      </Typography>
+    )
     // NÄYTÄ TÄÄLLÄ OHJE ETTÄ KATEGORIAN TULEE OLLA TYHJÄ JOTTA VOI POISTAA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   }
 
@@ -177,23 +211,37 @@ const CategoryPage = (props) => {
   const categoryModificationControls = () =>
     <div>
       <Collapse in={expandedCategoryModificationControls} timeout="auto" unmountOnExit>
-      <Paper>
-        {newCategorySelector()} <Button size="small" onClick={handleCategoryUpdate}>Päivitä kategoria</Button>
-        <br />
-        {categoryDeleteButton()}
+      <Paper className={classesSizeSelect.horizontalUpperLayout}>
+        <div className={classesSizeSelect.horizontalLayoutLeft}>
+        {newCategorySelector()} 
+        <Button
+        variant="contained"
+        color="primary"
+        className={classesSizeSelect.marginPlease}
+        onClick={handleCategoryUpdate}
+        startIcon={<SaveIcon />}
+      >
+        tallenna muutos
+      </Button>
+        </div>
+        <Divider orientation="vertical" flexItem />
+        <div className={classesSizeSelect.horizontalLayoutRight}>
+        {categoryDeleteButtonOrInstructions()}
+        </div>
       </Paper>
       </Collapse>
     </div>
 
   const newCategorySelector = () => 
     <FormControl variant="outlined" className={classesSizeSelect.formControl}>
-        <InputLabel id="size-select">Tuotteen uusi kategoria</InputLabel>
+        <InputLabel id="size-select" className={classesSizeSelect.marginPlease}>Kategorian uusi isäntä</InputLabel>
         <Select
           labelId="size-select-label-id"
           id="size-select-id"
           value={categorySelected}
           onChange={handleCategoryChange}
           label="Tuotteen uusi kategoria"
+          className={classesSizeSelect.select}
         >
           {getAsListOfIdsAndPaths(categories).map(item => <MenuItem value={item.id}>{item.path}</MenuItem> )}
         </Select>
@@ -203,9 +251,11 @@ const CategoryPage = (props) => {
 
     return (
       <> 
-        <div className={classesSizeSelect.horizontalLayout}>
+      <div className={classesSizeSelect.horizontalUpperLayout}>  
+        <div className={classesSizeSelect.horizontalLayoutLeft}>
           <BreadcrumbsLinks categoryId={categoryDisplayed.id} />
           {categoryDisplayed.description}
+          <div>
           <IconButton className={classesNewCard.expandButton}
             className={clsx(classesNewCard.expand, {
               [classesNewCard.expandOpen]: expandedCategoryModificationControls,
@@ -216,11 +266,18 @@ const CategoryPage = (props) => {
           >
             <EditIcon />
           </IconButton>
-        </div>
+          </div>
+          </div>
+
+          <div className={classesSizeSelect.horizontalLayoutRight}> 
+            <Button variant="contained" color="primary" onClick={handleShowNewProductForm} className={classesSizeSelect.marginPlease}>uusi tuote</Button>
+            <Button variant="contained" color="primary" onClick={handleShowNewCategoryForm} className={classesSizeSelect.marginPlease}>uusi alakategoria</Button>
+          </div>
+        
+      </div>
         
 
-        <Button size="small" color="primary" onClick={handleShowNewProductForm}>uusi tuote</Button>
-        <Button size="small" color="primary" onClick={handleShowNewCategoryForm}>uusi alakategoria</Button>
+        
         {newProductForm()}
         {newCategoryForm()}
         {categoryModificationControls()}
