@@ -67,6 +67,10 @@ const useStylesSizeSelect = makeStyles((theme) => ({
   marginPlease: {
     margin: theme.spacing(1),
   },
+  marginRight: {
+    margin: theme.spacing(1),
+    marginRight: '20px',
+  },
   select: {
     margin: theme.spacing(1),
     minWidth: 250
@@ -154,7 +158,7 @@ const CategoryPage = (props) => {
         variant="contained"
         color="secondary"
         startIcon={<DeleteIcon />}
-        className={classesSizeSelect.marginPlease}
+        className={classesSizeSelect.marginRight}
         onClick={handleDeleteCategory}
       >
         Poista kategoria
@@ -162,7 +166,7 @@ const CategoryPage = (props) => {
 
       )   
     else return (
-      <Typography variant="body2" color="textSecondary" component="p" className={classesSizeSelect.marginPlease}>
+      <Typography variant="body2" color="textSecondary" component="p" className={classesSizeSelect.marginRight}>
         Kategorian on oltava tyhjä jotta sen voi poistaa
       </Typography>
     )
@@ -221,7 +225,7 @@ const CategoryPage = (props) => {
         onClick={handleCategoryUpdate}
         startIcon={<SaveIcon />}
       >
-        tallenna muutos
+        tallenna
       </Button>
         </div>
         <Divider orientation="vertical" flexItem />
