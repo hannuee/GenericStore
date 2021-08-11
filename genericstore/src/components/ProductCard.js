@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
 const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewProductForm }) => {
   const classesNewCard = useStylesNewCard();
   
-  const admin = useSelector(state => state.customers.loggedIn)
+  const loggedIn = useSelector(state => state.customers.loggedIn)
   const dispatch = useDispatch()
 
   const [name, setName] = React.useState('')  // Product addition form.
@@ -133,7 +133,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
         description,
         pricesAndSizes: newPricesAndSizes,
         available: true
-      }, admin.token)
+      }, loggedIn.token)
       handleCloseNewProductForm()
       setName('')
       setDescription('')
@@ -171,7 +171,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
   }
 
   const EditButtonOrNothing = () => {
-    if (product != undefined) return (
+    if (product != undefined && loggedIn != null && loggedIn.admin != undefined) return (
       <IconButton
         className={clsx(classesNewCard.expand, {
           [classesNewCard.expandOpen]: expanded,

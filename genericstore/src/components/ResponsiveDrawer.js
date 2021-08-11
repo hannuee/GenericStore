@@ -48,7 +48,7 @@ import Notification from '../assistingComponents/Notification'
 const drawerWidth = 240;
 
 const customStyleColor = {  
-    background: '#dbdbdb',  // Yläpalkin taustaväri
+    background: '#a6e2ff',  // Yläpalkin taustaväri
     height: 47,
     boxShadow: '0px 0px'  // Tää päälle niin yläpalkista poistuu 3D efekti.
 }

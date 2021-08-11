@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 
 // Material UI:
@@ -66,6 +67,8 @@ const AddToShoppingCartForm = ({product}) => {
 
   const classesSizeSelect = useStylesSizeSelect();
 
+  const loggedIn = useSelector(state => state.customers.loggedIn)  
+
   const [priceAndSize, setPriceAndSize] = React.useState(product.pricesandsizes[0])
   const [quantity, setQuantity] = React.useState(1);
 
@@ -103,6 +106,36 @@ const AddToShoppingCartForm = ({product}) => {
       <OutlinedInput id="lukumaara" value={quantity} onChange={handleQuantityChange} label="Lukumäärä" type="number" />
     </FormControl>
 
+  const CustomerToCartButton = () => {
+    if (loggedIn != null && loggedIn.name != undefined) {
+      return (
+        <>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="medium"
+            className={classesSizeSelect.marginPlease}
+            onClick={handleAddToCart}
+            startIcon={<ShoppingCartIcon />}
+          >
+            ostoskoriin
+          </Button>
+        </>
+      )
+    } else return (
+      <Button
+        variant="outlined"
+        color="primary"
+        size="medium"
+        className={classesSizeSelect.marginPlease}
+        disabled
+        startIcon={<ShoppingCartIcon />}
+      >
+        ostoskoriin
+      </Button>
+    )
+  }
+
   return (  
     <div className={classesSizeSelect.horizontalUpperLayout}>
       <div className={classesSizeSelect.horizontalLayoutLeft}>
@@ -123,16 +156,7 @@ const AddToShoppingCartForm = ({product}) => {
       </div>
 
       <div className={classesSizeSelect.horizontalLayoutRight}>
-      <Button
-        variant="outlined"
-        color="primary"
-        size="medium"
-        className={classesSizeSelect.marginPlease}
-        onClick={handleAddToCart}
-        startIcon={<ShoppingCartIcon />}
-      >
-        ostoskoriin
-      </Button>
+      {CustomerToCartButton()}
 
       <Typography variant="body2" component="p" style={TypographyStylePrice}>{centsToPrice.format((priceAndSize.price*quantity)/100)}</Typography> 
       </div>
