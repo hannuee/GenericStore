@@ -7,7 +7,12 @@ const reducer = (state = [], action) => {
     case 'ADD_NEW_PRODUCT':
       return state.concat(action.data)
     case 'REPLACE_PRODUCT':
-      return state.filter(product => product.id !== action.data.id).concat(action.data)
+      const newArray = []
+      for(let product of state){
+        if(product.id === action.data.id) newArray.push(action.data)
+        else newArray.push(product)
+      }
+      return newArray
     default: return state
   }
 }
