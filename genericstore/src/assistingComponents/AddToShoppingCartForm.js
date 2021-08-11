@@ -90,7 +90,7 @@ const AddToShoppingCartForm = ({product}) => {
       type: 'ADD_TO_CART',
       data: {product_time, product_name, product_id, priceAndSize, quantity}
     })
-    // JONKINLAINEN PALAUTE TÄHÄN ETTÄ ASIAKAS TIETÄÄ ETTÄ NYT ON TUOTE LISÄTTY OSTOSKORIINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+    dispatch(displayNotificationForSeconds('Lisätty ostoskoriin', 'success', 5))
   }
 
   const centsToPrice = new Intl.NumberFormat('fi-FI', {

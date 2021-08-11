@@ -36,17 +36,30 @@ const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesPar
 
     const admin = useSelector(state => state.customers.loggedIn)
 
+    const centsToPrice = new Intl.NumberFormat('fi-FI', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    // Cents to price:
+    const transformedPricesAndSizes = []
+    if(product != null){
+      for(let pAndS of product.pricesandsizes) {
+        transformedPricesAndSizes.push({price: centsToPrice.format(pAndS.price / 100), size: pAndS.size})
+      }
+    }
+
     // Mode switching:
 
     let initState
-    if(product === undefined) initState = pricesAndSizesParent  // Set-mode
-    else initState = product.pricesandsizes                     // Update-mode
+    if(product == null) initState = pricesAndSizesParent  // Set-mode
+    else initState = transformedPricesAndSizes            // Update-mode
 
     const [pricesAndSizesOwn, setPricesAndSizesOwn] = React.useState(initState) 
     
     let pricesAndSizes
     let setPricesAndSizes
-    if(product === undefined) {  // Set-mode
+    if(product == null) {  // Set-mode
       pricesAndSizes = pricesAndSizesParent
       setPricesAndSizes = setPricesAndSizesParent
     }

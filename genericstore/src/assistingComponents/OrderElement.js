@@ -116,6 +116,7 @@ const OrderElement = ({order}) => {
         type: 'MODIFY_ADMINS_UNDISPATCHED_TRANSFER_TO_DISPATCHED_KEEP_DETAILS',
         data: modifiedOrder
       })
+      dispatch(displayNotificationForSeconds('Tilaus merkitty lähetetyksi', 'success', 5))
     } 
     catch(error) {
       dispatch(displayNotificationForSeconds('Tilauksen merkitseminen toimitetuksi epäonnistui', 'error', 5))

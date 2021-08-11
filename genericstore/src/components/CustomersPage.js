@@ -75,8 +75,8 @@ const CustomersPage = (props) => {
   // For the accordion:
   const classes = useStyles();
   
-  const customers = useSelector(state => state.customers.adminsCustomers)
-
+  let customers = useSelector(state => state.customers.adminsCustomers)
+  if(customers == null) customers = []  // because of the initialization delay.
 
   
 

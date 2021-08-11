@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { useDispatch } from 'react-redux'
-import {useHistory} from 'react-router-dom'
+import {useHistory, Redirect} from 'react-router-dom'
+import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 // import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -117,6 +118,7 @@ function ResponsiveDrawer(props) {
       data: null
     })
     history.push('/')
+    dispatch(displayNotificationForSeconds('Kirjauduttu ulos', 'success', 5))
   }
 
   const handleDrawerToggle = () => {
@@ -233,6 +235,9 @@ function ResponsiveDrawer(props) {
   const idInMatchObject = useRouteMatch('/kategoriat/:id')
   const idExtracted = idInMatchObject ? Number(idInMatchObject.params.id) : null
   
+  // First main category:
+  let firstMainCategory = categories.find(category => category.category_id == null)
+  if(firstMainCategory == null) firstMainCategory = {id: ''}  // because of the initialization delay.
   
   return (
     <div className={classes.root}>
@@ -312,6 +317,9 @@ function ResponsiveDrawer(props) {
       </Route>
       <Route path="/rekisteroityminen">
           <RegisterPage />
+      </Route>
+      <Route path="/">  
+          <Redirect to={'/kategoriat/' + firstMainCategory.id} />
       </Route>
     </Switch>
 

@@ -142,8 +142,10 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
         type: 'ADD_NEW_PRODUCT',
         data: product
       })
+      dispatch(displayNotificationForSeconds('Tuote lisätty', 'success', 5))
     }
     catch (error) {
+      dispatch(displayNotificationForSeconds('Virhe tuotetta lisättäessä', 'error', 5))
     }
     setDisabled(false)
   }
