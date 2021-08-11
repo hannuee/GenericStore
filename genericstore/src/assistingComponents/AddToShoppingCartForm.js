@@ -73,7 +73,7 @@ const AddToShoppingCartForm = ({product}) => {
     setPriceAndSize(event.target.value)
   }
   const handleQuantityChange = (event) => {
-    const quantityInput = Number(event.target.value)
+    const quantityInput = Math.round(Number(event.target.value))
     if (quantityInput >= 1) setQuantity(quantityInput)
     else setQuantity(1)
   }
@@ -115,7 +115,7 @@ const AddToShoppingCartForm = ({product}) => {
           onChange={handleChange}
           label="Koko"
         >
-          {product.pricesandsizes.map(priceAndSizeOption => <MenuItem value={priceAndSizeOption}>{priceAndSizeOption.size} - {priceAndSizeOption.price / 100} €</MenuItem> )}
+          {product.pricesandsizes.map(priceAndSizeOption => <MenuItem value={priceAndSizeOption}>{priceAndSizeOption.size} - {centsToPrice.format(priceAndSizeOption.price / 100)}</MenuItem> )}
         </Select>
       </FormControl>
 

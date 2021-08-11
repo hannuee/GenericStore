@@ -60,7 +60,7 @@ const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesPar
         const newArray = []
         pricesAndSizes.forEach((priceAndSize, index) => {
           if(index === indexModified && sizeOrPrice === 'size') newArray.push({price: priceAndSize.price, size: event.target.value})
-          else if(index === indexModified && sizeOrPrice === 'price') newArray.push({price: Number(event.target.value), size: priceAndSize.size})
+          else if(index === indexModified && sizeOrPrice === 'price') newArray.push({price: event.target.value, size: priceAndSize.size})
           else newArray.push(priceAndSize)
         })
         setPricesAndSizes(newArray)
@@ -79,10 +79,24 @@ const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesPar
       }
 
     const handlePriceAndSizeUpdate = async () => {
+      const newPricesAndSizes = []
+      for(let userInput of pricesAndSizes){
+        let asNumber = Number(Number(userInput.price.replace(",", ".").replace(/\s+/g, "")).toFixed(2))
+        if(isNaN(asNumber)) {
+          dispatch(displayNotificationForSeconds('Virheellinen hintatieto', 'error', 5))
+          return
+        } else if(asNumber < 0) {
+          dispatch(displayNotificationForSeconds('Hinta ei voi olla negatiivinen', 'error', 5))
+          return
+        }
+        asNumber = Math.trunc(asNumber*100)
+        newPricesAndSizes.push({price: asNumber, size: userInput.size})
+      }
+
         try{
           const modifiedProduct = await productService.putPricesAndSizes({
             id: product.id,
-            pricesAndSizes
+            pricesAndSizes: newPricesAndSizes
           }, admin.token)
           dispatch({
             type: 'REPLACE_PRODUCT',
@@ -107,8 +121,8 @@ const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesPar
       <TextField id="standard-required" label="Koko" value={priceAndSize.size} onChange={handlePriceAndSizeChange(index, 'size')} />
       <TextField
         id="standard-number"
-        label="Hinta"
-        type="number"
+        label="Hinta €"
+        //type="number"
         InputLabelProps={{
           shrink: true,
         }}

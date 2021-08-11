@@ -111,12 +111,27 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
 
   const handleAddNewProduct = async () => {
     setDisabled(true)
+
+    const newPricesAndSizes = []
+      for(let userInput of pricesAndSizes){
+        let asNumber = Number(Number(userInput.price.replace(",", ".").replace(/\s+/g, "")).toFixed(2))
+        if(isNaN(asNumber)) {
+          dispatch(displayNotificationForSeconds('Virheellinen hintatieto', 'error', 5))
+          return
+        } else if(asNumber < 0) {
+          dispatch(displayNotificationForSeconds('Hinta ei voi olla negatiivinen', 'error', 5))
+          return
+        }
+        asNumber = Math.trunc(asNumber*100)
+        newPricesAndSizes.push({price: asNumber, size: userInput.size})
+      }
+
     try {
       const product = await productService.post({
         parentCategoryId: parentCategoryIdForNewProduct,
         name,
         description,
-        pricesAndSizes,
+        pricesAndSizes: newPricesAndSizes,
         available: true
       }, admin.token)
       handleCloseNewProductForm()
