@@ -103,11 +103,11 @@ const CategoryPage = (props) => {
   const subCategories = useSelector(state => state.categories.filter(category => category.category_id === props.id))
   const products = useSelector(state => state.products.filter(product => product.category_id === props.id))
 
-  const admin = useSelector(state => state.customers.loggedIn)
+  const loggedIn = useSelector(state => state.customers.loggedIn)
 
   const handleDeleteCategory = async () => {
     try{
-      const category = await categoryService.deleteCategory(categoryDisplayed.id, admin.token)
+      const category = await categoryService.deleteCategory(categoryDisplayed.id, loggedIn.token)
       history.push('/')
       dispatch({
         type: 'DELETE_CATEGORY',
@@ -139,7 +139,7 @@ const CategoryPage = (props) => {
       const category = await categoryService.putNewCategory({
         id: categoryDisplayed.id,
         parentCategoryId: categorySelected
-      }, admin.token)
+      }, loggedIn.token)
       dispatch({
         type: 'REPLACE_CATEGORY',
         data: category
@@ -252,15 +252,10 @@ const CategoryPage = (props) => {
       </FormControl>
 
 
-
+const AdminExpandCategoryModificationControlsButton = () => {
+  if (loggedIn != null && loggedIn.admin != undefined) {
     return (
-      <> 
-      <div className={classesSizeSelect.horizontalUpperLayout}>  
-        <div className={classesSizeSelect.horizontalLayoutLeft}>
-          <BreadcrumbsLinks categoryId={categoryDisplayed.id} />
-          {categoryDisplayed.description}
-          <div>
-          <IconButton className={classesNewCard.expandButton}
+      <IconButton className={classesNewCard.expandButton}
             className={clsx(classesNewCard.expand, {
               [classesNewCard.expandOpen]: expandedCategoryModificationControls,
             })}
@@ -270,12 +265,34 @@ const CategoryPage = (props) => {
           >
             <EditIcon />
           </IconButton>
+    )
+  }
+}
+
+const AdminNewProductAndCategoryButtons = () => {
+  if (loggedIn != null && loggedIn.admin != undefined) {
+    return (
+      <>
+      <Button variant="contained" color="primary" onClick={handleShowNewProductForm} className={classesSizeSelect.marginPlease}>uusi tuote</Button>
+      <Button variant="contained" color="primary" onClick={handleShowNewCategoryForm} className={classesSizeSelect.marginPlease}>uusi alakategoria</Button>
+      </>
+    )
+  }
+}
+
+    return (
+      <> 
+      <div className={classesSizeSelect.horizontalUpperLayout}>  
+        <div className={classesSizeSelect.horizontalLayoutLeft}>
+          <BreadcrumbsLinks categoryId={categoryDisplayed.id} />
+          {categoryDisplayed.description}
+          <div>
+          {AdminExpandCategoryModificationControlsButton()}
           </div>
           </div>
 
           <div className={classesSizeSelect.horizontalLayoutRight}> 
-            <Button variant="contained" color="primary" onClick={handleShowNewProductForm} className={classesSizeSelect.marginPlease}>uusi tuote</Button>
-            <Button variant="contained" color="primary" onClick={handleShowNewCategoryForm} className={classesSizeSelect.marginPlease}>uusi alakategoria</Button>
+          {AdminNewProductAndCategoryButtons()}
           </div>
         
       </div>

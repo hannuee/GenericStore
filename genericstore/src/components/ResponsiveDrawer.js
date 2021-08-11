@@ -21,6 +21,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import GroupIcon from '@material-ui/icons/Group';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import AddIcon from '@material-ui/icons/Add';
+import StorefrontIcon from '@material-ui/icons/Storefront';
 
 import {
   Switch, Route, Link, useRouteMatch
@@ -100,6 +106,7 @@ function ResponsiveDrawer(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const categories = useSelector(state => state.categories)
+  const loggedIn = useSelector(state => state.customers.loggedIn)  
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -116,6 +123,83 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
+  const AdminAddCategoryButton = () => {
+    if (loggedIn != null && loggedIn.admin != undefined) {
+      return (
+        <Link to="/uusikategoria" style={noDeco}>
+            <ListItem button className={classes.listItem}>
+              <ListItemIcon> <AddIcon /> </ListItemIcon>
+              <ListItemText primary="Lisää pääkategoria" />
+            </ListItem>
+        </Link>
+      )
+    }
+  }
+
+  const CustomerButtons = () => {
+    if (loggedIn != null && loggedIn.name != undefined) {
+      return (
+        <>
+          <Link to="/omattilaukset" style={noDeco}>
+            <ListItem button className={classes.listItem}>
+              <ListItemIcon> <InboxIcon /> </ListItemIcon>
+              <ListItemText primary="Omat tilaukset" />
+            </ListItem>
+          </Link>
+          <Link to="/ostoskori" style={noDeco}>
+            <ListItem button className={classes.listItem}>
+              <ListItemIcon> <ShoppingCartIcon /> </ListItemIcon>
+              <ListItemText primary="Ostoskori" />
+            </ListItem>
+          </Link>
+        </>
+      )
+    }
+  }
+
+  const AdminButtons = () => {
+    if (loggedIn != null && loggedIn.admin != undefined) {
+      return (
+        <>
+          <Link to="/tilaukset" style={noDeco}>
+            <ListItem button className={classes.listItem}>
+              <ListItemIcon> <InboxIcon /> </ListItemIcon>
+              <ListItemText primary="Tilaukset" />
+            </ListItem>
+          </Link>
+          <Link to="/asiakkaat" style={noDeco}>
+            <ListItem button className={classes.listItem}>
+              <ListItemIcon> <GroupIcon /> </ListItemIcon>
+              <ListItemText primary="Asiakkaat" />
+            </ListItem>
+          </Link>
+        </>
+      )
+    }
+  }
+
+  const LogInOrLogOutButton = () => {
+    if (loggedIn == null) {
+      return (
+        <Link to="/kirjautuminen" style={noDeco}>
+          <ListItem button className={classes.listItem}>
+            <ListItemIcon> <AccountBoxIcon /> </ListItemIcon>
+            <ListItemText primary="Kirjaudu" />
+          </ListItem>
+        </Link>
+      )
+    } else {
+      return (
+        <Link style={noDeco} onClick={handleLogout}>
+          <ListItem button className={classes.listItem}>
+            <ListItemIcon> <ExitToAppIcon /> </ListItemIcon>
+            <ListItemText primary="Kirjaudu ulos" />
+          </ListItem>
+        </Link>
+      )
+    }
+  }
+
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -124,61 +208,21 @@ function ResponsiveDrawer(props) {
       {categories.filter(category => category.category_id === null).map(category =>
         <Link to={`/kategoriat/${category.id}`} style={noDeco} key={category.id}>
           <ListItem button className={classes.listItem}>   
-            <ListItemIcon> <InboxIcon /> </ListItemIcon>
+            <ListItemIcon> <StorefrontIcon /> </ListItemIcon>
             <ListItemText primary={category.name} />
           </ListItem>
         </Link>
       )}
+      {AdminAddCategoryButton()}
       </List>
 
       <Divider />
 
-      <Link to="/uusikategoria" style={noDeco}>   
-        <Button size="small">Lisää pääkategoria</Button>
-      </Link>
-
-      <Button size="small" onClick={handleLogout}>Kirjaudu ulos</Button>
-
-      <Divider />
-
       <List>
-        <Link to="/omattilaukset" style={noDeco}>
-          <ListItem button>   
-            <ListItemIcon> <InboxIcon /> </ListItemIcon>
-            <ListItemText primary="Omat tilaukset" />
-          </ListItem>
-        </Link>
-        <Link to="/ostoskori" style={noDeco}>
-          <ListItem button>   
-            <ListItemIcon> <MailIcon /> </ListItemIcon>
-            <ListItemText primary="Ostoskori" />
-          </ListItem>
-        </Link>
+        {CustomerButtons()}
+        {AdminButtons()}
+        {LogInOrLogOutButton()}
       </List>
-
-      <Divider />  
-
-      <List>
-        <Link to="/tilaukset" style={noDeco}>
-          <ListItem button>   
-            <ListItemIcon> <InboxIcon /> </ListItemIcon>
-            <ListItemText primary="Tilaukset" />
-          </ListItem>
-        </Link>
-        <Link to="/asiakkaat" style={noDeco}>
-          <ListItem button>   
-            <ListItemIcon> <InboxIcon /> </ListItemIcon>
-            <ListItemText primary="Asiakkaat" />
-          </ListItem>
-        </Link>
-        <Link to="/kirjautuminen" style={noDeco}>
-          <ListItem button>   
-            <ListItemIcon> <InboxIcon /> </ListItemIcon>
-            <ListItemText primary="Kirjaudu" />
-          </ListItem>
-        </Link>
-      </List>
-
     </div>
   );
 
@@ -206,7 +250,7 @@ function ResponsiveDrawer(props) {
           </IconButton>
           <Typography variant="h6" noWrap>
             Geneerinen kauppa
-          </Typography>
+          </Typography> 
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
