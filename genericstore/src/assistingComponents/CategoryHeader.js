@@ -123,7 +123,6 @@ const CategoryHeader = (props) => {
         Kategorian on oltava tyhjä jotta sen voi poistaa
       </Typography>
     )
-    // NÄYTÄ TÄÄLLÄ OHJE ETTÄ KATEGORIAN TULEE OLLA TYHJÄ JOTTA VOI POISTAA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   }
 
 
