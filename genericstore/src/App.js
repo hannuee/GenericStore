@@ -35,11 +35,6 @@ console.log('PITÄIS ALUSTAAAAAAAAAAAAA')
     else dispatch(initializeAvailableProducts())
   }, [dispatch])
 
-  //useEffect(() => {
-  //  dispatch(initializeAvailableProducts())
-  //}, [dispatch])
-
-
   return (
     <div>
       <Router>

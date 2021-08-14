@@ -131,9 +131,9 @@ const OrderElement = ({order}) => {
   const orderDetailsDisplay = () => {
     if(order.orderDetails !== undefined){
       return (
-        order.orderDetails.map(orderDetail => 
+        order.orderDetails.map((orderDetail, index) =>   // index should be fine as key, because the data in the table is not modified.
     
-            <TableRow key={orderDetail.name}>
+            <TableRow key={index}>
               <TableCell component="th" scope="row">{orderDetail.name}</TableCell>
               <TableCell align="right">{orderDetail.priceandsize.size}</TableCell>
               <TableCell align="right">{orderDetail.priceandsize.price / 100} €</TableCell>

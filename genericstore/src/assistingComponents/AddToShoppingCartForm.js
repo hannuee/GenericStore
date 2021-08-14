@@ -148,7 +148,7 @@ const AddToShoppingCartForm = ({product}) => {
           onChange={handleChange}
           label="Koko"
         >
-          {product.pricesandsizes.map(priceAndSizeOption => <MenuItem value={priceAndSizeOption}>{priceAndSizeOption.size} - {centsToPrice.format(priceAndSizeOption.price / 100)}</MenuItem> )}
+          {product.pricesandsizes.map(priceAndSizeOption => <MenuItem key={priceAndSizeOption.size} value={priceAndSizeOption}>{priceAndSizeOption.size} - {centsToPrice.format(priceAndSizeOption.price / 100)}</MenuItem> )}
         </Select>
       </FormControl>
 

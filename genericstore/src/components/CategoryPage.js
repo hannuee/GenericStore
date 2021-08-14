@@ -247,7 +247,7 @@ const CategoryPage = (props) => {
           label="Tuotteen uusi kategoria"
           className={classesSizeSelect.select}
         >
-          {getAsListOfIdsAndPaths(categories).map(item => <MenuItem value={item.id}>{item.path}</MenuItem> )}
+          {getAsListOfIdsAndPaths(categories).map(item => <MenuItem key={item.id} value={item.id}>{item.path}</MenuItem> )}
         </Select>
       </FormControl>
 

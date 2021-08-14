@@ -130,7 +130,7 @@ const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesPar
     <>
     {pricesAndSizes.map((priceAndSize, index) =>
     
-    <div className={classesNewCard.horizontalLayout}>
+    <div key={priceAndSize.size} className={classesNewCard.horizontalLayout}>
       <TextField id="standard-required" label="Koko" value={priceAndSize.size} onChange={handlePriceAndSizeChange(index, 'size')} />
       <TextField
         id="standard-number"

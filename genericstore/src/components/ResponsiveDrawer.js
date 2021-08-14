@@ -192,12 +192,10 @@ function ResponsiveDrawer(props) {
       )
     } else {
       return (
-        <Link style={noDeco} onClick={handleLogout}>
-          <ListItem button className={classes.listItem}>
+          <ListItem button className={classes.listItem} onClick={handleLogout} style={noDeco}>
             <ListItemIcon> <ExitToAppIcon /> </ListItemIcon>
             <ListItemText primary="Kirjaudu ulos" />
           </ListItem>
-        </Link>
       )
     }
   }
