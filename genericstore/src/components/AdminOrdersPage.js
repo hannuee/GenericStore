@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
+import OrderElement from '../assistingComponents/OrderElement'
 import { initializeAdminsDispatchedOrders } from '../reducers/orderReducer'
 import { initializeAdminsUndispatchedOrdersWithDetails } from '../reducers/orderReducer'
-import OrderElement from '../assistingComponents/OrderElement'
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';

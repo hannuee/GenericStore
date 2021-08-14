@@ -1,15 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import AddToShoppingCartForm from '../assistingComponents/AddToShoppingCartForm'
 import ParentCategoryUpdateForm from '../assistingComponents/ParentCategoryUpdateForm'  
 import AvailabilityUpdateSwitch from '../assistingComponents/AvailabilityUpdateSwitch' 
 import PricesAndSizesForm from '../assistingComponents/PricesAndSizesForm'  
-
-import { useDispatch } from 'react-redux'
-import productService from '../services/products'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import productService from '../services/products'
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,6 +19,8 @@ import Collapse from '@material-ui/core/Collapse';
 import EditIcon from '@material-ui/icons/Edit';
 import clsx from 'clsx';
 import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 const switchAndCategoryModStyle = {  
   alignItems: 'center',

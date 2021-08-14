@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import productService from '../services/products'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import { getAsListOfIdsAndPaths } from '../utils/CategoryTreeProcessors'
+import productService from '../services/products'
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';

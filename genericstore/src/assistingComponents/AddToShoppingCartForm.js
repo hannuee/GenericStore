@@ -1,6 +1,6 @@
-import React from 'react';
-import { useDispatch } from 'react-redux'
+import React from 'react'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 
 // Material UI:

@@ -1,15 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { addNewCategory } from '../reducers/categoryReducer'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
-
 import categoryService from '../services/categories'
 
+// Material UI:
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
 import Paper from '@material-ui/core/Paper';
 
 

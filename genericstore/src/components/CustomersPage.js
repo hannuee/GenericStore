@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux' 
-
 import { initializeCustomers, getDetailsForCustomer } from '../reducers/customerReducer'
 
-// For the accordion:
+// Material UI:
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -14,17 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-
-// For table:
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-import TextField from '@material-ui/core/TextField';
 
 
 // For the accordion:

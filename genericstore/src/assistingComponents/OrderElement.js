@@ -1,6 +1,6 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getDetailsForAdminsDispatchedOrder } from '../reducers/orderReducer'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import orderService from '../services/orders'

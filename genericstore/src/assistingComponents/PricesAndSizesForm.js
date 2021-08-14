@@ -1,8 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import productService from '../services/products'
+import { useDispatch } from 'react-redux'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import productService from '../services/products'
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';

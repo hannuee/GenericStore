@@ -1,20 +1,15 @@
 import React from 'react';
 import { useDispatch } from 'react-redux'
-import { logInWithCredentials } from '../reducers/customerReducer'
-
+import { Link } from "react-router-dom"
+import {useHistory} from 'react-router-dom'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import { initializeAllProducts } from '../reducers/productReducer'
 import customerService from '../services/customers'
-import {useHistory} from 'react-router-dom'
 
-import { initializeCustomers } from '../reducers/customerReducer'
-
+// Material UI:
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
-import { Link } from "react-router-dom"
-
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -1,10 +1,20 @@
-// Mainly copy-pasted this component from material-ui.com/components/drawers/, slightly modified and all visible text replaced with own text.
-
 import React from 'react';
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
+import { Switch, Route, Link, useRouteMatch } from "react-router-dom"
 import {useHistory, Redirect} from 'react-router-dom'
+import CategoryPage from './CategoryPage'
+import MyOrdersPage from './MyOrdersPage'
+import MyCartPage from './MyCartPage'
+import AdminOrdersPage from './AdminOrdersPage'
+import CustomersPage from './CustomersPage'
+import LoginPage from './LoginPage'
+import RegisterPage from './RegisterPage'
+import CategoryAdditionForm from './CategoryAdditionForm'
+import Notification from '../assistingComponents/Notification'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
-// import PropTypes from 'prop-types';
+
+// Material UI:
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -16,35 +26,16 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import GroupIcon from '@material-ui/icons/Group';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import AddIcon from '@material-ui/icons/Add';
 import StorefrontIcon from '@material-ui/icons/Storefront';
-
-import {
-  Switch, Route, Link, useRouteMatch
-} from "react-router-dom"
-
-import { useSelector } from 'react-redux'
-import CategoryPage from './CategoryPage'
-import MyOrdersPage from './MyOrdersPage'
-import MyCartPage from './MyCartPage'
-import AdminOrdersPage from './AdminOrdersPage'
-import CategoryAdditionForm from './CategoryAdditionForm'
-import CustomersPage from './CustomersPage'
-import LoginPage from './LoginPage'
-import RegisterPage from './RegisterPage'
-
-import Notification from '../assistingComponents/Notification'
-
 
 const drawerWidth = 240;
 

@@ -1,12 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux'
+import { Link } from "react-router-dom"
+import { getIdsAndNamesOnPathToId } from '../utils/CategoryTreeProcessors'
+
+// Material UI:
 import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-
-import { Link } from "react-router-dom"
-import { useSelector } from 'react-redux'
-
-import { getIdsAndNamesOnPathToId } from '../utils/CategoryTreeProcessors'
 
 const useStyles = makeStyles((theme) => ({
   crumbs: {

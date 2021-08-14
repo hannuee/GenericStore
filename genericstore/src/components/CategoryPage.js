@@ -1,23 +1,21 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
+import { Link } from "react-router-dom"
+import {useHistory} from 'react-router-dom'
 import CategoryAdditionForm from './CategoryAdditionForm'
 import ProductCard from './ProductCard'  
 import BreadcrumbsLinks from '../assistingComponents/BreadcrumbsLinks'
-import { deleteCategory } from '../reducers/categoryReducer'
-import { modifyParentCategory } from '../reducers/categoryReducer'
-
-import categoryService from '../services/categories'
-import {useHistory} from 'react-router-dom'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import { getAsListOfIdsAndPaths } from '../utils/CategoryTreeProcessors'
+import categoryService from '../services/categories'
 
-import { Link } from "react-router-dom"
-import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
-
-import Collapse from '@material-ui/core/Collapse';
-import Paper from '@material-ui/core/Paper';
-
+// Material UI:
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
@@ -25,15 +23,10 @@ import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from '@material-ui/core/Divider';
 import SaveIcon from '@material-ui/icons/Save';
-
-import { getAsListOfIdsAndPaths } from '../utils/CategoryTreeProcessors'
-
-// Kategorian muuttamiseen:
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
+import Collapse from '@material-ui/core/Collapse';
+import Paper from '@material-ui/core/Paper';
 
 const useStylesSizeSelect = makeStyles((theme) => ({
   formControl: {
