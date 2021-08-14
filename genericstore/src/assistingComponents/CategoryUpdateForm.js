@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import { getAsListOfIdsAndPaths } from '../utils/CategoryTreeProcessors'
 import categoryService from '../services/categories'
+import productService from '../services/products'
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,7 +35,9 @@ const useStylesSizeSelect = makeStyles((theme) => ({
     },
   }));
 
-const CategoryUpdateForm = ({id}) => {
+// Give categoryId to update the parent category id of a category,
+// Give productId to update the parent category id of a product.
+const CategoryUpdateForm = ({categoryId, productId}) => {
 
     const dispatch = useDispatch()
 
@@ -43,7 +46,7 @@ const CategoryUpdateForm = ({id}) => {
     const categories = useSelector(state => state.categories)
     const loggedIn = useSelector(state => state.customers.loggedIn)
 
-    const [categorySelected, setCategorySelected] = React.useState(id)
+    const [categorySelected, setCategorySelected] = React.useState('')
 
     const handleCategoryChange = (event) => {
       setCategorySelected(event.target.value)
@@ -51,16 +54,28 @@ const CategoryUpdateForm = ({id}) => {
 
     const handleCategoryUpdate = async () => {
         try{
-          const category = await categoryService.putNewCategory({
-            id,
-            parentCategoryId: categorySelected
-          }, loggedIn.token)
-          dispatch({
-            type: 'REPLACE_CATEGORY',
-            data: category
-          })
-          dispatch(displayNotificationForSeconds('Kategoria muutettu', 'success', 5))
-        } 
+            if(categoryId !== undefined){
+                const category = await categoryService.putNewCategory({
+                    id: categoryId,
+                    parentCategoryId: categorySelected
+                  }, loggedIn.token)
+                  dispatch({
+                    type: 'REPLACE_CATEGORY',
+                    data: category
+                  })
+                  dispatch(displayNotificationForSeconds('Kategoria muutettu', 'success', 5))
+            } else if(productId !== undefined) {
+                const productModified = await productService.putNewCategory({
+                    id: productId,
+                    parentCategoryId: categorySelected
+                  }, loggedIn.token)
+                  dispatch({
+                    type: 'REPLACE_PRODUCT',
+                    data: productModified
+                  })
+                  dispatch(displayNotificationForSeconds('Kategoria muutettu', 'success', 5))
+            }
+        }
         catch(error) {
           dispatch(displayNotificationForSeconds('Kategorian muutto epäonnistui', 'error', 5))
         }
@@ -82,7 +97,7 @@ const CategoryUpdateForm = ({id}) => {
         </FormControl>
 
     return (
-        <div className={classesSizeSelect.horizontalLayoutLeft}>
+        <>
             {newCategorySelector()}
             <Button
                 variant="contained"
@@ -93,7 +108,7 @@ const CategoryUpdateForm = ({id}) => {
             >
                 tallenna
             </Button>
-        </div>
+        </>
     )
 }
 

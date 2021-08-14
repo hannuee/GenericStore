@@ -165,20 +165,20 @@ const CategoryHeader = (props) => {
       </Collapse>
     </div>
 
-  const categoryModificationControls = () =>
-    <div>
-      <Collapse in={expandedCategoryModificationControls} timeout="auto" unmountOnExit>
-      <Paper className={classesSizeSelect.horizontalUpperLayout}>
-
-        <CategoryUpdateForm id={categoryDisplayed.id} />
-
-        <Divider orientation="vertical" flexItem />
-        <div className={classesSizeSelect.horizontalLayoutRight}>
-        {categoryDeleteButtonOrInstructions()}
+    const categoryModificationControls = () =>
+        <div>
+            <Collapse in={expandedCategoryModificationControls} timeout="auto" unmountOnExit>
+                <Paper className={classesSizeSelect.horizontalUpperLayout}>
+                    <div className={classesSizeSelect.horizontalLayoutLeft}>
+                        <CategoryUpdateForm categoryId={categoryDisplayed.id} />
+                    </div>
+                    <Divider orientation="vertical" flexItem />
+                    <div className={classesSizeSelect.horizontalLayoutRight}>
+                        {categoryDeleteButtonOrInstructions()}
+                    </div>
+                </Paper>
+            </Collapse>
         </div>
-      </Paper>
-      </Collapse>
-    </div>
 
 const AdminExpandCategoryModificationControlsButton = () => {
   if (loggedIn != null && loggedIn.admin != undefined) {

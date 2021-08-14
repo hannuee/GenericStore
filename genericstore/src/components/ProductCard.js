@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import AddToShoppingCartForm from '../assistingComponents/AddToShoppingCartForm'
-import ParentCategoryUpdateForm from '../assistingComponents/ParentCategoryUpdateForm'  
+import CategoryUpdateForm from '../assistingComponents/CategoryUpdateForm'  
 import AvailabilityUpdateSwitch from '../assistingComponents/AvailabilityUpdateSwitch' 
 import PricesAndSizesForm from '../assistingComponents/PricesAndSizesForm'  
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
@@ -226,7 +226,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
                 <AvailabilityUpdateSwitch product={product} />
               </div>
               <div className={classesNewCard.horizontalLayout} style={switchAndCategoryModStyle}>
-                <ParentCategoryUpdateForm product={product} />
+                <CategoryUpdateForm productId={product.id} />
               </div>
             </div>
           </div>
