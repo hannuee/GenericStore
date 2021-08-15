@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   details: {
     alignItems: 'center',
+    background: '#e6f7ff',  // AccordionDetails
   },
   column: {
     flexBasis: '33.33%',
@@ -88,7 +89,7 @@ const OrderElement = ({order}) => {
             type: 'REPLACE_ADMINS_UNDISPATCHED_KEEP_DETAILS',
             data: modifiedOrder
           })
-          dispatch(displayNotificationForSeconds('Tilauksen huomio muutettu', 'success', 5))   // VISUAALINE FEEDBACK??????????????????????????
+          dispatch(displayNotificationForSeconds('Tilauksen huomio muutettu', 'success', 5))  
         } 
         catch(error) {
           dispatch(displayNotificationForSeconds('Tilauksen huomion muuttaminen epäonnistui', 'error', 5))
@@ -101,7 +102,7 @@ const OrderElement = ({order}) => {
             type: 'REPLACE_ADMINS_DISPATCHED_KEEP_DETAILS',
             data: modifiedOrder
           })
-          dispatch(displayNotificationForSeconds('Tilauksen huomio muutettu', 'success', 5))   // VISUAALINE FEEDBACK??????????????????????????
+          dispatch(displayNotificationForSeconds('Tilauksen huomio muutettu', 'success', 5))   
         } 
         catch(error) {
           dispatch(displayNotificationForSeconds('Tilauksen huomion muuttaminen epäonnistui', 'error', 5))
@@ -176,7 +177,6 @@ const OrderElement = ({order}) => {
   }
 
 
-
   return (                  
 <Accordion onChange={handleExpansion}>
 <AccordionSummary
@@ -185,7 +185,7 @@ const OrderElement = ({order}) => {
   id="panel1c-header"
 >
   <div className={classes.column}>
-    <Typography className={classes.heading}>Tilaus {order.orderreceived}</Typography>
+    <Typography className={classes.heading}>Tilaus {new Date(order.orderreceived).toLocaleDateString('fi-FI')}</Typography>
   </div>
   <div className={classes.column}>
     <Typography className={classes.secondaryHeading}>{centsToFormattedEuros(order.purchaseprice)}</Typography>

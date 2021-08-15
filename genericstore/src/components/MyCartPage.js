@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { initializeCustomersOrdersWithDetails } from '../reducers/orderReducer'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import { centsToFormattedEuros } from '../utils/Money'
 import orderService from '../services/orders'
 
 // Material UI:
@@ -72,6 +73,10 @@ const MyOrdersPage = (props) => {
   // For table:
   const classes = useStyles();
 
+  // Calculate overall shopping cart price:
+  let overallPriceInCents = 0
+  for(let cartItem of cartItems) overallPriceInCents += cartItem.priceAndSize.price * cartItem.quantity
+
     return (
 <>
     <TableContainer component={Paper}>
@@ -91,9 +96,9 @@ const MyOrdersPage = (props) => {
             <TableRow key={cartItem.product_time}>
               <TableCell component="th" scope="row">{cartItem.product_name}</TableCell>
               <TableCell align="right">{cartItem.priceAndSize.size}</TableCell>
-              <TableCell align="right">{cartItem.priceAndSize.price / 100} €</TableCell>
-              <TableCell align="right">{cartItem.quantity}</TableCell>
-              <TableCell align="right">{(cartItem.priceAndSize.price * cartItem.quantity) / 100} €</TableCell>
+              <TableCell align="right">{centsToFormattedEuros(cartItem.priceAndSize.price)}</TableCell>
+              <TableCell align="right">{cartItem.quantity}</TableCell> 
+              <TableCell align="right">{centsToFormattedEuros(cartItem.priceAndSize.price * cartItem.quantity)}</TableCell>
               <TableCell align="right">
                 <Button size="small" color="primary" onClick={() => handleDeleteFromCart(cartItem.product_time)}>
                   Poista
@@ -101,6 +106,14 @@ const MyOrdersPage = (props) => {
               </TableCell>
             </TableRow>
           ))}
+          <TableRow>
+              <TableCell component="th" scope="row">YHTEENSÄ</TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right">{centsToFormattedEuros(overallPriceInCents)}</TableCell>
+              <TableCell align="right"></TableCell>
+            </TableRow>
         </TableBody>
       </Table>
     </TableContainer>

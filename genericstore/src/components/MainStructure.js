@@ -26,8 +26,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
 
-const customStyleColor = {  
-    background: '#a6e2ff',  // Yläpalkin taustaväri
+const customStyleColor = {
+    background: 'linear-gradient(90deg, #a6e2ff 30%, #ccefff 90%)',
     height: 47,
     boxShadow: '0px 0px'  // Tää päälle niin yläpalkista poistuu 3D efekti.
 }

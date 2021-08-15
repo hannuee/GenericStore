@@ -68,7 +68,9 @@ const reducer = (state = {customers: [], cart: [], adminsUndispatched: [], admin
   
         return {customers: state.customers, cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: ordersImmuted2}
       case 'ADD_TO_CART':
-        return {customers: state.customers, cart: state.cart.concat(action.data), adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched}
+        const newCart = state.cart.concat(action.data)
+        window.localStorage.setItem('cart', JSON.stringify(newCart))
+        return {customers: state.customers, cart: newCart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched}
       case 'DELETE_FROM_CART':
         return {customers: state.customers, cart: state.cart.filter(orderItem =>orderItem.product_time !== action.data), adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched}
       case 'CLEAR_CART':

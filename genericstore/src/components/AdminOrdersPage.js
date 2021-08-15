@@ -60,10 +60,11 @@ const AdminOrdersPage = (props) => {
           Lähettämättömät tilaukset
         </Typography>
 
-
+        <div className={classes.root}>
         {orders.map(order =>
           <OrderElement order={order} key={order.id} />
         )}
+        </div>
 
         <br />
         <Button size="small" color="primary" onClick={handleShowDispatchedOrders}>Näytä lähetetyt tilaukset</Button>

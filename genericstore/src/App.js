@@ -25,6 +25,17 @@ const App = () => {
       })
     }
 
+    const cartJSON = window.localStorage.getItem('cart')
+
+    let cart
+    if (cartJSON) {
+      cart = JSON.parse(cartJSON)
+      dispatch({
+        type: 'ADD_TO_CART',
+        data: cart
+      })
+    }
+
     dispatch(initializeCategories())
     if (user != null && user.admin != null) dispatch(initializeAllProducts(user.token))
     else dispatch(initializeAvailableProducts())
