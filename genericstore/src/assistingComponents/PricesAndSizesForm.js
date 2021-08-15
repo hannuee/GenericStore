@@ -2,6 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import { centsToFormattedEurosWithoutE } from '../utils/Money'
+import { userInputPriceToCleanedEuros } from '../utils/Money'
 import productService from '../services/products'
 
 // Material UI:
@@ -36,16 +38,11 @@ const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesPar
 
     const admin = useSelector(state => state.customers.loggedIn)
 
-    const centsToPrice = new Intl.NumberFormat('fi-FI', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
     // Cents to price:
     const transformedPricesAndSizes = []
     if(product != null){
-      for(let pAndS of product.pricesandsizes) {
-        transformedPricesAndSizes.push({price: centsToPrice.format(pAndS.price / 100), size: pAndS.size})
+      for(let pAndS of product.pricesandsizes) {    
+        transformedPricesAndSizes.push({price: centsToFormattedEurosWithoutE(pAndS.price), size: pAndS.size})
       }
     }
 
@@ -94,16 +91,16 @@ const PricesAndSizesForm = ({product, pricesAndSizesParent, setPricesAndSizesPar
     const handlePriceAndSizeUpdate = async () => {
       const newPricesAndSizes = []
       for(let userInput of pricesAndSizes){
-        let asNumber = Number(Number(userInput.price.replace(",", ".").replace(/\s+/g, "")).toFixed(2))
-        if(isNaN(asNumber)) {
+        let cleanedEuros = userInputPriceToCleanedEuros(userInput.price)
+        if(isNaN(cleanedEuros)) {
           dispatch(displayNotificationForSeconds('Virheellinen hintatieto', 'error', 5))
           return
-        } else if(asNumber < 0) {
+        } else if(cleanedEuros < 0) {
           dispatch(displayNotificationForSeconds('Hinta ei voi olla negatiivinen', 'error', 5))
           return
         }
-        asNumber = Math.trunc(asNumber*100)
-        newPricesAndSizes.push({price: asNumber, size: userInput.size})
+        const cents = Math.trunc(cleanedEuros*100)
+        newPricesAndSizes.push({price: cents, size: userInput.size})
       }
 
         try{

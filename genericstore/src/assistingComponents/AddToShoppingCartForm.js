@@ -2,11 +2,11 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import { centsToFormattedEuros } from '../utils/Money'
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
@@ -93,13 +93,6 @@ const AddToShoppingCartForm = ({product}) => {
     dispatch(displayNotificationForSeconds('Lisätty ostoskoriin', 'success', 5))
   }
 
-  const centsToPrice = new Intl.NumberFormat('fi-FI', {
-    style: 'currency',
-    currency: 'EUR',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-
   const quantityInput = () =>
     <FormControl variant="outlined" className={classesSizeSelect.formControlQuantity}>
       <InputLabel htmlFor="component-outlined">Lukumäärä</InputLabel>
@@ -145,10 +138,10 @@ const AddToShoppingCartForm = ({product}) => {
           labelId="size-select-label-id"
           id="size-select-id"
           value={priceAndSize}
-          onChange={handleChange}
+          onChange={handleChange} 
           label="Koko"
         >
-          {product.pricesandsizes.map(priceAndSizeOption => <MenuItem key={priceAndSizeOption.size} value={priceAndSizeOption}>{priceAndSizeOption.size} - {centsToPrice.format(priceAndSizeOption.price / 100)}</MenuItem> )}
+          {product.pricesandsizes.map(priceAndSizeOption => <MenuItem key={priceAndSizeOption.size} value={priceAndSizeOption}>{priceAndSizeOption.size} - {centsToFormattedEuros(priceAndSizeOption.price)}</MenuItem> )}
         </Select>
       </FormControl>
 
@@ -158,7 +151,7 @@ const AddToShoppingCartForm = ({product}) => {
       <div className={classesSizeSelect.horizontalLayoutRight}>
       {CustomerToCartButton()}
 
-      <Typography variant="body2" component="p" style={TypographyStylePrice}>{centsToPrice.format((priceAndSize.price*quantity)/100)}</Typography> 
+      <Typography variant="body2" component="p" style={TypographyStylePrice}>{centsToFormattedEuros(priceAndSize.price*quantity)}</Typography> 
       </div>
       
     </div>
