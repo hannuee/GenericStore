@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { getDetailsForAdminsDispatchedOrder } from '../reducers/orderReducer'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
+import { centsToFormattedEuros } from '../utils/Money'
 import orderService from '../services/orders'
 
 // Material UI:
@@ -49,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
     flexBasis: '33.33%',
   },
   helper: {
-    borderLeft: `2px solid ${theme.palette.divider}`,
     padding: theme.spacing(1, 2),
   },
 }));
@@ -136,9 +136,9 @@ const OrderElement = ({order}) => {
             <TableRow key={index}>
               <TableCell component="th" scope="row">{orderDetail.name}</TableCell>
               <TableCell align="right">{orderDetail.priceandsize.size}</TableCell>
-              <TableCell align="right">{orderDetail.priceandsize.price / 100} €</TableCell>
-              <TableCell align="right">{orderDetail.quantity}</TableCell>
-              <TableCell align="right">{(orderDetail.priceandsize.price * orderDetail.quantity) / 100} €</TableCell>
+              <TableCell align="right">{centsToFormattedEuros(orderDetail.priceandsize.price)}</TableCell> 
+              <TableCell align="right">{orderDetail.quantity}</TableCell>  
+              <TableCell align="right">{centsToFormattedEuros(orderDetail.priceandsize.price * orderDetail.quantity)}</TableCell>
             </TableRow>
 
           )
@@ -150,7 +150,6 @@ const OrderElement = ({order}) => {
   const adminDetails = () => {
     if(user.admin !== undefined) return (
       <Typography variant="caption">
-      Admin: <br /> 
       Huomiot: {order.internalnotes} <br />
       Asiakas ID: {order.customer_id} <br />
       Nimi: {order.name} <br />
@@ -189,7 +188,7 @@ const OrderElement = ({order}) => {
     <Typography className={classes.heading}>Tilaus {order.orderreceived}</Typography>
   </div>
   <div className={classes.column}>
-    <Typography className={classes.secondaryHeading}>{order.purchaseprice / 100} €</Typography>
+    <Typography className={classes.secondaryHeading}>{centsToFormattedEuros(order.purchaseprice)}</Typography>
   </div>
 </AccordionSummary>
 <AccordionDetails className={classes.details}>
@@ -228,7 +227,7 @@ const OrderElement = ({order}) => {
         Tilaustunnus: {order.id} <br /> 
         Tilaus vastaanotettu: {order.orderreceived} <br />
         Tuotteet lähetetty: {order.orderdispatched} <br /> 
-        Hinta: {order.purchaseprice} <br />
+        Hinta: {centsToFormattedEuros(order.purchaseprice)} <br />  
         Lisätiedot: {order.customerinstructions}
         </Typography>
         <br />
@@ -236,13 +235,7 @@ const OrderElement = ({order}) => {
         {adminDetails()}
       </div>  
 
-
-
 </AccordionDetails>
-<Divider />
-  <AccordionActions>
-    wazaaaa
-  </AccordionActions>
 </Accordion>
       )
 
