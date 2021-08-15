@@ -5,7 +5,7 @@ import {useHistory} from 'react-router-dom'
 import BreadcrumbsLinks from './BreadcrumbsLinks'
 import CategoryUpdateForm from './CategoryUpdateForm'
 import CategoryAdditionForm from '../components/CategoryAdditionForm'
-import ProductCard from '../components/ProductCard'  
+import ProductCard from './ProductCard'  
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import categoryService from '../services/categories'
 

@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ResponsiveDrawer(props) {
+function MainStructure(props) {
   const windowForMUI = props.window;
   const classes = useStyles();
   const theme = useTheme();
@@ -186,4 +186,4 @@ function ResponsiveDrawer(props) {
   );
 }
 
-export default ResponsiveDrawer;
+export default MainStructure

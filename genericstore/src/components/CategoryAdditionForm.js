@@ -1,3 +1,6 @@
+// This form is in the components-folder and not in the assisting components -folder, because
+// this form is also an independent page, besides being used in a page.
+
 import React from 'react';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'

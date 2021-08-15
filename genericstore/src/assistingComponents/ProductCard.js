@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import AddToShoppingCartForm from '../assistingComponents/AddToShoppingCartForm'
-import CategoryUpdateForm from '../assistingComponents/CategoryUpdateForm'  
-import AvailabilityUpdateSwitch from '../assistingComponents/AvailabilityUpdateSwitch' 
-import PricesAndSizesForm from '../assistingComponents/PricesAndSizesForm'  
+import AddToShoppingCartForm from './AddToShoppingCartForm'
+import CategoryUpdateForm from './CategoryUpdateForm'  
+import AvailabilityUpdateSwitch from './AvailabilityUpdateSwitch' 
+import PricesAndSizesForm from './PricesAndSizesForm'  
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import productService from '../services/products'
 
@@ -230,7 +230,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
               </div>
             </div>
           </div>
-        </CardContent>
+        </CardContent> 
       </Collapse>
     )
   }

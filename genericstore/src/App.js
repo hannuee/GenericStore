@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
-import { useSelector } from 'react-redux'  // TESTTTTTTTTTTTTTTT
 import { useDispatch } from 'react-redux'
-import ResponsiveDrawer from './components/ResponsiveDrawer'
+import MainStructure from './components/MainStructure'
 import { initializeCategories } from './reducers/categoryReducer'
 import { initializeAvailableProducts } from './reducers/productReducer'
 import { initializeAllProducts } from './reducers/productReducer'
@@ -35,7 +34,7 @@ const App = () => {
   return (
     <div>
       <Router>
-        <ResponsiveDrawer />
+        <MainStructure />
       </Router>
     </div>
   )

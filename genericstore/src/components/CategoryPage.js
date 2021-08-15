@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom"
 import CategoryHeader from '../assistingComponents/CategoryHeader'
-import ProductCard from './ProductCard'
+import ProductCard from '../assistingComponents/ProductCard'
 
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles';
