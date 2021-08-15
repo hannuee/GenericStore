@@ -207,30 +207,34 @@ const AdminNewProductAndCategoryButtons = () => {
   }
 }
 
-    return (
-      <> 
-      <div className={classesSizeSelect.horizontalUpperLayout}>  
-        <div className={classesSizeSelect.horizontalLayoutLeft}>
-          <BreadcrumbsLinks categoryId={categoryDisplayed.id} />
-          {categoryDisplayed.description}
-          <div>
-          {AdminExpandCategoryModificationControlsButton()}
-          </div>
-          </div>
+if(categoryDisplayed !== undefined) {  // This check is due to the problem of delayed initialization when non-root ULR is reloaded.
+  return (
+    <> 
+    <div className={classesSizeSelect.horizontalUpperLayout}>  
+      <div className={classesSizeSelect.horizontalLayoutLeft}>
+        <BreadcrumbsLinks categoryId={categoryDisplayed.id} />
+        {categoryDisplayed.description}
+        <div>
+        {AdminExpandCategoryModificationControlsButton()}
+        </div>
+        </div>
 
-          <div className={classesSizeSelect.horizontalLayoutRight}> 
-          {AdminNewProductAndCategoryButtons()}
-          </div>
-        
-      </div>
-        
+        <div className={classesSizeSelect.horizontalLayoutRight}> 
+        {AdminNewProductAndCategoryButtons()}
+        </div>
+      
+    </div>
+      
+      {newProductForm()}
+      {newCategoryForm()}
+      {categoryModificationControls()}
+    </>
+  )
+} else {
+  return <> </>
+}
 
-        
-        {newProductForm()}
-        {newCategoryForm()}
-        {categoryModificationControls()}
-      </>
-    )
+    
   }
   
   export default CategoryHeader

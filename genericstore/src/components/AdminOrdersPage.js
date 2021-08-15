@@ -26,7 +26,11 @@ const AdminOrdersPage = (props) => {
 
   const dispatch = useDispatch()
   const admin = useSelector(state => state.customers.loggedIn)
-  useEffect(() => dispatch(initializeAdminsUndispatchedOrdersWithDetails(admin.token)), [dispatch])
+  useEffect(() => {
+    if(admin !== null) {  // This check is due to the problem of delayed initialization when non-root ULR is reloaded.
+      dispatch(initializeAdminsUndispatchedOrdersWithDetails(admin.token))
+    }
+  }, [dispatch, admin])
 
   const orders = useSelector(state => state.orders.adminsUndispatched)  
 

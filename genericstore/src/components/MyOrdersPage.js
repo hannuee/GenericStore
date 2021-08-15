@@ -22,8 +22,11 @@ const MyOrdersPage = (props) => {
 
   const customer = useSelector(state => state.customers.loggedIn)
 
-  // SIIRRÄ ONNISTUNEEN KIRJAUTUMISEN JÄLKEISEEN HETKEEN, KUNHAN SE OSIO ON TEHTY, JA ONNISTUNEEN TILAUKSEN TEKO HETKEEN.
-  useEffect(() => dispatch(initializeCustomersOrdersWithDetails(customer.token)), [dispatch])
+  useEffect(() => {
+    if(customer !== null) {  // This check is due to the problem of delayed initialization when non-root ULR is reloaded.
+      dispatch(initializeCustomersOrdersWithDetails(customer.token))
+    }
+  }, [dispatch, customer])
 
   // For the accordion:
   const classes = useStyles();

@@ -21,10 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Notification = () => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
 
-  const notification = useSelector(state => state.notification)  // Kat haku tilasta MODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-
+  const notification = useSelector(state => state.notification)
 
   return (
     <div className={classes.root}>

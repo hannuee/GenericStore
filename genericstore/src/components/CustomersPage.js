@@ -58,7 +58,11 @@ const CustomersPage = (props) => {
   const dispatch = useDispatch()
   const admin = useSelector(state => state.customers.loggedIn)
 
-  useEffect(() => dispatch(initializeCustomers(admin.token)), [dispatch])
+  useEffect(() => {
+    if(admin !== null) {  // This check is due to the problem of delayed initialization when non-root ULR is reloaded.
+      dispatch(initializeCustomers(admin.token))
+    }
+  }, [dispatch, admin])
 
   // For the accordion:
   const classes = useStyles();
