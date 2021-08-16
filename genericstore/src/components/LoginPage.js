@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from "react-router-dom"
-import {useHistory} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import { initializeAllProducts } from '../reducers/productReducer'
 import customerService from '../services/customers'
 
 // Material UI:
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,14 +21,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const LoginPage = () => {
-  const classes = useStyles();
-
-  const history = useHistory()
+  const classes = useStyles()
 
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [disabled, setDisabled] = React.useState(false)
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value)
@@ -36,8 +36,6 @@ const LoginPage = () => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value)
   }
-
-  const [disabled, setDisabled] = React.useState(false)
 
   const handleLogIn = async () => {
     setDisabled(true)
@@ -54,18 +52,21 @@ const LoginPage = () => {
 
       if(tokenAndInfo.admin !== undefined) dispatch(initializeAllProducts(tokenAndInfo.token))
 
-      window.localStorage.setItem('genericStoreUser', JSON.stringify(tokenAndInfo)) 
+      window.localStorage.setItem('genericStoreUser', JSON.stringify(tokenAndInfo))
 
       history.push('/')
 
       dispatch(displayNotificationForSeconds('Tervetuloa!', 'success', 5))
-    } 
+    }
     catch(error) {
       if (error.response.data.error.includes('Incorrect email or password')) dispatch(displayNotificationForSeconds('Virheellinen sähköpostiosoite tai salasana', 'error', 5))
       else dispatch(displayNotificationForSeconds('Sisäänkirjautuminen epäonnistui', 'error', 5))
       setDisabled(false)
     }
   }
+
+
+  // MAIN COMPONENT:
 
   return (
     <form className={classes.root} noValidate autoComplete="off">

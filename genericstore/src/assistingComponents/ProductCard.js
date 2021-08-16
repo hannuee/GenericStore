@@ -1,28 +1,28 @@
-import React from 'react';
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import AddToShoppingCartForm from './AddToShoppingCartForm'
-import CategoryUpdateForm from './CategoryUpdateForm'  
-import AvailabilityUpdateSwitch from './AvailabilityUpdateSwitch' 
-import PricesAndSizesForm from './PricesAndSizesForm'  
+import CategoryUpdateForm from './CategoryUpdateForm'
+import AvailabilityUpdateSwitch from './AvailabilityUpdateSwitch'
+import PricesAndSizesForm from './PricesAndSizesForm'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import productService from '../services/products'
 
 // Material UI:
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Collapse from '@material-ui/core/Collapse';
-import EditIcon from '@material-ui/icons/Edit';
-import clsx from 'clsx';
-import Divider from '@material-ui/core/Divider';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Typography from '@material-ui/core/Typography'
+import IconButton from '@material-ui/core/IconButton'
+import Collapse from '@material-ui/core/Collapse'
+import EditIcon from '@material-ui/icons/Edit'
+import clsx from 'clsx'
+import Divider from '@material-ui/core/Divider'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 
-const switchAndCategoryModStyle = {  
+const switchAndCategoryModStyle = {
   alignItems: 'center',
   marginLeft: '30px'
 }
@@ -79,7 +79,7 @@ const useStylesNewCard = makeStyles((theme) => ({
     transform: 'rotate(90deg)',
     padding: '3px',
   },
-}));
+}))
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,14 +93,14 @@ const useStyles = makeStyles((theme) => ({
 // Product display -mode: product, undefined, undefined
 // Product addition -mode: undefined, parentCategoryIdForNewProduct, handleCloseNewProductForm
 const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewProductForm }) => {
-  const classesNewCard = useStylesNewCard();
-  
+  const classesNewCard = useStylesNewCard()
+
   const loggedIn = useSelector(state => state.customers.loggedIn)
   const dispatch = useDispatch()
 
   const [name, setName] = React.useState('')  // Product addition form.
   const [description, setDescription] = React.useState('')  // Product addition form.
-  const [pricesAndSizes, setPricesAndSizes] = React.useState([{price: 0, size: ''}])  // Product addition form.
+  const [pricesAndSizes, setPricesAndSizes] = React.useState([{ price: 0, size: '' }])  // Product addition form.
   const [disabled, setDisabled] = React.useState(false)  // Disable product addition form when sending data.
   const [expanded, setExpanded] = React.useState(false)  // Admin control panel expansion.
 
@@ -112,18 +112,18 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
     setDisabled(true)
 
     const newPricesAndSizes = []
-      for(let userInput of pricesAndSizes){
-        let asNumber = Number(Number(userInput.price.replace(",", ".").replace(/\s+/g, "")).toFixed(2))
-        if(isNaN(asNumber)) {
-          dispatch(displayNotificationForSeconds('Virheellinen hintatieto', 'error', 5))
-          return
-        } else if(asNumber < 0) {
-          dispatch(displayNotificationForSeconds('Hinta ei voi olla negatiivinen', 'error', 5))
-          return
-        }
-        asNumber = Math.trunc(asNumber*100)
-        newPricesAndSizes.push({price: asNumber, size: userInput.size})
+    for(let userInput of pricesAndSizes){
+      let asNumber = Number(Number(userInput.price.replace(',', '.').replace(/\s+/g, '')).toFixed(2))
+      if(isNaN(asNumber)) {
+        dispatch(displayNotificationForSeconds('Virheellinen hintatieto', 'error', 5))
+        return
+      } else if(asNumber < 0) {
+        dispatch(displayNotificationForSeconds('Hinta ei voi olla negatiivinen', 'error', 5))
+        return
       }
+      asNumber = Math.trunc(asNumber*100)
+      newPricesAndSizes.push({ price: asNumber, size: userInput.size })
+    }
 
     try {
       const product = await productService.post({
@@ -148,6 +148,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
     }
     setDisabled(false)
   }
+
 
   // SUBCOMPONENTS:
 
@@ -186,7 +187,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
     )
   }
 
-  const DescriptionOrFieldForIt = () => {   
+  const DescriptionOrFieldForIt = () => {
     if (product != undefined) return (
       <Typography variant="body2" color="textSecondary" component="p" className={classesNewCard.marginBottom}>
         {product.description} Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
@@ -230,10 +231,11 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
               </div>
             </div>
           </div>
-        </CardContent> 
+        </CardContent>
       </Collapse>
     )
   }
+
 
   // MAIN COMPONENT:
 
@@ -247,7 +249,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
         />
         <div className={classesNewCard.verticalLayout}>
           <CardContent className={classesNewCard.content}>
-            <div className={classesNewCard.nameLine}>   
+            <div className={classesNewCard.nameLine}>
               {TitleOrFieldForIt()}
               {VisibilityInfoOrNothing()}
               {EditButtonOrNothing()}

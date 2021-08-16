@@ -2,18 +2,18 @@ import productService from '../services/products'
 
 const reducer = (state = [], action) => {
   switch (action.type) {
-    case 'INIT_PRODUCTS':
-      return action.data
-    case 'ADD_NEW_PRODUCT':
-      return state.concat(action.data)
-    case 'REPLACE_PRODUCT':
-      const newArray = []
-      for(let product of state){
-        if(product.id === action.data.id) newArray.push(action.data)
-        else newArray.push(product)
-      }
-      return newArray
-    default: return state
+  case 'INIT_PRODUCTS':
+    return action.data
+  case 'ADD_NEW_PRODUCT':
+    return state.concat(action.data)
+  case 'REPLACE_PRODUCT':
+    const newArray = []
+    for(let product of state){
+      if(product.id === action.data.id) newArray.push(action.data)
+      else newArray.push(product)
+    }
+    return newArray
+  default: return state
   }
 }
 
@@ -71,7 +71,7 @@ export const modifyCategory = (idAndInfoToModify) => {           // SAA POISTAAA
   }
 }
 
-export const modifyPricesAndSizes = (idAndInfoToModify) => {      // SAA POISTAAAAAAAAAAAAAA  
+export const modifyPricesAndSizes = (idAndInfoToModify) => {      // SAA POISTAAAAAAAAAAAAAA
   return async dispatch => {
     const product = await productService.putPricesAndSizes(idAndInfoToModify)
     dispatch({

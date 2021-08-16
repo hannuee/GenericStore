@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import MainStructure from './components/MainStructure'
 import { initializeCategories } from './reducers/categoryReducer'
 import { initializeAvailableProducts } from './reducers/productReducer'
 import { initializeAllProducts } from './reducers/productReducer'
-import { BrowserRouter as Router } from "react-router-dom"
+import { BrowserRouter as Router } from 'react-router-dom'
 
 
 const App = () => {
@@ -41,7 +41,7 @@ const App = () => {
     else dispatch(initializeAvailableProducts())
   }, [dispatch])
 
-  
+
   return (
     <div>
       <Router>

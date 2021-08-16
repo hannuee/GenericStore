@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import OrderElement from '../assistingComponents/OrderElement'
@@ -7,20 +7,18 @@ import { initializeCustomersOrdersWithDetails } from '../reducers/orderReducer'
 // Material UI:
 import { makeStyles } from '@material-ui/core/styles'
 
-// For the accordion:
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   }
-}));
-
-// {order.id}, {order.customer_id}, {order.orderreceived}, {order.orderdispatched}, {order.purchaseprice}, {order.customerinstructions}
+}))
 
 const MyOrdersPage = (props) => {
-
-  const dispatch = useDispatch()
+  const classes = useStyles()
 
   const customer = useSelector(state => state.customers.loggedIn)
+  const orders = useSelector(state => state.orders.customers)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if(customer !== null) {  // This check is due to the problem of delayed initialization when non-root ULR is reloaded.
@@ -28,12 +26,10 @@ const MyOrdersPage = (props) => {
     }
   }, [dispatch, customer])
 
-  // For the accordion:
-  const classes = useStyles();
 
-  const orders = useSelector(state => state.orders.customers)
+  // MAIN COMPONENT:
 
-    return (
+  return (
     <div className={classes.root}>
 
       {orders.map(order =>
@@ -41,8 +37,8 @@ const MyOrdersPage = (props) => {
       )}
 
     </div>
-    )
+  )
 
-  }
-  
-  export default MyOrdersPage
+}
+
+export default MyOrdersPage

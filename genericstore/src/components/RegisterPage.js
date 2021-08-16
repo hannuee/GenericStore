@@ -1,14 +1,13 @@
-import React from 'react';
+import React from 'react'
 import { useDispatch } from 'react-redux'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import customerService from '../services/customers'
 
 // Material UI:
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,10 +19,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const RegisterPage = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const dispatch = useDispatch()
-
   const history = useHistory()
 
   const [name, setName] = React.useState('')
@@ -31,6 +29,7 @@ const RegisterPage = () => {
   const [mobile, setMobile] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [disabled, setDisabled] = React.useState(false)
 
   const handleNameChange = (event) => {
     setName(event.target.value)
@@ -48,30 +47,29 @@ const RegisterPage = () => {
     setPassword(event.target.value)
   }
 
-
-  // Buttoniin: disabled={disabled}
-  const [disabled, setDisabled] = React.useState(false)
-  
   const handleAddNewCustomer = async () => {
     setDisabled(true)
 
-      try{
-        await customerService.post({
-          name,
-          address,
-          mobile,
-          email,
-          password
-        })
-        history.push('/kirjautuminen')
-        dispatch(displayNotificationForSeconds('Rekisteröityminen onnistui', 'success', 5))
-      }
-      catch(error){
-        if (error.response.data.error.includes('violates unique constraint')) dispatch(displayNotificationForSeconds('Virheellinen sähköpostiosoite', 'error', 5))
-        else dispatch(displayNotificationForSeconds('Rekisteröityminen epäonnistui', 'error', 5))
-        setDisabled(false)
-      }
+    try{
+      await customerService.post({
+        name,
+        address,
+        mobile,
+        email,
+        password
+      })
+      history.push('/kirjautuminen')
+      dispatch(displayNotificationForSeconds('Rekisteröityminen onnistui', 'success', 5))
+    }
+    catch(error){
+      if (error.response.data.error.includes('violates unique constraint')) dispatch(displayNotificationForSeconds('Virheellinen sähköpostiosoite', 'error', 5))
+      else dispatch(displayNotificationForSeconds('Rekisteröityminen epäonnistui', 'error', 5))
+      setDisabled(false)
+    }
   }
+
+
+  // MAIN COMPONENT:
 
   return (
     <form className={classes.root} noValidate autoComplete="off">

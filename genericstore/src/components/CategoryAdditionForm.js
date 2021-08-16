@@ -1,18 +1,16 @@
 // This form is in the components-folder and not in the assisting components -folder, because
 // this form is also an independent page, besides being used in a page.
-
-import React from 'react';
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { displayNotificationForSeconds } from '../reducers/notificationReducer'
 import categoryService from '../services/categories'
 
 // Material UI:
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,14 +23,14 @@ const useStyles = makeStyles((theme) => ({
 
 // handleCloseNewCategoryForm is optional, and giving it causes a close form -button to be shown on the form.
 const CategoryAdditionForm = ({ parentCategoryIdForNewCategory, handleCloseNewCategoryForm }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const adminToken = useSelector(state => state.customers.loggedIn.token)
-
   const dispatch = useDispatch()
 
   const [name, setName] = React.useState('')
   const [description, setDescription] = React.useState('')
+  const [disabled, setDisabled] = React.useState(false)
 
   const handleNameChange = (event) => {
     setName(event.target.value)
@@ -41,8 +39,6 @@ const CategoryAdditionForm = ({ parentCategoryIdForNewCategory, handleCloseNewCa
     setDescription(event.target.value)
   }
 
-  const [disabled, setDisabled] = React.useState(false)
-  
   const handleAddNewCategory = async () => {
     setDisabled(true)
 
@@ -61,12 +57,15 @@ const CategoryAdditionForm = ({ parentCategoryIdForNewCategory, handleCloseNewCa
         data: category
       })
       dispatch(displayNotificationForSeconds('Kategoria lisätty', 'success', 5))
-    } 
+    }
     catch(error) {
       setDisabled(false)
       dispatch(displayNotificationForSeconds('Kategorian lisäys epäonnistui', 'error', 5))
     }
   }
+
+
+  // SUBCOMPONENTS:
 
   const closeFormButtonOrNothing = () => {
     if(handleCloseNewCategoryForm !== undefined) {
@@ -75,16 +74,18 @@ const CategoryAdditionForm = ({ parentCategoryIdForNewCategory, handleCloseNewCa
   }
 
 
+  // MAIN COMPONENT:
+
   return (
     <Paper>
-    <form className={classes.root} noValidate autoComplete="off">
-      <div>
-        <TextField required id="standard-required" label="Kategorian nimi" value={name} onChange={handleNameChange} />
-        <TextField id="standard-required" label="Kuvaus" value={description} onChange={handleDescriptionChange} />
-        <Button size="small" disabled={disabled} onClick={handleAddNewCategory}>Lisää kategoria</Button>
-        {closeFormButtonOrNothing()}
-      </div>
-    </form>
+      <form className={classes.root} noValidate autoComplete="off">
+        <div>
+          <TextField required id="standard-required" label="Kategorian nimi" value={name} onChange={handleNameChange} />
+          <TextField id="standard-required" label="Kuvaus" value={description} onChange={handleDescriptionChange} />
+          <Button size="small" disabled={disabled} onClick={handleAddNewCategory}>Lisää kategoria</Button>
+          {closeFormButtonOrNothing()}
+        </div>
+      </form>
     </Paper>
   )
 }
