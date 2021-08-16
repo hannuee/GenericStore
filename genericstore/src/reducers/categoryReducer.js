@@ -27,44 +27,4 @@ export const initializeCategories = () => {
   }
 }
 
-
-export const addNewCategory = (newCategory, setDisabled, ClearForm) => {    // SAA POISTAAAAAAAAAAAAAA
-  return async dispatch => {
-    setDisabled(true)
-
-    try{
-      const category = await categoryService.post(newCategory)
-      ClearForm()
-      setDisabled(false)
-      dispatch({
-        type: 'ADD_NEW_CATEGORY',
-        data: category
-      })
-    }
-    catch(error) {
-      setDisabled(false)
-    }
-  }
-}
-
-export const deleteCategory = (id) => {      // SAA POISTAAAAAAAAAAAAAA
-  return async dispatch => {
-    const category = await categoryService.deleteCategory(id)
-    dispatch({
-      type: 'DELETE_CATEGORY',
-      data: id
-    })
-  }
-}
-
-export const modifyParentCategory = (idAndInfoToModify) => {      // SAA POISTAAAAAAAAAAAAAA
-  return async dispatch => {
-    const category = await categoryService.putNewCategory(idAndInfoToModify)
-    dispatch({
-      type: 'REPLACE_CATEGORY',
-      data: category
-    })
-  }
-}
-
 export default reducer

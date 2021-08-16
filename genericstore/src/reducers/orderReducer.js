@@ -12,8 +12,6 @@ const reducer = (state = { customers: [], cart: [], adminsUndispatched: [], admi
   switch (action.type) {
   case 'INIT_CUSTOMERS_ORDERS':
     return { customers: action.data, cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched }
-  case 'ADD_ORDER':  // MIETI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ei käyttöä toistaiseksti
-    return { customers: state.customers.concat(action.data), cart: state.cart, adminsUndispatched: state.adminsUndispatched, adminsDispatched: state.adminsDispatched }
   case 'INIT_ADMINS_UNDISPATCHED_ORDERS':
     return { customers: state.customers, cart: state.cart, adminsUndispatched: action.data, adminsDispatched: state.adminsDispatched }
   case 'INIT_ADMINS_DISPATCHED_ORDERS':
@@ -91,45 +89,6 @@ export const initializeCustomersOrdersWithDetails = (customerToken) => {
   }
 }
 
-export const sendNewOrder = (cartItems) => {   // SAA POISTAAAAAAAAAAAAAA
-  return async dispatch => {
-
-    for(let item of cartItems) {
-      delete item.product_time
-      delete item.product_name
-    }
-
-    const response = await orderService.post(cartItems)
-
-    // jos onnistuu niin ostoskorin tyhjennys:
-    dispatch({
-      type: 'CLEAR_CART'
-    })
-
-    // Tilaukset haetaan uudestaan koska Orders POST rajapinta ei tällä hetkellä palauta lisättyä tilausta.
-    // Kun tilaukset pyydetään Orders GET rajapinnoilta niin ne tulevat varmasti oikein, siten kun ne ovat tietokannassa.
-    dispatch(initializeCustomersOrdersWithDetails())
-  }
-}
-
-export const addOrderItemToCart = (productAndDetails) => {      // SAA POISTAAAAAAAAAAAAAA
-  return async dispatch => {
-    dispatch({
-      type: 'ADD_TO_CART',
-      data: productAndDetails
-    })
-  }
-}
-
-export const deleteItemFromCart = (product_time) => {           // SAA POISTAAAAAAAAAAAAAA
-  return async dispatch => {
-    dispatch({
-      type: 'DELETE_FROM_CART',
-      data: product_time
-    })
-  }
-}
-
 export const initializeAdminsUndispatchedOrdersWithDetails = (adminToken) => {
   return async dispatch => {
     const orders = await orderService.getUndispatchedWithDetails(adminToken)
@@ -156,36 +115,6 @@ export const initializeAdminsDispatchedOrders = (adminToken) => {
     dispatch({
       type: 'INIT_ADMINS_DISPATCHED_ORDERS',
       data: orders
-    })
-  }
-}
-
-export const modifyAdminsUndispatchedInternalNotes = (idAndInternalNotes) => {      // SAA POISTAAAAAAAAAAAAAA
-  return async dispatch => {
-    const order = await orderService.putInternalNotes(idAndInternalNotes)
-    dispatch({
-      type: 'REPLACE_ADMINS_UNDISPATCHED_KEEP_DETAILS',
-      data: order
-    })
-  }
-}
-
-export const modifyAdminsDispatchedInternalNotes = (idAndInternalNotes) => {      // SAA POISTAAAAAAAAAAAAAA
-  return async dispatch => {
-    const order = await orderService.putInternalNotes(idAndInternalNotes)
-    dispatch({
-      type: 'REPLACE_ADMINS_DISPATCHED_KEEP_DETAILS',
-      data: order
-    })
-  }
-}
-
-export const markOrderAsDispatched = (id) => {                   // SAA POISTAAAAAAAAAAAAAA
-  return async dispatch => {
-    const order = await orderService.putOrderDispatched({ id })
-    dispatch({
-      type: 'MODIFY_ADMINS_UNDISPATCHED_TRANSFER_TO_DISPATCHED_KEEP_DETAILS',
-      data: order
     })
   }
 }

@@ -24,33 +24,6 @@ const reducer = (state = { loggedIn: null }, action) => {
 
 // Action creators:
 
-export const logInWithCredentials = (credentials) => {           // SAA POISTAAAAAAAAAAAAAAAAA
-  return async dispatch => {
-    const customerNameAndToken = await customerService.postLogin(credentials)
-    dispatch({
-      type: 'ADD_LOGGED_IN',
-      data: customerNameAndToken
-    })
-  }
-}
-
-export const addNewCustomer = (customer, setDisabled, redirect) => {   // SAA POISTAAAAAAAAAAAAAAAAA
-  return async dispatch => {
-    setDisabled(true)
-
-    try{
-      await customerService.post(customer)
-      redirect()
-    }
-    catch(error){
-      if (error.response.data.error.includes('violates unique constraint')) console.log('Email varattu')
-      else console.log('Joku muu error')
-      setDisabled(false)
-    }
-  }
-}
-
-
 export const initializeCustomers = (adminToken) => {
   return async dispatch => {
     const customers = await customerService.getAll(adminToken)
