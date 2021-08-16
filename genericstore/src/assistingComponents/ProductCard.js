@@ -81,15 +81,6 @@ const useStylesNewCard = makeStyles((theme) => ({
   },
 }))
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
-  },
-}))
-
 // Product display -mode: product, undefined, undefined
 // Product addition -mode: undefined, parentCategoryIdForNewProduct, handleCloseNewProductForm
 const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewProductForm }) => {

@@ -60,10 +60,8 @@ const useStylesSizeSelect = makeStyles((theme) => ({
 }))
 
 const useStylesNewCard = makeStyles((theme) => ({
-  expandButton: {
-    float: 'left'
-  },
   expand: {
+    float: 'left',
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
     transition: theme.transitions.create('transform', {
@@ -71,6 +69,7 @@ const useStylesNewCard = makeStyles((theme) => ({
     }),
   },
   expandOpen: {
+    float: 'left',
     transform: 'rotate(90deg)',
   },
 }))
@@ -108,7 +107,7 @@ const CategoryHeader = (props) => {
 
   const handleDeleteCategory = async () => {
     try{
-      const category = await categoryService.deleteCategory(categoryDisplayed.id, loggedIn.token)
+      await categoryService.deleteCategory(categoryDisplayed.id, loggedIn.token)
       history.push('/')
       dispatch({
         type: 'DELETE_CATEGORY',
@@ -176,7 +175,7 @@ const CategoryHeader = (props) => {
   const AdminExpandCategoryModificationControlsButton = () => {
     if (loggedIn != null && loggedIn.admin != undefined) {
       return (
-        <IconButton className={classesNewCard.expandButton}
+        <IconButton 
           className={clsx(classesNewCard.expand, {
             [classesNewCard.expandOpen]: expandedCategoryModificationControls,
           })}

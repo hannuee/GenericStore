@@ -27,19 +27,23 @@ const Notification = () => {
 
   // MAIN COMPONENT:
 
-  return (
-    <div className={classes.root}>
-      <Snackbar anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-      open={notification.text !== ''}>
-        <Alert severity={notification.severity}>
-          {notification.text}
-        </Alert>
-      </Snackbar>
-    </div>
-  )
+  if (notification.text !== '') {
+    return (
+      <div className={classes.root}>
+        <Snackbar anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+          open={true}>
+          <Alert severity={notification.severity}>
+            {notification.text}
+          </Alert>
+        </Snackbar>
+      </div>
+    )
+  } else {
+    return null
+  }
 }
 
 export default Notification

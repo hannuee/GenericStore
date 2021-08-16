@@ -69,7 +69,9 @@ const OrderElement = ({ order }) => {
   const user = useSelector(state => state.customers.loggedIn)
   const dispatch = useDispatch()
 
-  const [internalNoteField, setInternalNoteField] = React.useState(order.internalnotes)
+  let internalNoteFieldInit = ''
+  if(order.internalnotes !== null) internalNoteFieldInit = order.internalnotes
+  const [internalNoteField, setInternalNoteField] = React.useState(internalNoteFieldInit)
 
   const handleInternalNotesChange = (event) => {
     setInternalNoteField(event.target.value)

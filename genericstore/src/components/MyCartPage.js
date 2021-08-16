@@ -48,7 +48,7 @@ const MyOrdersPage = (props) => {
         delete item.product_name
       }
 
-      const response = await orderService.post(cartItems, customer.token)
+      await orderService.post(cartItems, customer.token)
 
       setDisabled(false)
       // jos onnistuu niin ostoskorin tyhjennys:
