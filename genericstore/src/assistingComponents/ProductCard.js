@@ -40,6 +40,7 @@ const useStylesNewCard = makeStyles((theme) => ({
   verticalLayout: {
     display: 'flex',
     flexDirection: 'column',
+    width: '100%'
   },
   floatLeft: {
     float: 'left'
@@ -83,7 +84,7 @@ const useStylesNewCard = makeStyles((theme) => ({
 
 // Product display -mode: product, undefined, undefined
 // Product addition -mode: undefined, parentCategoryIdForNewProduct, handleCloseNewProductForm
-const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewProductForm }) => {
+const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewProductForm }) => {   
   const classesNewCard = useStylesNewCard()
 
   const loggedIn = useSelector(state => state.customers.loggedIn)
@@ -181,8 +182,7 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
   const DescriptionOrFieldForIt = () => {
     if (product != undefined) return (
       <Typography variant="body2" color="textSecondary" component="p" className={classesNewCard.marginBottom}>
-        {product.description} Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
-        Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller Mac Miller
+        {product.description}
       </Typography>
     )
     else return (
@@ -227,17 +227,30 @@ const ProductCard = ({ product, parentCategoryIdForNewProduct, handleCloseNewPro
     )
   }
 
+  const productPictureOrBlank = () => {
+    if (product != undefined && product.picture != null) return (
+      <CardMedia
+        className={classesNewCard.cover}
+        image={'/' + product.picture.URL}
+        title={product.picture.desc}
+      />
+    )
+    else return (
+      <CardMedia
+        className={classesNewCard.cover}
+        image="/paleBlue.jpg"
+        title="Pale blue picture"
+      />
+    )
+  }
+
 
   // MAIN COMPONENT:
 
   return (
     <Card className={classesNewCard.root}>
       <div className={classesNewCard.horizontalLayout}>
-        <CardMedia
-          className={classesNewCard.cover}
-          image="/reptile.jpg"
-          title="Live from space album cover"
-        />
+        {productPictureOrBlank()}
         <div className={classesNewCard.verticalLayout}>
           <CardContent className={classesNewCard.content}>
             <div className={classesNewCard.nameLine}>
