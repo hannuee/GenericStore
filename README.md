@@ -30,6 +30,9 @@ Työaikaa käytetty yhteensä: 181 tuntia
 | Versionhallinta | Git |
 | Versionhallinta-palvelin | GitHub |
 | Paketinhallinta | npm |
-| Technical UI framework | React |
+| Tekninen UI framework | React |
 | Design UI framework | Material UI |
 | Ohjelmointikieli | JavaScript |
+
+## Backend
+[Backend-repositorio](https://github.com/hannuee/GenericStoreBackend)
