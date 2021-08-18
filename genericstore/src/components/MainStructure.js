@@ -107,7 +107,7 @@ function MainStructure(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Geneerinen kauppa
+            Linnakauppa
           </Typography>
         </Toolbar>
       </AppBar>
