@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3001/api/customers'
+const baseUrl = '/api/customers'
 
 const post = async (customerInfo) => {
   const response = await axios.post(baseUrl, customerInfo)
