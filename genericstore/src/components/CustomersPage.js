@@ -10,7 +10,6 @@ import AccordionDetails from '@material-ui/core/AccordionDetails'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Divider from '@material-ui/core/Divider'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,7 +105,6 @@ const CustomersPage = (props) => {
           <AccordionDetails className={classes.details}>
             {customerDetailsDisplay(customer)}
           </AccordionDetails>
-          <Divider />
         </Accordion>
 
       )}
